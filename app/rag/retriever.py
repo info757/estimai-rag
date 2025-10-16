@@ -35,7 +35,8 @@ class HybridRetriever:
     def __init__(
         self,
         qdrant_url: str = None,
-        collection_name: str = "construction_standards"
+        collection_name: str = "construction_standards",
+        use_memory: bool = None
     ):
         """
         Initialize hybrid retriever.
@@ -43,16 +44,34 @@ class HybridRetriever:
         Args:
             qdrant_url: Qdrant server URL (defaults to env var or localhost)
             collection_name: Name of Qdrant collection
+            use_memory: Use in-memory Qdrant (True) or server (False). Auto-detects if None.
         """
-        self.qdrant_url = qdrant_url or os.getenv(
-            "QDRANT_URL",
-            "http://localhost:6333"
-        )
         self.collection_name = collection_name
         
+        # Auto-detect: try server first, fallback to memory
+        if use_memory is None:
+            try:
+                test_client = QdrantClient(url="http://localhost:6333", timeout=2)
+                test_client.get_collections()
+                use_memory = False
+                logger.info("Qdrant server detected, using server mode")
+            except Exception:
+                use_memory = True
+                logger.info("Qdrant server not available, using in-memory mode")
+        
+        self.use_memory = use_memory
+        
         # Initialize Qdrant client
-        self.client = QdrantClient(url=self.qdrant_url)
-        logger.info(f"Connected to Qdrant at {self.qdrant_url}")
+        if use_memory:
+            self.client = QdrantClient(":memory:")
+            logger.info("Connected to Qdrant (in-memory mode)")
+        else:
+            self.qdrant_url = qdrant_url or os.getenv(
+                "QDRANT_URL",
+                "http://localhost:6333"
+            )
+            self.client = QdrantClient(url=self.qdrant_url)
+            logger.info(f"Connected to Qdrant at {self.qdrant_url}")
         
         # Initialize embeddings
         self.embeddings = OpenAIEmbeddings(
