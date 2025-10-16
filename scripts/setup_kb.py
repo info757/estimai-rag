@@ -61,7 +61,10 @@ def main():
     print("🔌 Step 2: Connecting to Qdrant...")
     try:
         retriever = HybridRetriever()
-        print(f"   ✅ Connected to {retriever.qdrant_url}")
+        if retriever.use_memory:
+            print(f"   ✅ Connected (in-memory mode - no Docker required)")
+        else:
+            print(f"   ✅ Connected to {retriever.qdrant_url}")
         print()
     except Exception as e:
         print(f"   ❌ Error connecting to Qdrant: {e}")
