@@ -1,0 +1,59 @@
+[
+  {
+    "content": "Storm drain minimum cover requirements: 1.5 feet under roadways and parking areas, 1.0 feet under landscaped areas. If cover is less than specified, pipe must be encased in concrete or use thicker wall pipe class.",
+    "discipline": "storm",
+    "category": "cover_depth",
+    "source": "Local Code",
+    "reference": "Section 12.4.2"
+  },
+  {
+    "content": "Storm drain pipe using RCP (reinforced concrete pipe) requires minimum 3.0 feet of cover for H-20 loading. For depths less than 3.0 feet, use HDPE or PVC pipe with adequate wall thickness.",
+    "discipline": "storm",
+    "category": "cover_depth",
+    "source": "ASCE Manual 37",
+    "reference": "Table 4-2"
+  },
+  {
+    "content": "Sanitary sewer minimum cover: 2.5 feet in general areas, 4.0 feet under roadways. Maximum cover without special design: 15 feet for PVC, 20 feet for DI.",
+    "discipline": "sanitary",
+    "category": "cover_depth",
+    "source": "IPC",
+    "reference": "Section 702.1"
+  },
+  {
+    "content": "Sanitary sewer cover must account for frost depth. In frost-susceptible areas, minimum cover shall be 4.5 feet or below frost line, whichever is greater.",
+    "discipline": "sanitary",
+    "category": "cover_depth",
+    "source": "Local Code",
+    "reference": "Section 14.2.1"
+  },
+  {
+    "content": "Water main minimum cover: 3.0 feet in general, 4.5 feet in areas subject to frost. In non-frost areas (southern climates), 2.5 feet minimum acceptable.",
+    "discipline": "water",
+    "category": "cover_depth",
+    "source": "AWWA C600",
+    "reference": "Section 5.3"
+  },
+  {
+    "content": "Water main cover under roadways: Minimum 4.5 feet. For heavy traffic areas (truck routes), consider 5.0 feet minimum to avoid damage from dynamic loads.",
+    "discipline": "water",
+    "category": "cover_depth",
+    "source": "AWWA M23",
+    "reference": "Chapter 6"
+  },
+  {
+    "content": "Shallow cover pipe installation: When cover is less than minimum specified, engineer shall design thrust blocks, concrete encasement, or specify higher pressure rating. Document in project specifications.",
+    "discipline": "general",
+    "category": "cover_depth",
+    "source": "ASCE Manual 60",
+    "reference": "Section 8.4"
+  },
+  {
+    "content": "Deep trench excavation requirements: For trenches deeper than 12 feet, sloping or shoring required per OSHA. For depths greater than 20 feet, special design consideration for pipe bedding and lateral earth pressure required.",
+    "discipline": "general",
+    "category": "cover_depth",
+    "source": "OSHA",
+    "reference": "1926 Subpart P"
+  }
+]
+

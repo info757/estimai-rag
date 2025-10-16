@@ -1,0 +1,87 @@
+[
+  {
+    "content": "PVC pipe for gravity sewer: Maximum diameter 24 inches. Suitable for sanitary and storm drainage. Not recommended for pressurized water over 100 psi or diameters greater than 12 inches.",
+    "discipline": "general",
+    "category": "material",
+    "source": "IPC",
+    "reference": "Table 702.1"
+  },
+  {
+    "content": "PVC pipe classifications: SDR 35 for gravity sewer (non-pressure), SDR 26 for low pressure, SDR 21 for medium pressure (water mains up to 165 psi), SDR 17 for high pressure (up to 200 psi).",
+    "discipline": "general",
+    "category": "material",
+    "source": "ASTM D2241",
+    "reference": "Table 1"
+  },
+  {
+    "content": "Ductile Iron (DI) pipe: Suitable for water mains of any diameter. Excellent for high-pressure applications (up to 350 psi with proper class). Can handle deep burial (15+ feet) without special considerations.",
+    "discipline": "water",
+    "category": "material",
+    "source": "AWWA C151",
+    "reference": "Section 4.1"
+  },
+  {
+    "content": "Ductile Iron pipe pressure classes: Class 150, 200, 250, 300, 350. Selection based on working pressure, surge pressure, and burial depth. For water mains under roads with heavy traffic, minimum Class 200.",
+    "discipline": "water",
+    "category": "material",
+    "source": "AWWA C150",
+    "reference": "Table 2"
+  },
+  {
+    "content": "Reinforced Concrete Pipe (RCP): Primary use for storm drainage 12-144 inches diameter. Requires minimum 3 feet of cover for H-20 loading. Not suitable for sanitary sewer due to corrosion concerns in sulfide environments.",
+    "discipline": "storm",
+    "category": "material",
+    "source": "ASTM C76",
+    "reference": "Section 1.1"
+  },
+  {
+    "content": "RCP wall thickness classes: Class I, II, III, IV, V based on D-load strength. Class III common for 1.5-3 ft cover, Class IV for 3-8 ft cover, Class V for deep burial (8-15 ft).",
+    "discipline": "storm",
+    "category": "material",
+    "source": "ASTM C76",
+    "reference": "Table 1"
+  },
+  {
+    "content": "HDPE (High-Density Polyethylene) pipe: Suitable for storm and sanitary drainage, 4-60 inches diameter. Excellent for corrosive environments. Can be installed with minimal cover (12 inches) if properly bedded. Flexible pipe requires proper bedding and compaction.",
+    "discipline": "general",
+    "category": "material",
+    "source": "ASTM F2306",
+    "reference": "Section 1.2"
+  },
+  {
+    "content": "HDPE DR ratings: DR 9 for high pressure water (200 psi), DR 11 for medium pressure (160 psi), DR 17 for low pressure (100 psi), DR 35 for gravity drainage (non-pressure).",
+    "discipline": "general",
+    "category": "material",
+    "source": "AWWA C906",
+    "reference": "Table 1"
+  },
+  {
+    "content": "Vitrified Clay Pipe (VCP): Traditional material for sanitary sewers 4-36 inches. Excellent chemical resistance. Brittle - requires careful handling and installation. Not suitable for areas with ground movement or high impact loads.",
+    "discipline": "sanitary",
+    "category": "material",
+    "source": "ASTM C700",
+    "reference": "Section 1.1"
+  },
+  {
+    "content": "Copper pipe for water service: Type K (heavy wall) for underground, Type L for interior, Type M (thin wall) not recommended for underground. Suitable for small diameter water services (3/4\" to 2\") only.",
+    "discipline": "water",
+    "category": "material",
+    "source": "IPC",
+    "reference": "Table 605.1"
+  },
+  {
+    "content": "Material selection for corrosive soils: Avoid uncoated DI and metallic pipes in soils with resistivity less than 2000 ohm-cm or pH less than 5.5. Use PVC, HDPE, or epoxy-lined DI. Cathodic protection may be required for metallic pipes.",
+    "discipline": "general",
+    "category": "material",
+    "source": "AWWA M27",
+    "reference": "Chapter 4"
+  },
+  {
+    "content": "Material compatibility with wastewater: PVC and HDPE suitable for all sanitary applications. Concrete pipe (RCP) susceptible to sulfide attack - use only if H2S levels are low or with protective linings. Cast iron not recommended for sanitary sewer.",
+    "discipline": "sanitary",
+    "category": "material",
+    "source": "WEF Manual of Practice 9",
+    "reference": "Section 7.2"
+  }
+]
+

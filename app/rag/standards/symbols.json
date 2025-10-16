@@ -1,0 +1,101 @@
+[
+  {
+    "content": "MH or SSMH symbol indicates manhole, specifically sanitary sewer manhole. Used for access points in gravity sewer systems. Typically shown as circle with cross or 'MH' label. Manhole inverts should be shown on profile sheets.",
+    "discipline": "sanitary",
+    "category": "symbol",
+    "source": "Standard Drawing Conventions",
+    "reference": "ASPE Legend"
+  },
+  {
+    "content": "CB symbol indicates catch basin for storm drainage. Alternate symbols: DI (drain inlet), FES (flared end section). Catch basins collect surface runoff. Typically shown as square or rectangle on plan view.",
+    "discipline": "storm",
+    "category": "symbol",
+    "source": "Standard Drawing Conventions",
+    "reference": "ASPE Legend"
+  },
+  {
+    "content": "WM indicates water main. Associated symbols: HYD (fire hydrant), GV (gate valve), WV (water valve), WSL (water service line). Water mains typically shown as solid or dashed lines in blue.",
+    "discipline": "water",
+    "category": "symbol",
+    "source": "Standard Drawing Conventions",
+    "reference": "AWWA Standard"
+  },
+  {
+    "content": "SS or SSM indicates sanitary sewer main. INV notation shows invert elevation. Sanitary sewers typically shown as green dashed lines or lines with specific hatch pattern.",
+    "discipline": "sanitary",
+    "category": "symbol",
+    "source": "Standard Drawing Conventions",
+    "reference": "ASCE Legend"
+  },
+  {
+    "content": "SD or STM indicates storm drain main. Associated symbols: SDMH (storm drain manhole), CB (catch basin), AREA DRAIN. Storm drains typically shown as cyan or light blue solid lines.",
+    "discipline": "storm",
+    "category": "symbol",
+    "source": "Standard Drawing Conventions",
+    "reference": "ASCE Legend"
+  },
+  {
+    "content": "IE or INV indicates invert elevation - the elevation of the inside bottom of the pipe. Critical for calculating pipe depths and slopes. Always shown in feet above sea level or project datum.",
+    "discipline": "general",
+    "category": "symbol",
+    "source": "Engineering Conventions",
+    "reference": "ASCE Notation"
+  },
+  {
+    "content": "RIM or TOP indicates rim elevation or top of manhole/structure. Ground surface elevation at that point. Difference between RIM and INV gives pipe depth/cover.",
+    "discipline": "general",
+    "category": "symbol",
+    "source": "Engineering Conventions",
+    "reference": "ASCE Notation"
+  },
+  {
+    "content": "Pipe diameter notation: Shown as number followed by inch symbol (12\") or as (D=12\"). Sometimes shown with material prefix: PVC-8, DI-12, RCP-18.",
+    "discipline": "general",
+    "category": "symbol",
+    "source": "Engineering Conventions",
+    "reference": "Standard Practice"
+  },
+  {
+    "content": "Slope notation: Shown as percentage (2.0%) or ratio (1:50). S= prefix common. Minimum slopes: 0.5% for sanitary 8\", 0.4% for storm 12-24\", 0.3% for storm 27+\". May also be shown as drop per 100ft (2.0/100).",
+    "discipline": "general",
+    "category": "symbol",
+    "source": "Engineering Conventions",
+    "reference": "IPC Requirements"
+  },
+  {
+    "content": "Line types legend: Solid line typically means existing, dashed means proposed. Heavy/thick line may indicate larger diameter. Color coding: Blue = water, Green = sanitary, Cyan/Light Blue = storm. Verify with drawing legend.",
+    "discipline": "general",
+    "category": "symbol",
+    "source": "CAD Standards",
+    "reference": "AIA CAD Layer Guidelines"
+  },
+  {
+    "content": "STA or STATION indicates stationing along alignment. Shown as 1+00, 2+00, etc. Each station represents 100 feet. Used on profile sheets to correlate plan view distances with elevations.",
+    "discipline": "general",
+    "category": "symbol",
+    "source": "Civil Engineering Standards",
+    "reference": "Survey Convention"
+  },
+  {
+    "content": "CL indicates centerline of road or pipe alignment. Stationing and elevations typically reference the centerline. Profile sheets show elevations along the centerline.",
+    "discipline": "general",
+    "category": "symbol",
+    "source": "Civil Engineering Standards",
+    "reference": "Survey Convention"
+  },
+  {
+    "content": "Directional flow arrows: Arrows on pipes indicate flow direction. Critical for sanitary and storm (flows downhill). Water mains bidirectional but arrows may show primary flow from source.",
+    "discipline": "general",
+    "category": "symbol",
+    "source": "Drawing Standards",
+    "reference": "Engineering Practice"
+  },
+  {
+    "content": "EX or (E) prefix indicates existing utilities. New proposed utilities may have (N) or (P) prefix. Verify with legend. Demolition items may have strikethrough or special symbol.",
+    "discipline": "general",
+    "category": "symbol",
+    "source": "Drawing Standards",
+    "reference": "Construction Documents"
+  }
+]
+

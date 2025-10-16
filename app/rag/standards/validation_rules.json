@@ -1,0 +1,101 @@
+[
+  {
+    "content": "Storm drain minimum slope: 0.5% for pipes 8-12 inches, 0.4% for 15-24 inches, 0.3% for 27 inches and larger. Flatter slopes may cause sediment buildup. Steeper slopes acceptable but may require energy dissipation.",
+    "discipline": "storm",
+    "category": "slope",
+    "source": "ASCE Manual 37",
+    "reference": "Table 5-1"
+  },
+  {
+    "content": "Sanitary sewer minimum slope: 1.0% for 4 inch, 0.6% for 6 inch, 0.5% for 8 inch, 0.4% for 10-12 inch, 0.3% for 15 inch and larger. Based on minimum velocity of 2.0 fps at design flow to prevent solids deposition.",
+    "discipline": "sanitary",
+    "category": "slope",
+    "source": "IPC",
+    "reference": "Section 704.1"
+  },
+  {
+    "content": "Water main slope: Not critical for function (pressurized system). However, minimum 0.2% slope recommended for drainage during maintenance. High points should have air relief valves, low points should have blow-off valves.",
+    "discipline": "water",
+    "category": "slope",
+    "source": "AWWA M23",
+    "reference": "Chapter 8"
+  },
+  {
+    "content": "Maximum pipe slope without special considerations: 10%. Slopes greater than 10% may require anchoring, thrust blocks, or pipe restraints to prevent movement. Slopes greater than 20% require engineered design.",
+    "discipline": "general",
+    "category": "slope",
+    "source": "ASCE Manual 60",
+    "reference": "Section 9.2"
+  },
+  {
+    "content": "Pipe depth validation: Minimum depth must meet cover requirements. Maximum practical depth without special design: 15 feet for PVC, 20 feet for DI, 25 feet for RCP. Deeper installations require geotechnical analysis.",
+    "discipline": "general",
+    "category": "validation",
+    "source": "ASTM Standards",
+    "reference": "Multiple Standards"
+  },
+  {
+    "content": "Pipe length validation: Typical pipe lengths for takeoff: 10-600 feet between structures. Unusually short runs (less than 10 ft) or long runs (over 600 ft) should be flagged for review. Sanitary manholes required every 400 feet maximum.",
+    "discipline": "general",
+    "category": "validation",
+    "source": "IPC / Local Codes",
+    "reference": "Section 704.3"
+  },
+  {
+    "content": "Diameter progression validation: Pipe diameters should not decrease in direction of flow for gravity systems. Exception: Force mains (pumped) may have diameter changes based on hydraulic design.",
+    "discipline": "general",
+    "category": "validation",
+    "source": "Engineering Practice",
+    "reference": "Hydraulic Design"
+  },
+  {
+    "content": "Material-diameter compatibility: PVC gravity sewer maximum 24 inches. PVC water pressure maximum 12 inches (for 100+ psi). DI water no size limit. RCP storm drainage 12-144 inches. HDPE 4-60 inches. Verify with manufacturer specs.",
+    "discipline": "general",
+    "category": "validation",
+    "source": "Manufacturer Standards",
+    "reference": "ASTM/AWWA"
+  },
+  {
+    "content": "Elevation flow check: For gravity systems (storm/sanitary), upstream invert must be higher than downstream. Invert drop of at least 0.1 feet at manholes to maintain hydraulic grade line. Pumped systems (force mains) flow uphill.",
+    "discipline": "general",
+    "category": "validation",
+    "source": "Hydraulic Design",
+    "reference": "Engineering Practice"
+  },
+  {
+    "content": "Storm drain sizing validation: Common sizes 12, 15, 18, 24, 30, 36, 42, 48 inches. Unusual sizes (odd numbers, very small storm pipes) should be flagged. Minimum practical storm drain size: 12 inches.",
+    "discipline": "storm",
+    "category": "validation",
+    "source": "ASCE Manual 37",
+    "reference": "Section 6.1"
+  },
+  {
+    "content": "Sanitary sewer sizing validation: Common sizes 6, 8, 10, 12, 15, 18 inches for lateral sewers. Minimum size: 4 inches for building sewers, 6-8 inches for mains. Residential laterals typically 4-6 inches.",
+    "discipline": "sanitary",
+    "category": "validation",
+    "source": "IPC",
+    "reference": "Section 702.3"
+  },
+  {
+    "content": "Water main sizing validation: Common sizes 4, 6, 8, 10, 12, 16, 20, 24 inches. Minimum fire protection size: 6 inches. Residential distribution: 6-8 inches. Transmission mains: 12-24 inches or larger.",
+    "discipline": "water",
+    "category": "validation",
+    "source": "AWWA M31",
+    "reference": "Chapter 4"
+  },
+  {
+    "content": "Cover-to-diameter ratio validation: For flexible pipes (PVC, HDPE), minimum cover should be at least 1.0 times diameter. For rigid pipes (RCP, DI), 0.5 times diameter acceptable with proper bedding. Very shallow cover requires engineering review.",
+    "discipline": "general",
+    "category": "validation",
+    "source": "ASTM Standards",
+    "reference": "Installation Guidelines"
+  },
+  {
+    "content": "Temperature considerations: In frost zones (freeze index > 100), water mains must be below frost line (typically 4-6 feet). Sanitary sewers protected by flowing wastewater (warmer). Storm drains can be above frost line if drained between events.",
+    "discipline": "general",
+    "category": "validation",
+    "source": "AWWA C600",
+    "reference": "Section 5.3"
+  }
+]
+
