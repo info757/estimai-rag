@@ -83,7 +83,73 @@ class HybridRetriever:
         self.documents: List[Dict[str, Any]] = []
         self.doc_ids: List[int] = []
         
+        # Try to load existing collection and build BM25
+        self._init_bm25_from_collection()
+        
         logger.info("Hybrid retriever initialized")
+    
+    def _init_bm25_from_collection(self):
+        """Initialize BM25 index from existing Qdrant collection."""
+        try:
+            # Check if collection exists
+            collections = self.client.get_collections()
+            collection_exists = any(
+                c.name == self.collection_name
+                for c in collections.collections
+            )
+            
+            if not collection_exists:
+                logger.info("Collection doesn't exist yet, BM25 will be built on creation")
+                return
+            
+            # Scroll through all points to get documents
+            offset = None
+            all_points = []
+            
+            while True:
+                batch = self.client.scroll(
+                    collection_name=self.collection_name,
+                    limit=100,
+                    offset=offset,
+                    with_payload=True,
+                    with_vectors=False
+                )
+                
+                points, offset = batch
+                all_points.extend(points)
+                
+                if offset is None:
+                    break
+            
+            if not all_points:
+                logger.warning("Collection is empty, BM25 not built")
+                return
+            
+            # Extract documents
+            texts = []
+            for point in all_points:
+                content = point.payload.get("content", "")
+                texts.append(content)
+                self.documents.append({
+                    "id": point.id,
+                    "content": content,
+                    "metadata": {
+                        "discipline": point.payload.get("discipline"),
+                        "category": point.payload.get("category"),
+                        "source": point.payload.get("source"),
+                        "reference": point.payload.get("reference", "")
+                    }
+                })
+                self.doc_ids.append(point.id)
+            
+            # Build BM25 index
+            tokenized_corpus = [doc.lower().split() for doc in texts]
+            self.bm25 = BM25Okapi(tokenized_corpus)
+            
+            logger.info(f"✅ BM25 index built from collection ({len(texts)} documents)")
+        
+        except Exception as e:
+            logger.warning(f"Could not initialize BM25 from collection: {e}")
     
     def create_collection(
         self,

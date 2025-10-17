@@ -128,8 +128,17 @@ class RAGASEvaluator:
                 metrics=eval_metrics
             )
             
-            # Convert to dict
-            scores = results.to_pandas().mean().to_dict()
+            # Convert to pandas and extract ONLY the numeric metric columns
+            df = results.to_pandas()
+            
+            # Get only the metric columns (numeric scores)
+            metric_names = [m.name for m in eval_metrics]
+            scores = {}
+            
+            for metric_name in metric_names:
+                if metric_name in df.columns:
+                    # Calculate mean for this metric
+                    scores[metric_name] = float(df[metric_name].mean())
             
             logger.info("RAGAS evaluation complete")
             for metric, score in scores.items():

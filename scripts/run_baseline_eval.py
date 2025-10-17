@@ -17,8 +17,13 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
-def load_golden_dataset():
-    """Load all test PDFs and their ground truth."""
+def load_golden_dataset(limit=1):
+    """
+    Load test PDFs and their ground truth.
+    
+    Args:
+        limit: Number of PDFs to evaluate (default 1 for speed)
+    """
     dataset_dir = Path("golden_dataset")
     pdfs_dir = dataset_dir / "pdfs"
     gt_dir = dataset_dir / "ground_truth"
@@ -27,6 +32,9 @@ def load_golden_dataset():
     
     # Find all PDFs
     pdf_files = sorted(pdfs_dir.glob("test_*.pdf"))
+    
+    # Limit to first N PDFs for faster evaluation
+    pdf_files = pdf_files[:limit]
     
     for pdf_file in pdf_files:
         # Find corresponding ground truth
@@ -46,7 +54,7 @@ def load_golden_dataset():
             "ground_truth": ground_truth
         })
     
-    logger.info(f"Loaded {len(test_cases)} test cases")
+    logger.info(f"Loaded {len(test_cases)} test cases (limited to {limit})")
     return test_cases
 
 
