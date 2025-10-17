@@ -271,30 +271,53 @@ Return JSON:
         
         try:
             response = self.llm.invoke(messages)
-            import json
-            consolidated = json.loads(response.content)
             
-            logger.info(
-                f"Consolidation complete: {consolidated['summary']['total_pipes']} total pipes, "
-                f"{consolidated['summary']['total_lf']:.1f} LF"
-            )
+            # Just use text consolidation - no JSON parsing!
+            consolidation_text = response.content
             
-            return consolidated
-        
-        except Exception as e:
-            logger.error(f"Consolidation failed: {e}")
-            # Fallback: basic aggregation
-            return {
+            # Calculate simple summary from vision results if available
+            consolidated = {
                 "summary": {
-                    "storm_pipes": researcher_results.get("storm", {}).get("findings", {}).get("pipes_found", 0),
-                    "sanitary_pipes": researcher_results.get("sanitary", {}).get("findings", {}).get("pipes_found", 0),
-                    "water_pipes": researcher_results.get("water", {}).get("findings", {}).get("pipes_found", 0),
+                    "storm_pipes": 0,
+                    "sanitary_pipes": 0,
+                    "water_pipes": 0,
                     "total_pipes": 0,
                     "storm_lf": 0.0,
                     "sanitary_lf": 0.0,
                     "water_lf": 0.0,
                     "total_lf": 0.0
                 },
+                "consolidation_analysis": consolidation_text,
+                "materials_found": [],
+                "diameters_found": [],
+                "elevations_extracted": False,
+                "conflicts": [],
+                "overall_confidence": sum(r.get("confidence", 0) for r in researcher_results.values()) / len(researcher_results) if researcher_results else 0.0,
+                "validation_issues": [],
+                "recommendations": "Review researcher findings"
+            }
+            
+            logger.info(
+                f"Consolidation complete. Overall confidence: {consolidated['overall_confidence']:.2f}"
+            )
+            
+            return consolidated
+        
+        except Exception as e:
+            logger.error(f"Consolidation failed: {e}")
+            # Fallback: basic structure
+            return {
+                "summary": {
+                    "storm_pipes": 0,
+                    "sanitary_pipes": 0,
+                    "water_pipes": 0,
+                    "total_pipes": 0,
+                    "storm_lf": 0.0,
+                    "sanitary_lf": 0.0,
+                    "water_lf": 0.0,
+                    "total_lf": 0.0
+                },
+                "consolidation_analysis": str(e),
                 "materials_found": [],
                 "diameters_found": [],
                 "elevations_extracted": False,

@@ -172,8 +172,8 @@ def main():
     print("  3. Generate comparison tables")
     print("  4. Save all results")
     print()
-    
-    input("Press Enter to continue...")
+    print("Starting...")
+    print()
     
     # Run baseline
     success = run_command(

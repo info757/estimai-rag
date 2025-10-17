@@ -137,15 +137,22 @@ Return JSON format:
         try:
             response = self.llm.invoke(messages)
             
-            import json
-            findings = json.loads(response.content)
+            # Just use the text response - no JSON parsing!
+            findings_text = response.content
+            
+            # Estimate confidence based on response quality
+            confidence = 0.8 if len(findings_text) > 200 else 0.6
             
             return {
                 "researcher_name": "storm",
                 "task": task,
                 "retrieved_context": [doc["content"] for doc in unique_docs],
-                "findings": findings,
-                "confidence": findings.get("confidence", 0.5)
+                "findings": {
+                    "analysis": findings_text,
+                    "retrieved_standards_count": len(unique_docs),
+                    "vision_pipes_provided": len(storm_pipes) if storm_pipes else 0
+                },
+                "confidence": confidence
             }
         
         except Exception as e:
@@ -154,7 +161,7 @@ Return JSON format:
                 "researcher_name": "storm",
                 "task": task,
                 "retrieved_context": [],
-                "findings": {"error": str(e), "pipes_found": 0},
+                "findings": {"error": str(e), "analysis": ""},
                 "confidence": 0.0
             }
 

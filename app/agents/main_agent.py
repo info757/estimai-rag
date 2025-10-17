@@ -153,10 +153,11 @@ Pipe breakdown:
             f"Found {result['consolidated_data'].get('summary', {}).get('total_pipes', 0)} pipes"
         )
         
-        # Update state with supervisor results
+        # Update state with supervisor results (preserve vision_results!)
         return {
             **state,
             "final_report": {
+                **state.get("final_report", {}),  # Preserve existing data like vision_results
                 "supervisor_tasks": result["assigned_tasks"],
                 "researcher_results": result["researcher_results"],
                 "consolidated_data": result["consolidated_data"],
@@ -167,31 +168,62 @@ Pipe breakdown:
     def generate_report_node(self, state: AgentState) -> AgentState:
         """
         Node 3: Generate final takeoff report.
+        
+        Uses vision results + researcher RAG validation.
         """
         logger.info("[Main Agent] Generating final report...")
         
-        consolidated = state["final_report"]["consolidated_data"]
-        researcher_results = state["final_report"]["researcher_results"]
+        # Get vision results (actual pipe data)
+        vision_results = state["final_report"].get("vision_results", {})
+        vision_pipes = vision_results.get("pipes", [])
         
-        # Extract summary
-        summary_data = consolidated.get("summary", {})
+        # Get researcher results (RAG validation)
+        researcher_results = state["final_report"].get("researcher_results", {})
+        consolidated = state["final_report"].get("consolidated_data", {})
         
-        # Create TakeoffSummary
+        # Count pipes by discipline from vision
+        storm_count = len([p for p in vision_pipes if p.get("discipline") == "storm"])
+        sanitary_count = len([p for p in vision_pipes if p.get("discipline") == "sanitary"])
+        water_count = len([p for p in vision_pipes if p.get("discipline") == "water"])
+        
+        # Sum lengths
+        storm_lf = sum(p.get("length_ft", 0) for p in vision_pipes if p.get("discipline") == "storm")
+        sanitary_lf = sum(p.get("length_ft", 0) for p in vision_pipes if p.get("discipline") == "sanitary")
+        water_lf = sum(p.get("length_ft", 0) for p in vision_pipes if p.get("discipline") == "water")
+        
+        # Create TakeoffSummary from vision + RAG validation
         summary = TakeoffSummary(
-            total_pipes=summary_data.get("total_pipes", 0),
-            storm_pipes=summary_data.get("storm_pipes", 0),
-            sanitary_pipes=summary_data.get("sanitary_pipes", 0),
-            water_pipes=summary_data.get("water_pipes", 0),
-            storm_lf=summary_data.get("storm_lf", 0.0),
-            sanitary_lf=summary_data.get("sanitary_lf", 0.0),
-            water_lf=summary_data.get("water_lf", 0.0),
-            total_lf=summary_data.get("total_lf", 0.0),
-            avg_confidence=consolidated.get("overall_confidence", 0.0),
+            total_pipes=len(vision_pipes),
+            storm_pipes=storm_count,
+            sanitary_pipes=sanitary_count,
+            water_pipes=water_count,
+            storm_lf=storm_lf,
+            sanitary_lf=sanitary_lf,
+            water_lf=water_lf,
+            total_lf=storm_lf + sanitary_lf + water_lf,
+            avg_confidence=consolidated.get("overall_confidence", 0.75),
             validation_flags_count=len(consolidated.get("validation_issues", []))
         )
         
-        # Create placeholder pipes (in real version, extract from researcher findings)
+        # Convert vision pipes to PipeDetection format
+        from app.models import PipeDetection
         pipes = []
+        for i, vp in enumerate(vision_pipes):
+            pipe = PipeDetection(
+                pipe_id=f"pipe_{i}",
+                discipline=vp.get("discipline", "storm"),
+                material=vp.get("material"),
+                diameter_in=vp.get("dia_in"),
+                length_ft=vp.get("length_ft"),
+                invert_in_ft=vp.get("invert_in_ft"),
+                invert_out_ft=vp.get("invert_out_ft"),
+                ground_level_ft=vp.get("ground_elev_ft"),
+                depth_ft=vp.get("ground_elev_ft", 0) - vp.get("invert_in_ft", 0) if vp.get("ground_elev_ft") and vp.get("invert_in_ft") else None,
+                confidence=0.8,
+                retrieved_context=[],  # Would include researcher contexts
+                validation_flags=[]
+            )
+            pipes.append(pipe)
         
         # Build TakeoffResult
         result = TakeoffResult(

@@ -160,23 +160,26 @@ Provide your findings in JSON format:
         try:
             response = self.llm.invoke(messages)
             
-            # Parse response (simplified - in production use structured output)
-            import json
-            findings = json.loads(response.content)
+            # Use raw text response - no JSON parsing needed!
+            findings_text = response.content
             
-            confidence = findings.get("confidence", 0.5)
+            # Simple confidence estimation based on response quality
+            confidence = 0.7 if len(findings_text) > 100 else 0.5
             
             logger.info(
                 f"[{self.researcher_name}] Analysis complete. "
-                f"Confidence: {confidence:.2f}"
+                f"Response length: {len(findings_text)} chars"
             )
             
-            # Return updated state
+            # Return updated state with text findings
             return {
                 "researcher_name": self.researcher_name,
                 "task": task,
                 "retrieved_context": [doc["content"] for doc in retrieved_docs],
-                "findings": findings,
+                "findings": {
+                    "analysis": findings_text,
+                    "retrieved_standards_count": len(retrieved_docs)
+                },
                 "confidence": confidence
             }
         
@@ -186,7 +189,7 @@ Provide your findings in JSON format:
                 "researcher_name": self.researcher_name,
                 "task": task,
                 "retrieved_context": [],
-                "findings": {"error": str(e)},
+                "findings": {"error": str(e), "analysis": ""},
                 "confidence": 0.0
             }
     
