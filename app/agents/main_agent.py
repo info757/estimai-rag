@@ -67,53 +67,64 @@ class MainAgent:
         """
         Node 1: Analyze the PDF to understand its content.
         
-        This uses GPT-4o Vision to understand what's in the PDF.
+        This uses GPT-4o Vision to understand what's in the PDF and
+        extract initial pipe information.
         """
         pdf_path = state["pdf_path"]
         user_query = state.get("user_query", "")
         
         logger.info(f"[Main Agent] Analyzing PDF: {pdf_path}")
         
-        # In a real implementation, we'd use Vision API
-        # For now, simulate with a text prompt
-        prompt = f"""Analyze this construction PDF and provide a summary.
-
-PDF Path: {pdf_path}
-User Query: {user_query}
-
-Describe what you see:
-1. What type of drawing is this? (site plan, profile, detail sheet, combination?)
-2. Which utility disciplines are present? (storm, sanitary, water?)
-3. Are there elevation labels (inverts, ground levels)?
-4. Is there a legend or symbol key?
-5. What page(s) contain each type of information?
-
-Provide a concise summary for the supervisor to use when deploying researchers."""
-        
-        messages = [
-            SystemMessage(content="You are a construction drawing analysis expert."),
-            HumanMessage(content=prompt)
-        ]
-        
         try:
-            response = self.llm.invoke(messages)
-            pdf_summary = response.content
+            # Use vision processor to analyze PDF
+            from app.vision_processor import process_pdf_with_vision
             
-            logger.info(f"[Main Agent] PDF analysis complete")
-            logger.info(f"Summary: {pdf_summary[:200]}...")
+            vision_results = process_pdf_with_vision(pdf_path, max_pages=10)
             
-            # Update state
+            pipes_found = len(vision_results.get("pipes", []))
+            pages_processed = vision_results.get("num_pages_processed", 0)
+            
+            # Create summary for supervisor
+            pdf_summary = f"""PDF Analysis Results:
+- Pages processed: {pages_processed}
+- Total pipes detected: {pipes_found}
+- Page summaries: {' | '.join(vision_results.get('page_summaries', []))}
+
+Pipe breakdown:
+"""
+            # Count by discipline
+            from collections import Counter
+            disciplines = [p.get("discipline") for p in vision_results.get("pipes", []) if p.get("discipline")]
+            discipline_counts = Counter(disciplines)
+            
+            for disc, count in discipline_counts.items():
+                pdf_summary += f"- {disc}: {count} pipes\n"
+            
+            if user_query:
+                pdf_summary += f"\nUser request: {user_query}"
+            
+            logger.info(f"[Main Agent] PDF analysis complete: {pipes_found} pipes found")
+            logger.info(f"Summary: {pdf_summary[:300]}...")
+            
+            # Store vision results in state for later use
             return {
                 **state,
                 "pdf_summary": pdf_summary,
-                "messages": state.get("messages", []) + [response]
+                "final_report": {
+                    "vision_results": vision_results
+                },
+                "messages": state.get("messages", [])
             }
         
         except Exception as e:
             logger.error(f"[Main Agent] PDF analysis failed: {e}")
+            import traceback
+            traceback.print_exc()
+            
+            # Fallback: basic summary
             return {
                 **state,
-                "pdf_summary": "Analysis failed. Deploying all researchers as fallback.",
+                "pdf_summary": f"PDF: {pdf_path}. Analysis failed: {e}. Deploying all researchers.",
                 "messages": state.get("messages", [])
             }
     

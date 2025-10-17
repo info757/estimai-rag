@@ -44,11 +44,26 @@ Analyze the PDF for:
 Use the retrieved construction standards to validate your findings.
 Return detailed, accurate information with high confidence when evidence is clear."""
     
-    def analyze(self, state):
-        """Analyze storm drainage with specialized retrieval."""
+    def analyze(self, state, vision_pipes=None):
+        """
+        Analyze storm drainage with specialized retrieval.
+        
+        Args:
+            state: ResearcherState
+            vision_pipes: Optional pre-extracted pipes from vision LLM
+        """
         task = state["task"]
         
         logger.info(f"[Storm] Analyzing: {task}")
+        
+        # Filter vision pipes to storm only
+        storm_pipes = []
+        if vision_pipes:
+            storm_pipes = [
+                p for p in vision_pipes
+                if p.get("discipline") == "storm"
+            ]
+            logger.info(f"[Storm] Received {len(storm_pipes)} pre-detected storm pipes from vision")
         
         # Retrieve storm-specific context
         queries = [
