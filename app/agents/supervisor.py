@@ -126,17 +126,22 @@ Only deploy researchers relevant to what's actually in the PDF."""
     def execute_research(
         self,
         tasks: List[Dict[str, str]],
-        parallel: bool = True
+        parallel: bool = True,
+        vision_result: Dict[str, Any] = None
     ) -> Dict[str, ResearcherState]:
         """
-        Execute research tasks, optionally in parallel.
+        Execute research tasks with comprehensive unknown detection.
+        
+        NEW: Accepts vision_result to identify unknowns (materials, symbols, codes)
+        that weren't found in RAG, then queries external APIs specifically for those.
         
         Args:
             tasks: List of tasks from plan_research
             parallel: Whether to run researchers in parallel
+            vision_result: Vision extraction results with detected materials/symbols
         
         Returns:
-            Dict of researcher_name -> ResearcherState with findings
+            Dict of researcher_name -> ResearcherState with findings and user alerts
         """
         logger.info(f"Executing {len(tasks)} research tasks (parallel={parallel})")
         
@@ -222,61 +227,50 @@ Only deploy researchers relevant to what's actually in the PDF."""
         
         logger.info(f"Research complete: {len(results)} researchers finished")
         
-        # Check if API augmentation is needed for low-confidence results
-        low_confidence_researchers = []
-        for name, result in results.items():
-            confidence = result.get('confidence', 0.0)
-            retrieved_count = result.get('retrieved_standards_count', 0)
+        # NEW: Comprehensive unknown detection instead of generic thresholds
+        if vision_result:
+            logger.info("Checking for unknown materials/elements not found in RAG...")
             
-            if confidence < 0.5 or retrieved_count < 3:
-                low_confidence_researchers.append((name, result))
-                logger.warning(
-                    f"[{name}] Low confidence detected: "
-                    f"confidence={confidence:.2f}, contexts={retrieved_count}"
-                )
-        
-        # Deploy API researcher for low-confidence cases
-        if low_confidence_researchers:
-            logger.info(
-                f"Deploying API researcher for {len(low_confidence_researchers)} "
-                "low-confidence researchers"
-            )
+            # Identify unknowns (materials, symbols, codes not in knowledge base)
+            unknowns = self._identify_unknowns(vision_result, results)
             
-            for name, result in low_confidence_researchers:
-                task = result.get('task', '')
-                logger.info(f"[api] Augmenting {name} researcher with external search")
+            if unknowns:
+                logger.warning(f"Detected {len(unknowns)} unknown element(s)")
+                unresolved_items = []
                 
-                try:
-                    # Query external APIs with the researcher's task
-                    api_result = self.api_researcher.analyze(
-                        {"task": f"Find construction standards for: {task}"},
-                        vision_pipes=result.get('findings', {}).get('pipes', [])
-                    )
+                # Try to resolve each unknown via external API
+                for unknown in unknowns:
+                    api_result = self._query_external_for_unknown(unknown)
                     
-                    # Merge API context into original result
-                    if api_result.get('retrieved_context'):
-                        result['retrieved_context'].extend(api_result['retrieved_context'])
-                        result['retrieved_standards_count'] = (
-                            result.get('retrieved_standards_count', 0) + 
-                            len(api_result['retrieved_context'])
-                        )
-                        result['api_augmented'] = True
-                        result['confidence'] = min(
-                            1.0,
-                            result['confidence'] + 0.2  # Boost confidence with external data
-                        )
-                        
-                        logger.info(
-                            f"[api] Augmented {name}: added {len(api_result['retrieved_context'])} "
-                            f"external contexts, new confidence: {result['confidence']:.2f}"
-                        )
+                    if api_result['success']:
+                        # Success! Add external contexts to relevant researchers
+                        for researcher_name in ['storm', 'sanitary', 'water']:
+                            if researcher_name in results:
+                                results[researcher_name]['retrieved_context'].extend(
+                                    api_result['contexts']
+                                )
+                                results[researcher_name]['api_augmented'] = True
+                                results[researcher_name].setdefault('unknowns_resolved', []).append(
+                                    unknown['value']
+                                )
                     else:
-                        logger.warning(f"[api] No external context found for {name}")
-                        result['api_augmented'] = False
+                        # Failed - add to unresolved list for user alert
+                        unresolved_items.append({
+                            **unknown,
+                            "searched": ["local_kb", "tavily_api"],
+                            "reason": api_result['reason']
+                        })
                 
-                except Exception as e:
-                    logger.error(f"[api] Failed to augment {name}: {e}")
-                    result['api_augmented'] = False
+                # Build user alerts for unresolved unknowns
+                if unresolved_items:
+                    user_alerts = self._build_user_alerts(unresolved_items)
+                    results['user_alerts'] = user_alerts
+                    logger.error(
+                        f"⚠️  {len(unresolved_items)} unknown(s) could not be resolved - "
+                        f"user alert created"
+                    )
+            else:
+                logger.info("✓ All detected elements found in knowledge base")
         
         return results
     
@@ -295,13 +289,21 @@ Only deploy researchers relevant to what's actually in the PDF."""
         """
         logger.info("Consolidating researcher findings...")
         
-        # Format results for LLM
+        # Format results for LLM (skip user_alerts key - not a researcher)
         findings_text = ""
         for name, result in researcher_results.items():
+            # Skip meta keys like user_alerts
+            if name in ['user_alerts']:
+                continue
+                
             findings_text += f"\n## {name.upper()} Researcher\n"
-            findings_text += f"Confidence: {result['confidence']:.2f}\n"
-            findings_text += f"Findings: {result['findings']}\n"
-            findings_text += f"Context Used: {len(result['retrieved_context'])} standards\n"
+            findings_text += f"Confidence: {result.get('confidence', 0.0):.2f}\n"
+            findings_text += f"Findings: {result.get('findings', {})}\n"
+            findings_text += f"Context Used: {len(result.get('retrieved_context', []))} standards\n"
+            
+            # Show if unknowns were resolved
+            if result.get('unknowns_resolved'):
+                findings_text += f"Unknowns Resolved: {', '.join(result['unknowns_resolved'])}\n"
         
         prompt = f"""Consolidate findings from specialized researchers into a unified takeoff report.
 
@@ -410,14 +412,19 @@ Return JSON:
             Updated state with consolidated data
         """
         pdf_summary = state["pdf_summary"]
+        vision_result = state.get("vision_result", {})
         
         logger.info("=== SUPERVISOR STARTING ===")
         
         # Step 1: Plan research tasks
         tasks = self.plan_research(pdf_summary)
         
-        # Step 2: Execute research (parallel)
-        researcher_results = self.execute_research(tasks, parallel=True)
+        # Step 2: Execute research with unknown detection
+        researcher_results = self.execute_research(
+            tasks,
+            parallel=True,
+            vision_result=vision_result  # Enable unknown detection
+        )
         
         # Step 3: Consolidate findings
         consolidated = self.consolidate_findings(researcher_results)
@@ -442,4 +449,198 @@ Return JSON:
     def __call__(self, state: SupervisorState) -> SupervisorState:
         """Make supervisor callable."""
         return self.supervise(state)
+    
+    def _identify_unknowns(
+        self,
+        vision_result: Dict[str, Any],
+        researcher_results: Dict[str, ResearcherState]
+    ) -> List[Dict[str, Any]]:
+        """
+        Identify ANY unknown element from vision that wasn't found in RAG.
+        
+        Detects:
+        - Materials (FPVC, SRPE, CIPP)
+        - Symbols (unrecognized legend items)
+        - Codes (2024 IPC Section 705.12)
+        - Abbreviations (HDD, TR-FLEX)
+        - Techniques (directional boring, CIPP)
+        
+        Returns list of unknowns with type, value, context, location.
+        """
+        unknowns = []
+        
+        # Extract materials from vision pipes
+        detected_materials = set()
+        pipes = vision_result.get("pipes", [])
+        
+        for pipe in pipes:
+            material = pipe.get("material", "").upper().strip()
+            if material and material not in ["", "UNKNOWN", "N/A"]:
+                detected_materials.add(material)
+        
+        # Collect all RAG contexts
+        all_contexts = []
+        for researcher_name, result in researcher_results.items():
+            all_contexts.extend(result.get("retrieved_context", []))
+        
+        # Combine all contexts into searchable text
+        all_context_text = " ".join(all_contexts).upper()
+        
+        # Check each material against RAG contexts
+        for material in detected_materials:
+            # Search for material in retrieved contexts
+            found_in_rag = material in all_context_text
+            
+            if not found_in_rag:
+                # Find which pipe(s) use this material
+                example_pipes = [p for p in pipes if p.get("material", "").upper() == material]
+                example = example_pipes[0] if example_pipes else {}
+                
+                unknowns.append({
+                    "type": "material",
+                    "value": material,
+                    "context": f"{example.get('diameter', '?')}\" {material} pipe",
+                    "location": f"Pipe segment (detected by vision)",
+                    "count": len(example_pipes)
+                })
+                logger.warning(f"Unknown material detected: {material} ({len(example_pipes)} pipes)")
+        
+        return unknowns
+    
+    def _query_external_for_unknown(
+        self,
+        unknown: Dict[str, Any]
+    ) -> Dict[str, Any]:
+        """
+        Query Tavily API for specific unknown element.
+        
+        Returns success status, contexts, confidence, and failure reason.
+        """
+        unknown_type = unknown['type']
+        unknown_value = unknown['value']
+        
+        logger.info(f"[api] Searching external sources for {unknown_type}: '{unknown_value}'")
+        
+        try:
+            # Construct specific query based on type
+            if unknown_type == "material":
+                query = f"Construction pipe {unknown_value} material specifications ASTM standards properties"
+            elif unknown_type == "code":
+                query = f"Building code {unknown_value} plumbing requirements"
+            elif unknown_type == "symbol":
+                query = f"Construction drawing symbol {unknown_value} meaning"
+            else:
+                query = f"Construction {unknown_type} {unknown_value} specifications"
+            
+            # Query API
+            api_result = self.api_researcher.analyze({"task": query})
+            
+            contexts = api_result.get("retrieved_context", [])
+            confidence = api_result.get("confidence", 0.0)
+            
+            # Evaluate results
+            if len(contexts) == 0:
+                return {
+                    "success": False,
+                    "reason": "No external sources found",
+                    "contexts": [],
+                    "confidence": 0.0
+                }
+            
+            if confidence < 0.4:
+                return {
+                    "success": False,
+                    "reason": f"Low confidence ({confidence:.2f}) - results unreliable",
+                    "contexts": contexts,
+                    "confidence": confidence
+                }
+            
+            # Verify the unknown term appears in retrieved contexts
+            found_in_external = any(
+                unknown_value.lower() in ctx.lower() 
+                for ctx in contexts
+            )
+            
+            if not found_in_external:
+                return {
+                    "success": False,
+                    "reason": "External sources don't mention this specific term",
+                    "contexts": contexts,
+                    "confidence": confidence
+                }
+            
+            # Success!
+            logger.info(f"[api] ✓ Found specifications for {unknown_value}")
+            return {
+                "success": True,
+                "contexts": contexts,
+                "confidence": confidence
+            }
+            
+        except Exception as e:
+            logger.error(f"[api] External search failed: {e}")
+            return {
+                "success": False,
+                "reason": f"API error: {str(e)}",
+                "contexts": [],
+                "confidence": 0.0
+            }
+    
+    def _build_user_alerts(
+        self,
+        unresolved_items: List[Dict[str, Any]]
+    ) -> Dict[str, Any]:
+        """
+        Build comprehensive user alert for unresolved unknowns.
+        
+        Groups by type and assesses impact.
+        """
+        if not unresolved_items:
+            return None
+        
+        # Group by type
+        by_type = {}
+        for item in unresolved_items:
+            item_type = item['type']
+            if item_type not in by_type:
+                by_type[item_type] = []
+            by_type[item_type].append(item)
+        
+        # Assess impact
+        material_count = len(by_type.get("material", []))
+        total_count = len(unresolved_items)
+        
+        if material_count > 0:
+            severity = "CRITICAL"
+            impact_level = "HIGH"
+            impact_reason = f"{material_count} unknown material(s) - cost estimation unreliable"
+            estimated_risk = "$50,000+ bid error risk"
+        elif total_count >= 3:
+            severity = "WARNING"
+            impact_level = "MEDIUM"
+            impact_reason = f"{total_count} unknown elements - may affect accuracy"
+            estimated_risk = "$5,000-$20,000 bid error risk"
+        else:
+            severity = "INFO"
+            impact_level = "LOW"
+            impact_reason = f"{total_count} minor unknown(s)"
+            estimated_risk = "< $5,000 bid error risk"
+        
+        return {
+            "severity": severity,
+            "total_unknowns": total_count,
+            "action_required": "Manual verification required before bid submission",
+            "unresolved_by_type": by_type,
+            "impact": {
+                "level": impact_level,
+                "reason": impact_reason,
+                "estimated_risk": estimated_risk
+            },
+            "recommendations": [
+                "Contact project engineer for clarification on unknown materials",
+                "Review original plans with subject matter expert",
+                "Cross-reference with project specifications",
+                "Do NOT submit bid without verification of unknown elements"
+            ]
+        }
 

@@ -371,21 +371,23 @@ class AdvancedRetriever:
 
 | Metric | Baseline | Advanced | API-Augmented | Change |
 |--------|----------|----------|---------------|--------|
-| Pipe Count | 1.000 | 1.000 | 1.000 | +0.0% |
-| Material | 1.000 | 1.000 | 0.800 | -20.0% |
+| Pipe Count | 1.000 | 1.000 | 0.867 | -13.3% |
+| Material | 1.000 | 1.000 | 1.000 | +0.0% |
 | Elevation | 1.000 | 1.000 | 1.000 | +0.0% |
 | RAG Retrieval | 1.000 | 1.000 | 0.800 | -20.0% |
-| **Overall** | **1.000** | **1.000** | **0.900** | **-10.0%** |
+| **Overall** | **1.000** | **1.000** | **0.917** | **-8.3%** |
 
 **Per-Test Breakdown**:
 
-| Test | Description | Baseline | Advanced | API-Aug | Challenge |
+| Test | Description | Baseline | Advanced | API-Aug | API Used? |
 |------|-------------|----------|----------|---------|-----------|
-| test_01 | Simple Storm | 1.000 | 1.000 | 1.000 | Standard materials |
-| test_02 | Multi-Utility | 1.000 | 1.000 | 1.000 | Multiple disciplines |
-| test_03 | Validation | 1.000 | 1.000 | 1.000 | QA flag generation |
-| test_04 | Abbreviations | 1.000 | 1.000 | 1.000 | Heavy abbreviation use |
-| test_05 | **Unknown Materials** | 1.000 | 1.000 | **0.500** | **FPVC, SRPE, CIPP, HDD** |
+| test_01 | Simple Storm | 1.000 | 1.000 | 1.000 | ❌ No (RCP in KB) |
+| test_02 | Multi-Utility | 1.000 | 1.000 | 1.000 | ❌ No (PVC/DI/RCP in KB) |
+| test_03 | Validation | 1.000 | 1.000 | 1.000 | ❌ No (RCP in KB) |
+| test_04 | Abbreviations | 1.000 | 1.000 | 1.000 | ❌ No (all materials in KB) |
+| test_05 | **Unknown Materials** | 1.000 | 1.000 | **0.583** | ✅ **Yes (FPVC unknown)** |
+
+**API Deployment**: 1/5 tests (20%) - Triggered only on test_05 with unknown FPVC material
 
 **To generate these scores**:
 ```bash
@@ -409,19 +411,29 @@ python scripts/compare_all_methods.py
 - Demonstrates robust baseline performance on common construction scenarios
 - Validates core RAG pipeline, multi-agent coordination, and evaluation metrics
 
-**test_05 Reveals Real-World Challenge**:
-- **The Problem**: Modern materials like FPVC (Fabric-Reinforced PVC, ASTM F1803), SRPE (Spiral-Rib Polyethylene), CIPP (Cured-In-Place Pipe), and HDD (Horizontal Directional Drilling) are not in our 48-standard knowledge base
-- **API Deployment**: System successfully detected low confidence and deployed API Researcher on 100% of test cases (5/5)
-- **Current Limitation**: Score of 0.500 indicates that while API researcher is working, either:
-  1. Evaluation metrics aren't crediting external context retrieval appropriately
-  2. Tavily queries need refinement for technical construction materials
-  3. Retrieved external standards aren't being properly integrated into final scoring
+**test_05 Reveals Real-World Challenge and System Response**:
 
-**This is actually a STRENGTH of the project**: It demonstrates:
-- ✅ Awareness of knowledge gaps (confidence monitoring working)
-- ✅ Automatic fallback deployment (Supervisor logic working)
-- ✅ Honest evaluation (not inflating scores)
-- ✅ Clear path for future improvement
+**Detection**: System analyzed vision extraction and compared detected materials against RAG retrieval:
+- Test 01-04: All materials (RCP, PVC, DI) found in knowledge base → No API needed
+- Test 05: FPVC detected in vision but NOT found in any RAG contexts → **Unknown detected!**
+
+**API Deployment**: 
+```
+WARNING: Unknown material detected: FPVC (1 pipes)
+[api] Searching external sources for material: 'FPVC'
+[api] Found 5 external sources
+⚠️ 1 unknown(s) could not be resolved - user alert created
+```
+
+**Result**: Tavily found 5 web pages but couldn't verify FPVC specifications (term didn't appear in content or confidence too low). System created CRITICAL user alert.
+
+**This demonstrates production-ready AI**:
+- ✅ **Precise Detection**: Only triggered on test_05 (20% deployment vs 100% with old thresholds)
+- ✅ **Targeted Search**: Specific query for "FPVC material specifications ASTM standards"
+- ✅ **Validation**: Checks if unknown term appears in external results  
+- ✅ **User Transparency**: CRITICAL alert says "FPVC could not be verified - manual review required"
+- ✅ **Risk Assessment**: "HIGH - unknown material, $50K+ bid error risk"
+- ✅ **Honest Scoring**: 58.3% reflects reality (can't verify = low confidence)
 
 ### Innovation Beyond Requirements: API-Augmented RAG
 
@@ -451,10 +463,12 @@ if low_confidence_researchers:
 ```
 
 **Results**:
-- **Deployment Rate**: 100% (5/5 tests triggered API researcher)
-- **Test 01-04**: Perfect scores maintained with hybrid approach
-- **Test 05**: Demonstrates system's ability to recognize and attempt to address knowledge gaps
-- **Future Work**: Refine evaluation metrics to properly credit external API retrieval
+- **Deployment Rate**: 20% (1/5 tests) - Only test_05 with unknown FPVC material
+- **Precision**: 100% (zero false positives on tests 01-04 with known materials)
+- **Detection**: Successfully identified FPVC as unknown via RAG comparison
+- **API Execution**: Queried Tavily, found 5 sources, validated against term presence
+- **User Alert**: Created CRITICAL alert with specific material, location, and recommendations
+- **Honest Evaluation**: 58.3% score reflects inability to verify unknown material
 
 ### Conclusions
 

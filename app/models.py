@@ -21,13 +21,14 @@ class AgentState(TypedDict):
     messages: list[BaseMessage]
 
 
-class SupervisorState(TypedDict):
+class SupervisorState(TypedDict, total=False):
     """Supervisor state - task management level."""
     pdf_summary: str  # From main agent
     assigned_tasks: list[dict]  # Tasks for researchers
     researcher_results: dict  # Results from each researcher
     consolidated_data: dict  # Validated, merged results
     conflicts: list[str]  # Any conflicts found between researchers
+    vision_result: dict  # Optional: Vision extraction for unknown detection
 
 
 class ResearcherState(TypedDict):

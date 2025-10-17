@@ -136,13 +136,16 @@ Pipe breakdown:
         
         logger.info("[Main Agent] Calling supervisor...")
         
-        # Create supervisor state
+        # Create supervisor state (with vision_result for unknown detection)
+        vision_result = state.get("final_report", {}).get("vision_results", {})
+        
         supervisor_state: SupervisorState = {
             "pdf_summary": pdf_summary,
             "assigned_tasks": [],
             "researcher_results": {},
             "consolidated_data": {},
-            "conflicts": []
+            "conflicts": [],
+            "vision_result": vision_result  # Pass for unknown detection
         }
         
         # Run supervisor

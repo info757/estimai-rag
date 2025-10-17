@@ -63,14 +63,30 @@ def run_takeoff_with_api(pdf_path: str):
     takeoff_data = result.get("takeoff_result", {})
     researcher_results = result.get("researcher_results", {})
     
-    # Check if API was used
-    api_used = any(
-        res.get("api_augmented", False) 
-        for res in researcher_results.values()
-    )
+    # Check if API was used - two ways to detect:
+    # 1. Any researcher has api_augmented flag
+    # 2. user_alerts present (means unknowns detected and API attempted)
+    api_used = False
+    
+    for key, res in researcher_results.items():
+        if key == 'user_alerts':
+            # User alerts means unknowns were detected and API was attempted
+            api_used = True
+            break
+        if isinstance(res, dict) and res.get("api_augmented", False):
+            api_used = True
+            break
+    
+    # Check for user alerts (unknowns that couldn't be resolved)
+    user_alerts = researcher_results.get('user_alerts')
     
     if api_used:
-        print("   🌐 API Researcher deployed - external standards retrieved!")
+        if user_alerts:
+            unknowns_count = user_alerts.get('total_unknowns', 0)
+            print(f"   🌐 API Researcher deployed for {unknowns_count} unknown(s)")
+            print(f"   ⚠️  User alert: {user_alerts.get('severity', 'WARNING')} - manual review needed")
+        else:
+            print("   🌐 API Researcher deployed - unknowns resolved!")
     else:
         print("   📚 Local knowledge base sufficient")
     
@@ -90,7 +106,8 @@ def run_takeoff_with_api(pdf_path: str):
         "takeoff_result": takeoff_data,
         "researcher_results": researcher_results,
         "retrieved_contexts": all_contexts,
-        "api_used": api_used
+        "api_used": api_used,
+        "user_alerts": user_alerts  # Include user alerts in response
     }
 
 

@@ -10,7 +10,7 @@
         "rag_retrieval_quality": 1.0,
         "overall_accuracy": 1.0
       },
-      "api_used": true,
+      "api_used": false,
       "pdf_name": "test_01_simple_storm.pdf"
     },
     "test_02": {
@@ -21,7 +21,7 @@
         "rag_retrieval_quality": 1.0,
         "overall_accuracy": 1.0
       },
-      "api_used": true,
+      "api_used": false,
       "pdf_name": "test_02_multi_utility.pdf"
     },
     "test_03": {
@@ -32,7 +32,7 @@
         "rag_retrieval_quality": 1.0,
         "overall_accuracy": 1.0
       },
-      "api_used": true,
+      "api_used": false,
       "pdf_name": "test_03_validation.pdf"
     },
     "test_04": {
@@ -43,31 +43,31 @@
         "rag_retrieval_quality": 1.0,
         "overall_accuracy": 1.0
       },
-      "api_used": true,
+      "api_used": false,
       "pdf_name": "test_04_abbreviations.pdf"
     },
     "test_05": {
       "scores": {
-        "pipe_count_accuracy": 1.0,
-        "material_accuracy": 0.0,
+        "pipe_count_accuracy": 0.33333333333333337,
+        "material_accuracy": 1.0,
         "elevation_accuracy": 1.0,
         "rag_retrieval_quality": 0.0,
-        "overall_accuracy": 0.5
+        "overall_accuracy": 0.5833333333333334
       },
       "api_used": true,
       "pdf_name": "test_05_complex_realistic.pdf"
     }
   },
   "averages": {
-    "pipe_count_accuracy": 1.0,
-    "material_accuracy": 0.8,
+    "pipe_count_accuracy": 0.8666666666666666,
+    "material_accuracy": 1.0,
     "elevation_accuracy": 1.0,
     "rag_retrieval_quality": 0.8,
-    "overall_accuracy": 0.9
+    "overall_accuracy": 0.9166666666666666
   },
   "api_usage": {
-    "tests_using_api": 5,
+    "tests_using_api": 1,
     "total_tests": 5,
-    "percentage": 1.0
+    "percentage": 0.2
   }
 }
