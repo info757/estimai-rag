@@ -1,0 +1,20 @@
+{
+  "test_case": "test_04_abbreviations.pdf",
+  "description": "Heavy abbreviation test - real-world construction drawing style",
+  "baseline": {
+    "method": "semantic_only",
+    "recall": 1.0,
+    "keywords_found": "21/21",
+    "missing": []
+  },
+  "advanced": {
+    "method": "hybrid_bm25_semantic",
+    "recall": 1.0,
+    "keywords_found": "21/21",
+    "missing": []
+  },
+  "improvement": {
+    "absolute": 0.0,
+    "percentage_points": 0.0
+  }
+}

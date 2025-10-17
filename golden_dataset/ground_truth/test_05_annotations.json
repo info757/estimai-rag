@@ -1,0 +1,56 @@
+{
+  "pdf_name": "test_05_complex_realistic.pdf",
+  "description": "Complex realistic test with modern/unknown materials NOT in knowledge base",
+  "expected_pipes": [
+    {
+      "discipline": "storm",
+      "material": "FPVC",
+      "diameter_in": 24,
+      "length_ft": 350.0,
+      "note": "Fabric-Reinforced PVC - modern material"
+    },
+    {
+      "discipline": "sanitary",
+      "material": "SRPE",
+      "diameter_in": 12,
+      "length_ft": 280.0,
+      "note": "Spiral-Rib Polyethylene - modern material"
+    },
+    {
+      "discipline": "water",
+      "material": "DI",
+      "diameter_in": 8,
+      "length_ft": 420.0,
+      "note": "Standard ductile iron"
+    }
+  ],
+  "expected_retrieval_keywords": [
+    "FPVC",
+    "Fabric-Reinforced PVC",
+    "ASTM F1803",
+    "TR-FLEX",
+    "Rubber Gasket Joint",
+    "CIPP",
+    "Cured-In-Place Pipe",
+    "HDD",
+    "Horizontal Directional Drilling",
+    "SRPE",
+    "Spiral-Rib Polyethylene",
+    "NYLOPLAST",
+    "Thermoplastic Drainage",
+    "2024 IPC",
+    "2024 UPC",
+    "Section 705.12",
+    "Section 702.2"
+  ],
+  "test_focus": "unknown_materials_api_augmentation",
+  "expected_summary": "3 pipes: 24\" FPVC storm (350 LF), 12\" SRPE sanitary (280 LF), 8\" DI water (420 LF)",
+  "challenge": "Modern materials and recent code references NOT in knowledge base - requires API fallback",
+  "expected_behavior": {
+    "baseline": "Low confidence, missing material specs, incomplete context",
+    "hybrid": "Slightly better but still low confidence on unknown materials",
+    "advanced_multi_query": "Better abbreviation expansion but still missing FPVC/SRPE specs",
+    "api_augmented": "HIGH confidence - Tavily finds ASTM F1803, 2024 IPC codes, modern material specs from external sources"
+  }
+}
+

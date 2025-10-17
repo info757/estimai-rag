@@ -1,0 +1,50 @@
+{
+  "pdf_name": "test_04_abbreviations.pdf",
+  "description": "Heavy abbreviation test - real-world construction drawing style",
+  "expected_pipes": [
+    {
+      "discipline": "sanitary",
+      "material": "DI",
+      "diameter_in": 12,
+      "length_ft": 300.0
+    },
+    {
+      "discipline": "storm",
+      "material": "RCP",
+      "diameter_in": 18,
+      "length_ft": 250.0
+    },
+    {
+      "discipline": "water",
+      "material": "DI",
+      "diameter_in": 8,
+      "length_ft": 400.0
+    }
+  ],
+  "expected_retrieval_keywords": [
+    "MH",
+    "manhole",
+    "SSMH",
+    "sanitary sewer manhole",
+    "CB",
+    "catch basin",
+    "DI",
+    "ductile iron",
+    "drain inlet",
+    "RCP",
+    "reinforced concrete",
+    "HDPE",
+    "high-density polyethylene",
+    "IE",
+    "invert elevation",
+    "FES",
+    "flared end section",
+    "STA",
+    "station",
+    "CL",
+    "centerline"
+  ],
+  "test_focus": "abbreviation_recognition",
+  "expected_summary": "3 pipes: 12\" DI sanitary (300 LF), 18\" RCP storm (250 LF), 8\" DI water (400 LF)"
+}
+

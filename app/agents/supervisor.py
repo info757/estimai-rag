@@ -20,6 +20,7 @@ from app.agents.researchers.sanitary_researcher import SanitaryResearcher
 from app.agents.researchers.water_researcher import WaterResearcher
 from app.agents.researchers.elevation_researcher import ElevationResearcher
 from app.agents.researchers.legend_researcher import LegendResearcher
+from app.agents.researchers.api_researcher import APIResearcher
 
 logger = logging.getLogger(__name__)
 
@@ -47,7 +48,10 @@ class SupervisorAgent:
             "legend": LegendResearcher()
         }
         
-        logger.info("Supervisor initialized with 5 researchers")
+        # Initialize API researcher for low-confidence augmentation
+        self.api_researcher = APIResearcher()
+        
+        logger.info("Supervisor initialized with 5 researchers + API augmentation")
     
     def plan_research(self, pdf_summary: str) -> List[Dict[str, str]]:
         """
@@ -214,9 +218,66 @@ Only deploy researchers relevant to what's actually in the PDF."""
                         "retrieved_context": [],
                         "findings": {"error": str(e)},
                         "confidence": 0.0
-                    }
+                        }
         
         logger.info(f"Research complete: {len(results)} researchers finished")
+        
+        # Check if API augmentation is needed for low-confidence results
+        low_confidence_researchers = []
+        for name, result in results.items():
+            confidence = result.get('confidence', 0.0)
+            retrieved_count = result.get('retrieved_standards_count', 0)
+            
+            if confidence < 0.5 or retrieved_count < 3:
+                low_confidence_researchers.append((name, result))
+                logger.warning(
+                    f"[{name}] Low confidence detected: "
+                    f"confidence={confidence:.2f}, contexts={retrieved_count}"
+                )
+        
+        # Deploy API researcher for low-confidence cases
+        if low_confidence_researchers:
+            logger.info(
+                f"Deploying API researcher for {len(low_confidence_researchers)} "
+                "low-confidence researchers"
+            )
+            
+            for name, result in low_confidence_researchers:
+                task = result.get('task', '')
+                logger.info(f"[api] Augmenting {name} researcher with external search")
+                
+                try:
+                    # Query external APIs with the researcher's task
+                    api_result = self.api_researcher.analyze(
+                        {"task": f"Find construction standards for: {task}"},
+                        vision_pipes=result.get('findings', {}).get('pipes', [])
+                    )
+                    
+                    # Merge API context into original result
+                    if api_result.get('retrieved_context'):
+                        result['retrieved_context'].extend(api_result['retrieved_context'])
+                        result['retrieved_standards_count'] = (
+                            result.get('retrieved_standards_count', 0) + 
+                            len(api_result['retrieved_context'])
+                        )
+                        result['api_augmented'] = True
+                        result['confidence'] = min(
+                            1.0,
+                            result['confidence'] + 0.2  # Boost confidence with external data
+                        )
+                        
+                        logger.info(
+                            f"[api] Augmented {name}: added {len(api_result['retrieved_context'])} "
+                            f"external contexts, new confidence: {result['confidence']:.2f}"
+                        )
+                    else:
+                        logger.warning(f"[api] No external context found for {name}")
+                        result['api_augmented'] = False
+                
+                except Exception as e:
+                    logger.error(f"[api] Failed to augment {name}: {e}")
+                    result['api_augmented'] = False
+        
         return results
     
     def consolidate_findings(
