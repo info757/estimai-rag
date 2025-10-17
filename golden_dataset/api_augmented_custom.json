@@ -1,0 +1,73 @@
+{
+  "method": "api_augmented",
+  "description": "Hybrid RAG with Tavily API fallback for unknown materials",
+  "test_results": {
+    "test_01": {
+      "scores": {
+        "pipe_count_accuracy": 1.0,
+        "material_accuracy": 1.0,
+        "elevation_accuracy": 1.0,
+        "rag_retrieval_quality": 1.0,
+        "overall_accuracy": 1.0
+      },
+      "api_used": true,
+      "pdf_name": "test_01_simple_storm.pdf"
+    },
+    "test_02": {
+      "scores": {
+        "pipe_count_accuracy": 1.0,
+        "material_accuracy": 1.0,
+        "elevation_accuracy": 1.0,
+        "rag_retrieval_quality": 1.0,
+        "overall_accuracy": 1.0
+      },
+      "api_used": true,
+      "pdf_name": "test_02_multi_utility.pdf"
+    },
+    "test_03": {
+      "scores": {
+        "pipe_count_accuracy": 1.0,
+        "material_accuracy": 1.0,
+        "elevation_accuracy": 1.0,
+        "rag_retrieval_quality": 1.0,
+        "overall_accuracy": 1.0
+      },
+      "api_used": true,
+      "pdf_name": "test_03_validation.pdf"
+    },
+    "test_04": {
+      "scores": {
+        "pipe_count_accuracy": 1.0,
+        "material_accuracy": 1.0,
+        "elevation_accuracy": 1.0,
+        "rag_retrieval_quality": 1.0,
+        "overall_accuracy": 1.0
+      },
+      "api_used": true,
+      "pdf_name": "test_04_abbreviations.pdf"
+    },
+    "test_05": {
+      "scores": {
+        "pipe_count_accuracy": 1.0,
+        "material_accuracy": 0.0,
+        "elevation_accuracy": 1.0,
+        "rag_retrieval_quality": 0.0,
+        "overall_accuracy": 0.5
+      },
+      "api_used": true,
+      "pdf_name": "test_05_complex_realistic.pdf"
+    }
+  },
+  "averages": {
+    "pipe_count_accuracy": 1.0,
+    "material_accuracy": 0.8,
+    "elevation_accuracy": 1.0,
+    "rag_retrieval_quality": 0.8,
+    "overall_accuracy": 0.9
+  },
+  "api_usage": {
+    "tests_using_api": 5,
+    "total_tests": 5,
+    "percentage": 1.0
+  }
+}
