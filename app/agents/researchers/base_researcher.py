@@ -143,14 +143,19 @@ Be precise, cite standards when relevant, and always include confidence scores."
 
 {context_text}
 
-Provide your findings in JSON format:
-{{
-    "summary": "Brief summary of findings",
-    "details": {{}},  // Specific data found
-    "confidence": 0.0-1.0,
-    "issues": [],  // Any problems or conflicts
-    "context_used": []  // Which standards were most relevant
-}}"""
+Provide your findings and EXPLICITLY CITE the construction standards you used.
+
+Format your response as:
+
+FINDINGS:
+[Your analysis of what you found]
+
+STANDARDS USED:
+[List which construction standards from above informed your analysis. Quote key phrases.]
+
+CONFIDENCE: [0.0-1.0]
+
+IMPORTANT: Reference specific standards in your findings to show how you validated the information."""
         
         messages = [
             SystemMessage(content=system_prompt),

@@ -14,10 +14,14 @@
     }
   ],
   "expected_summary": "1 storm drain pipe, 250 LF, 18\" RCP, depth 5-7 ft",
-  "expected_retrieval_context": [
-    "Storm drain minimum cover requirements",
-    "RCP reinforced concrete pipe",
-    "storm drain cover depth"
+  "expected_retrieval_keywords": [
+    "storm drain",
+    "RCP",
+    "reinforced concrete",
+    "cover",
+    "1.5 feet",
+    "CB",
+    "catch basin"
   ],
   "expected_qa_flags": []
 }

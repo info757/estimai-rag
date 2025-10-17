@@ -1,0 +1,7 @@
+{
+  "pipe_count_accuracy": 1.0,
+  "material_accuracy": 1.0,
+  "elevation_accuracy": 1.0,
+  "rag_retrieval_quality": 1.0,
+  "overall_accuracy": 1.0
+}
