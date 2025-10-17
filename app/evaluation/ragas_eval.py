@@ -185,21 +185,31 @@ class RAGASEvaluator:
         if not contexts:
             contexts = ["No RAG context retrieved"]
         
-        # Format answer (what the agent found)
+        # Format answer including researcher analysis (with citations!)
         materials = list(set([p.get('material') for p in pipes if p.get('material')]))
         diameters = list(set([p.get('diameter_in') for p in pipes if p.get('diameter_in')]))
         
+        # Get researcher analyses (these should cite standards!)
+        researcher_analyses = []
+        for researcher_name, result in researcher_results.items():
+            findings = result.get("findings", {})
+            analysis = findings.get("analysis", "")
+            if analysis and len(analysis) > 50:  # Has meaningful content
+                researcher_analyses.append(f"**{researcher_name.title()} Researcher Analysis:**\n{analysis[:500]}")
+        
+        # Combine summary with researcher citations
         answer = f"""Takeoff Results for {pdf_name}:
-Total Pipes: {summary.get('total_pipes', 0)}
+
+Summary:
+- Total Pipes: {summary.get('total_pipes', 0)}
 - Storm: {summary.get('storm_pipes', 0)} pipes, {summary.get('storm_lf', 0):.1f} LF
 - Sanitary: {summary.get('sanitary_pipes', 0)} pipes, {summary.get('sanitary_lf', 0):.1f} LF
 - Water: {summary.get('water_pipes', 0)} pipes, {summary.get('water_lf', 0):.1f} LF
+- Materials: {materials}
+- Diameters: {diameters}
 
-Materials: {materials}
-Diameters: {diameters}
-Elevations: {len([p for p in pipes if p.get('invert_in_ft')])} pipes with elevations
-
-Overall Confidence: {summary.get('avg_confidence', 0.0):.2f}"""
+Researcher Validation Using Retrieved Standards:
+{chr(10).join(researcher_analyses[:2])}"""  # Include up to 2 researcher analyses
         
         # Format ground truth
         gt = ground_truth.get("expected_summary", "")
