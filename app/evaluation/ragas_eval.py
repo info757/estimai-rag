@@ -53,7 +53,7 @@ class RAGASEvaluator:
         """
         logger.info(f"Preparing dataset with {len(test_cases)} test cases")
         
-        # Format for RAGAS
+        # Format for RAGAS - each field must be a LIST of values
         dataset_dict = {
             "question": [],
             "answer": [],
@@ -62,10 +62,34 @@ class RAGASEvaluator:
         }
         
         for case in test_cases:
-            dataset_dict["question"].append(case["question"])
-            dataset_dict["answer"].append(case["answer"])
-            dataset_dict["contexts"].append(case["contexts"])
-            dataset_dict["ground_truth"].append(case["ground_truth"])
+            # Ensure question is string
+            question = case.get("question", "")
+            if isinstance(question, list):
+                question = question[0] if question else ""
+            
+            # Ensure answer is string
+            answer = case.get("answer", "")
+            if isinstance(answer, list):
+                answer = answer[0] if answer else ""
+            
+            # Ensure contexts is LIST of strings
+            contexts = case.get("contexts", [])
+            if not isinstance(contexts, list):
+                contexts = [str(contexts)]
+            # Make sure each context is a string
+            contexts = [str(c) for c in contexts if c]
+            if not contexts:
+                contexts = ["No context available"]
+            
+            # Ensure ground_truth is string
+            ground_truth = case.get("ground_truth", "")
+            if isinstance(ground_truth, list):
+                ground_truth = ground_truth[0] if ground_truth else ""
+            
+            dataset_dict["question"].append(question)
+            dataset_dict["answer"].append(answer)
+            dataset_dict["contexts"].append(contexts)  # List of strings
+            dataset_dict["ground_truth"].append(ground_truth)
         
         dataset = Dataset.from_dict(dataset_dict)
         logger.info("Dataset prepared")
@@ -136,9 +160,10 @@ class RAGASEvaluator:
         Returns:
             Test case dict ready for RAGAS
         """
-        # Extract consolidated data
-        consolidated = takeoff_result.get("consolidated_data", {})
-        summary = consolidated.get("summary", {})
+        # Extract takeoff_result (the actual data)
+        takeoff_data = takeoff_result.get("takeoff_result", {})
+        summary = takeoff_data.get("summary", {})
+        pipes = takeoff_data.get("pipes", [])
         
         # Extract retrieved contexts from all researchers
         contexts = []
@@ -146,22 +171,26 @@ class RAGASEvaluator:
         for researcher_name, result in researcher_results.items():
             contexts.extend(result.get("retrieved_context", []))
         
-        # Remove duplicates
-        contexts = list(set(contexts))
+        # Remove duplicates and ensure they're strings
+        contexts = list(set([str(c) for c in contexts if c]))
+        if not contexts:
+            contexts = ["No RAG context retrieved"]
         
         # Format answer (what the agent found)
+        materials = list(set([p.get('material') for p in pipes if p.get('material')]))
+        diameters = list(set([p.get('diameter_in') for p in pipes if p.get('diameter_in')]))
+        
         answer = f"""Takeoff Results for {pdf_name}:
 Total Pipes: {summary.get('total_pipes', 0)}
 - Storm: {summary.get('storm_pipes', 0)} pipes, {summary.get('storm_lf', 0):.1f} LF
 - Sanitary: {summary.get('sanitary_pipes', 0)} pipes, {summary.get('sanitary_lf', 0):.1f} LF
 - Water: {summary.get('water_pipes', 0)} pipes, {summary.get('water_lf', 0):.1f} LF
 
-Materials: {consolidated.get('materials_found', [])}
-Diameters: {consolidated.get('diameters_found', [])}
-Elevations Extracted: {consolidated.get('elevations_extracted', False)}
+Materials: {materials}
+Diameters: {diameters}
+Elevations: {len([p for p in pipes if p.get('invert_in_ft')])} pipes with elevations
 
-Validation Issues: {len(consolidated.get('validation_issues', []))}
-Overall Confidence: {consolidated.get('overall_confidence', 0.0):.2f}"""
+Overall Confidence: {summary.get('avg_confidence', 0.0):.2f}"""
         
         # Format ground truth
         gt = ground_truth.get("expected_summary", "")
