@@ -1,0 +1,33 @@
+{
+  "pdf_name": "test_02_multi_utility.pdf",
+  "description": "Multi-utility plan with storm, sanitary, and water",
+  "expected_pipes": [
+    {
+      "discipline": "storm",
+      "material": "RCP",
+      "diameter_in": 12,
+      "length_ft": 200.0
+    },
+    {
+      "discipline": "sanitary",
+      "material": "PVC",
+      "diameter_in": 8,
+      "length_ft": 200.0
+    },
+    {
+      "discipline": "water",
+      "material": "DI",
+      "diameter_in": 8,
+      "length_ft": 200.0
+    }
+  ],
+  "expected_summary": "3 total pipes: 1 storm (RCP 12\"), 1 sanitary (PVC 8\"), 1 water (DI 8\"), 600 LF total",
+  "expected_retrieval_context": [
+    "storm drain",
+    "sanitary sewer",
+    "water main",
+    "RCP reinforced concrete",
+    "PVC pipe",
+    "ductile iron DI"
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "pdf_name": "test_03_validation.pdf",
+  "description": "Storm drain with shallow cover - should trigger validation flag",
+  "expected_pipes": [
+    {
+      "discipline": "storm",
+      "material": "RCP",
+      "diameter_in": 18,
+      "length_ft": 120.0,
+      "invert_in_ft": 421.0,
+      "invert_out_ft": 420.5,
+      "ground_elev_ft": 422.0,
+      "depth_ft": 1.0
+    }
+  ],
+  "expected_summary": "1 storm drain pipe, 120 LF, 18\" RCP, SHALLOW COVER (1.0 ft < 1.5 ft required)",
+  "expected_retrieval_context": [
+    "Storm drain minimum cover requirements: 1.5 feet under roadways",
+    "parking",
+    "RCP"
+  ],
+  "expected_qa_flags": [
+    "STORM_COVER_LOW"
+  ]
+}
