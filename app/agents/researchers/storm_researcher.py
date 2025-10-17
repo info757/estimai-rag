@@ -93,39 +93,29 @@ Return detailed, accurate information with high confidence when evidence is clea
 
 {context_text}
 
-As a storm drainage specialist, analyze the PDF and provide:
+As a storm drainage specialist, analyze the task using the construction standards provided above.
 
-1. **Storm Pipes Detected**:
-   - Count and locations
-   - Materials (RCP, HDPE, etc.)
-   - Diameters (inches)
-   - Lengths (linear feet)
+IMPORTANT: You must EXPLICITLY CITE the construction standards in your analysis.
 
-2. **Elevations**:
-   - Invert elevations (inlet and outlet)
-   - Ground elevations
-   - Calculated cover depths
+Provide:
 
-3. **Validation**:
-   - Check cover depths against standards (1.5ft roads minimum)
-   - Verify material-diameter compatibility
-   - Check slopes are adequate
+1. **Storm Pipes Analysis**:
+   - What storm pipes did you find?
+   - What materials and diameters?
 
-4. **Confidence Assessment**:
-   - How clear is the information?
-   - Any uncertainties or conflicts?
+2. **Validation Using Retrieved Standards**:
+   - Quote relevant standards (e.g., "According to the standard: 'Storm drain minimum cover: 1.5 feet...'")
+   - Apply those standards to validate findings
+   - Flag any violations
 
-Return JSON format:
-{{
-    "pipes_found": int,
-    "total_linear_feet": float,
-    "materials": {{"RCP": int, "HDPE": int}},
-    "diameters": [12, 18, 24],
-    "elevations_extracted": bool,
-    "validation_issues": [],
-    "confidence": 0.0-1.0,
-    "evidence": "What in the PDF supports these findings"
-}}"""
+3. **Evidence**:
+   - Reference specific construction standards by quoting them
+   - Explain how each standard validates or informs your findings
+
+Example good response:
+"Based on the retrieved construction standard stating 'Storm drain minimum cover requirements: 1.5 feet under roadways', I validated that the detected 18\" RCP storm drain has adequate cover of 5.0 feet. The standard for 'RCP: Primary use for storm drainage 12-144 inches' confirms that 18\" RCP is appropriate for this application."
+
+Format as clear text analysis with explicit standard citations, not JSON."""
         
         from langchain_core.messages import SystemMessage, HumanMessage
         

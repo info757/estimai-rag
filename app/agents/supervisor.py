@@ -89,7 +89,18 @@ Only deploy researchers relevant to what's actually in the PDF."""
         try:
             response = self.llm.invoke(messages)
             import json
-            tasks = json.loads(response.content)
+            import re
+            
+            # Extract JSON from response (might be wrapped in markdown or have text)
+            content = response.content
+            
+            # Try to find JSON array in response
+            json_match = re.search(r'\[.*\]', content, re.DOTALL)
+            if json_match:
+                tasks = json.loads(json_match.group())
+            else:
+                # Try parsing whole response
+                tasks = json.loads(content)
             
             logger.info(f"Planned {len(tasks)} research tasks")
             for task in tasks:
@@ -98,8 +109,8 @@ Only deploy researchers relevant to what's actually in the PDF."""
             return tasks
         
         except Exception as e:
-            logger.error(f"Task planning failed: {e}")
-            # Fallback: deploy all researchers
+            logger.warning(f"Task planning failed ({e}), using default deployment")
+            # Fallback: deploy all researchers (this is fine!)
             return [
                 {"researcher": "legend", "task": "Read and interpret the drawing legend and symbols"},
                 {"researcher": "storm", "task": "Extract all storm drainage information"},
