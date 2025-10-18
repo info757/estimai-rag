@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EstimAI-RAG - Construction Takeoff with Human-in-the-Loop</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .confidence-low { background-color: #fee2e2; border-left: 4px solid #ef4444; }
+        .confidence-medium { background-color: #fef3c7; border-left: 4px solid #f59e0b; }
+        .confidence-high { background-color: #d1fae5; border-left: 4px solid #10b981; }
+        [contenteditable="true"] { cursor: text; padding: 4px; }
+        [contenteditable="true"]:hover { background-color: #f3f4f6; }
+        [contenteditable="true"]:focus { outline: 2px solid #3b82f6; background-color: white; }
+        .edited { background-color: #dbeafe !important; }
+    </style>
+</head>
+<body class="bg-gray-100">
+    
+    <!-- Header -->
+    <div class="bg-blue-900 text-white p-4 shadow-lg">
+        <h1 class="text-2xl font-bold">EstimAI-RAG</h1>
+        <p class="text-sm text-blue-200">Multi-Agent Construction Takeoff with RAG + Human-in-the-Loop</p>
+    </div>
+    
+    <!-- Main Layout -->
+    <div class="grid grid-cols-2 gap-4 p-4" style="height: calc(100vh - 80px)">
+        
+        <!-- Left: PDF Viewer -->
+        <div class="bg-white rounded-lg shadow-lg flex flex-col">
+            <div class="p-4 border-b bg-gray-50">
+                <h2 class="text-lg font-bold mb-2">Construction Plan</h2>
+                <input type="file" 
+                       id="pdf-upload" 
+                       accept=".pdf" 
+                       onchange="uploadPDF(this)"
+                       class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+            </div>
+            <div id="pdf-container" class="flex-1 p-4">
+                <embed id="pdf-viewer" type="application/pdf" class="w-full h-full rounded" style="display:none;">
+                <div id="pdf-placeholder" class="flex items-center justify-center h-full text-gray-400">
+                    <div class="text-center">
+                        <svg class="mx-auto h-12 w-12 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                        </svg>
+                        <p class="mt-2">Upload a PDF to begin</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Right: Results + HITL -->
+        <div class="space-y-4 overflow-auto">
+            
+            <!-- Loading Indicator -->
+            <div id="loading" class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-lg" style="display:none;">
+                <div class="flex items-center">
+                    <svg class="animate-spin h-5 w-5 text-blue-500 mr-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    <span class="font-semibold">Processing PDF with AI agents...</span>
+                </div>
+                <p class="text-sm text-gray-600 mt-2">Running Vision LLM → Multi-Agent Analysis → RAG Retrieval</p>
+            </div>
+            
+            <!-- User Alerts (Critical/Warning for Unknowns) -->
+            <div id="alerts-container"></div>
+            
+            <!-- Summary Stats -->
+            <div id="summary-container" style="display:none;" class="bg-white rounded-lg shadow p-4">
+                <h3 class="font-bold text-lg mb-3">Summary</h3>
+                <div class="grid grid-cols-3 gap-4 text-center">
+                    <div class="p-3 bg-blue-50 rounded">
+                        <div class="text-2xl font-bold text-blue-600" id="storm-count">-</div>
+                        <div class="text-sm text-gray-600">Storm</div>
+                    </div>
+                    <div class="p-3 bg-yellow-50 rounded">
+                        <div class="text-2xl font-bold text-yellow-600" id="sewer-count">-</div>
+                        <div class="text-sm text-gray-600">Sewer</div>
+                    </div>
+                    <div class="p-3 bg-green-50 rounded">
+                        <div class="text-2xl font-bold text-green-600" id="water-count">-</div>
+                        <div class="text-sm text-gray-600">Water</div>
+                    </div>
+                </div>
+                <div class="mt-3 text-sm text-gray-600">
+                    Processing time: <span id="processing-time" class="font-semibold">-</span>s
+                </div>
+            </div>
+            
+            <!-- Editable Takeoff Table -->
+            <div id="pipes-container" style="display:none;" class="bg-white rounded-lg shadow p-4">
+                <div class="flex justify-between items-center mb-3">
+                    <h3 class="font-bold text-lg">Takeoff Results (Editable)</h3>
+                    <span class="text-sm text-gray-500">Click any cell to edit</span>
+                </div>
+                <div class="overflow-x-auto">
+                    <table id="pipes-table" class="w-full text-sm">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="p-2 text-left">Discipline</th>
+                                <th class="p-2 text-left">Material</th>
+                                <th class="p-2 text-left">Diameter</th>
+                                <th class="p-2 text-left">Length (LF)</th>
+                                <th class="p-2 text-left">Confidence</th>
+                                <th class="p-2 text-left">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="pipes-tbody">
+                            <!-- Dynamic rows -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="mt-4 flex gap-2">
+                    <button onclick="saveCorrections()" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+                        💾 Save Corrections
+                    </button>
+                    <button onclick="exportToCSV()" class="px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700">
+                        📊 Export to CSV
+                    </button>
+                </div>
+            </div>
+            
+            <!-- RAG Contexts -->
+            <div id="rag-container" style="display:none;" class="bg-white rounded-lg shadow p-4">
+                <details>
+                    <summary class="font-bold cursor-pointer hover:text-blue-600">
+                        📚 RAG Contexts Retrieved (<span id="context-count">-</span> standards)
+                    </summary>
+                    <div id="rag-contexts" class="mt-3 space-y-2 text-sm"></div>
+                </details>
+            </div>
+            
+            <!-- Researcher Logs -->
+            <div id="logs-container" style="display:none;" class="bg-white rounded-lg shadow p-4">
+                <details>
+                    <summary class="font-bold cursor-pointer hover:text-blue-600">
+                        🤖 Agent Activity Log (<span id="researcher-count">-</span> researchers)
+                    </summary>
+                    <div id="researcher-logs" class="mt-3 space-y-1 text-xs font-mono"></div>
+                </details>
+            </div>
+            
+        </div>
+        
+    </div>
+    
+    <script>
+        const API_BASE = 'http://localhost:8000';
+        let currentData = null;
+        let editedCells = {};
+        
+        async function uploadPDF(input) {
+            const file = input.files[0];
+            if (!file) return;
+            
+            // Show loading
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('pdf-placeholder').style.display = 'none';
+            hideResults();
+            
+            try {
+                // Upload and process
+                const formData = new FormData();
+                formData.append('file', file);
+                
+                const response = await fetch(`${API_BASE}/takeoff`, {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                const data = await response.json();
+                currentData = data;
+                
+                // Hide loading
+                document.getElementById('loading').style.display = 'none';
+                
+                // Display PDF
+                const pdfViewer = document.getElementById('pdf-viewer');
+                pdfViewer.src = `${API_BASE}/uploads/${data.filename}`;
+                pdfViewer.style.display = 'block';
+                
+                // Display results
+                displayAlerts(data.user_alerts);
+                displaySummary(data.result, data.processing_time_sec);
+                displayPipes(data.result.pipes || []);
+                displayRAGContexts(data.researcher_results);
+                displayResearcherLogs(data.researcher_logs);
+                
+            } catch (error) {
+                document.getElementById('loading').style.display = 'none';
+                alert(`Error: ${error.message}`);
+                console.error(error);
+            }
+        }
+        
+        function hideResults() {
+            document.getElementById('summary-container').style.display = 'none';
+            document.getElementById('pipes-container').style.display = 'none';
+            document.getElementById('rag-container').style.display = 'none';
+            document.getElementById('logs-container').style.display = 'none';
+            document.getElementById('alerts-container').innerHTML = '';
+        }
+        
+        function displayAlerts(alerts) {
+            const container = document.getElementById('alerts-container');
+            
+            if (!alerts || alerts.total_unknowns === 0) {
+                container.innerHTML = '';
+                return;
+            }
+            
+            const severityStyles = {
+                'CRITICAL': 'bg-red-100 border-red-500 text-red-900',
+                'WARNING': 'bg-yellow-100 border-yellow-500 text-yellow-900',
+                'INFO': 'bg-blue-100 border-blue-500 text-blue-900'
+            };
+            
+            const style = severityStyles[alerts.severity] || severityStyles['WARNING'];
+            
+            let unknownsList = '';
+            if (alerts.unresolved_by_type) {
+                for (const [type, items] of Object.entries(alerts.unresolved_by_type)) {
+                    items.forEach(item => {
+                        unknownsList += `
+                            <div class="flex items-center justify-between bg-white p-2 rounded mt-2">
+                                <div>
+                                    <span class="font-semibold">${item.value}</span>
+                                    <span class="text-sm text-gray-600">- ${item.context}</span>
+                                </div>
+                                <button onclick="markVerified('${item.value}')" 
+                                        class="px-3 py-1 bg-green-500 text-white rounded text-sm hover:bg-green-600">
+                                    ✓ Mark Verified
+                                </button>
+                            </div>
+                        `;
+                    });
+                }
+            }
+            
+            container.innerHTML = `
+                <div class="${style} border-l-4 p-4 rounded-lg shadow">
+                    <div class="flex items-start">
+                        <span class="text-2xl mr-3">${alerts.severity === 'CRITICAL' ? '🔴' : '⚠️'}</span>
+                        <div class="flex-1">
+                            <h3 class="font-bold text-lg">${alerts.severity}: Manual Review Required</h3>
+                            <p class="mt-1">${alerts.total_unknowns} unknown element(s) detected</p>
+                            <p class="text-sm mt-2">
+                                <span class="font-semibold">Risk:</span> ${alerts.impact?.estimated_risk || 'Unknown'}
+                            </p>
+                            
+                            ${unknownsList}
+                            
+                            <div class="mt-3 text-sm">
+                                <p class="font-semibold">Recommendations:</p>
+                                <ul class="list-disc ml-5 mt-1">
+                                    ${alerts.recommendations?.map(r => `<li>${r}</li>`).join('') || ''}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        function displaySummary(result, processingTime) {
+            const container = document.getElementById('summary-container');
+            container.style.display = 'block';
+            
+            const summary = result.summary || {};
+            document.getElementById('storm-count').textContent = summary.storm_pipes || 0;
+            document.getElementById('sewer-count').textContent = summary.sanitary_pipes || 0;
+            document.getElementById('water-count').textContent = summary.water_pipes || 0;
+            document.getElementById('processing-time').textContent = processingTime?.toFixed(1) || '-';
+        }
+        
+        function displayPipes(pipes) {
+            const container = document.getElementById('pipes-container');
+            const tbody = document.getElementById('pipes-tbody');
+            
+            if (!pipes || pipes.length === 0) {
+                container.style.display = 'none';
+                return;
+            }
+            
+            container.style.display = 'block';
+            tbody.innerHTML = '';
+            
+            pipes.forEach((pipe, idx) => {
+                const conf = pipe.confidence || 0.5;
+                const confClass = conf < 0.5 ? 'confidence-low' : (conf < 0.8 ? 'confidence-medium' : 'confidence-high');
+                
+                const row = document.createElement('tr');
+                row.className = confClass;
+                row.innerHTML = `
+                    <td class="p-2">${pipe.discipline || '-'}</td>
+                    <td class="p-2" contenteditable="true" data-idx="${idx}" data-field="material" onblur="markEdited(this)">
+                        ${pipe.material || '-'}
+                    </td>
+                    <td class="p-2" contenteditable="true" data-idx="${idx}" data-field="diameter_in" onblur="markEdited(this)">
+                        ${pipe.diameter_in || '-'}"
+                    </td>
+                    <td class="p-2" contenteditable="true" data-idx="${idx}" data-field="length_ft" onblur="markEdited(this)">
+                        ${pipe.length_ft || '-'}
+                    </td>
+                    <td class="p-2">
+                        <span class="px-2 py-1 rounded text-xs font-semibold ${conf < 0.5 ? 'bg-red-600 text-white' : (conf < 0.8 ? 'bg-yellow-600 text-white' : 'bg-green-600 text-white')}">
+                            ${(conf * 100).toFixed(0)}%
+                        </span>
+                    </td>
+                    <td class="p-2">
+                        ${conf < 0.5 ? `<button onclick="verifyPipe(${idx})" class="px-2 py-1 bg-green-500 text-white rounded text-xs hover:bg-green-600">✓ Verify</button>` : '<span class="text-green-600">✓</span>'}
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+        
+        function displayRAGContexts(researcherResults) {
+            const container = document.getElementById('rag-container');
+            const contextsDiv = document.getElementById('rag-contexts');
+            
+            if (!researcherResults) {
+                container.style.display = 'none';
+                return;
+            }
+            
+            // Collect all contexts
+            let allContexts = [];
+            for (const [name, result] of Object.entries(researcherResults)) {
+                if (name === 'user_alerts') continue;
+                const contexts = result.retrieved_context || [];
+                contexts.forEach(ctx => {
+                    allContexts.push({
+                        researcher: name,
+                        content: ctx
+                    });
+                });
+            }
+            
+            if (allContexts.length === 0) {
+                container.style.display = 'none';
+                return;
+            }
+            
+            container.style.display = 'block';
+            document.getElementById('context-count').textContent = allContexts.length;
+            
+            contextsDiv.innerHTML = allContexts.map((ctx, idx) => `
+                <div class="p-3 bg-gray-50 rounded border border-gray-200">
+                    <div class="flex items-center justify-between mb-1">
+                        <span class="text-xs font-semibold text-blue-600 uppercase">${ctx.researcher}</span>
+                        <span class="text-xs text-gray-500">#${idx + 1}</span>
+                    </div>
+                    <p class="text-xs text-gray-700">${ctx.content.substring(0, 200)}${ctx.content.length > 200 ? '...' : ''}</p>
+                </div>
+            `).join('');
+        }
+        
+        function displayResearcherLogs(logs) {
+            const container = document.getElementById('logs-container');
+            const logsDiv = document.getElementById('researcher-logs');
+            
+            if (!logs || logs.length === 0) {
+                container.style.display = 'none';
+                return;
+            }
+            
+            container.style.display = 'block';
+            document.getElementById('researcher-count').textContent = logs.length;
+            
+            logsDiv.innerHTML = logs.map(log => `
+                <div class="p-2 bg-gray-50 rounded">
+                    <span class="text-blue-600 font-semibold">[${log.researcher}]</span>
+                    <span class="text-gray-600">confidence: ${(log.confidence * 100).toFixed(0)}%,</span>
+                    <span class="text-gray-600">standards: ${log.standards_used}</span>
+                </div>
+            `).join('');
+        }
+        
+        function markEdited(cell) {
+            cell.classList.add('edited');
+            const idx = cell.getAttribute('data-idx');
+            const field = cell.getAttribute('data-field');
+            
+            if (!editedCells[idx]) {
+                editedCells[idx] = {};
+            }
+            editedCells[idx][field] = cell.textContent.trim();
+        }
+        
+        function verifyPipe(idx) {
+            const row = document.querySelector(`td[data-idx="${idx}"]`).closest('tr');
+            row.classList.remove('confidence-low');
+            row.classList.add('confidence-high');
+            
+            if (!editedCells[idx]) {
+                editedCells[idx] = {};
+            }
+            editedCells[idx].verified = true;
+            
+            alert('Pipe marked as verified!');
+        }
+        
+        function markVerified(material) {
+            alert(`Material "${material}" marked as verified by human review.`);
+            // In production: POST to backend to save verification
+        }
+        
+        function saveCorrections() {
+            if (Object.keys(editedCells).length === 0) {
+                alert('No changes to save');
+                return;
+            }
+            
+            console.log('Saving corrections:', editedCells);
+            
+            // In production: POST to /corrections endpoint
+            // For demo: just show confirmation
+            alert(`Saved ${Object.keys(editedCells).length} correction(s)!\\n\\nIn production, these would be saved for audit trail.`);
+            
+            // Clear edited highlighting
+            document.querySelectorAll('.edited').forEach(el => el.classList.remove('edited'));
+            editedCells = {};
+        }
+        
+        function exportToCSV() {
+            if (!currentData || !currentData.result.pipes) {
+                alert('No data to export');
+                return;
+            }
+            
+            const pipes = currentData.result.pipes;
+            let csv = 'Discipline,Material,Diameter (in),Length (LF),Confidence\\n';
+            
+            pipes.forEach(pipe => {
+                csv += `${pipe.discipline},${pipe.material},${pipe.diameter_in},${pipe.length_ft},${(pipe.confidence * 100).toFixed(0)}%\\n`;
+            });
+            
+            // Download
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'takeoff_results.csv';
+            a.click();
+        }
+    </script>
+    
+</body>
+</html>
+

@@ -6,8 +6,9 @@ Main endpoint: POST /takeoff - upload PDF and get takeoff results
 import logging
 import time
 from pathlib import Path
-from fastapi import FastAPI, UploadFile, File, Form
+from fastapi import FastAPI, UploadFile, File, Form, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
 from pydantic import BaseModel
 
 from app.models import TakeoffResponse
@@ -175,13 +176,22 @@ async def takeoff(
                     "findings_summary": str(res.get("findings", {}))[:200] + "..."
                 })
         
+        # Extract user alerts if present
+        user_alerts = result.get("researcher_results", {}).get("user_alerts")
+        
         logger.info(
             f"Takeoff complete: {processing_time:.2f}s, "
             f"{len(researcher_logs)} researchers deployed"
         )
         
+        if user_alerts:
+            logger.warning(f"User alerts: {user_alerts.get('severity')} - {user_alerts.get('total_unknowns')} unknowns")
+        
         return {
+            "filename": file.filename,  # For PDF viewer
             "result": result.get("takeoff_result", result.get("consolidated_data", {})),
+            "user_alerts": user_alerts,  # Critical for HITL
+            "researcher_results": result.get("researcher_results", {}),
             "processing_time_sec": processing_time,
             "researcher_logs": researcher_logs
         }
@@ -197,6 +207,19 @@ async def takeoff(
             "processing_time_sec": time.time() - start_time,
             "researcher_logs": []
         }
+
+
+@app.get("/uploads/{filename}")
+async def serve_pdf(filename: str):
+    """Serve uploaded PDF for viewing in browser."""
+    file_path = UPLOAD_DIR / filename
+    if not file_path.exists():
+        raise HTTPException(status_code=404, detail="PDF not found")
+    return FileResponse(
+        file_path,
+        media_type="application/pdf",
+        headers={"Content-Disposition": f"inline; filename={filename}"}
+    )
 
 
 if __name__ == "__main__":
