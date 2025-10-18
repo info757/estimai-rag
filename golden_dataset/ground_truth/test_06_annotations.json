@@ -1,0 +1,74 @@
+{
+  "test_id": "test_06_realistic_site",
+  "description": "Comprehensive multi-utility site with storm, sewer, water systems",
+  "expected_pipes": [
+    {
+      "id": "STM-1",
+      "discipline": "storm",
+      "material": "RCP",
+      "diameter_in": 18,
+      "length_ft": 269,
+      "from": "CI-1",
+      "to": "DI-1"
+    },
+    {
+      "id": "STM-2",
+      "discipline": "storm",
+      "material": "RCP",
+      "diameter_in": 24,
+      "length_ft": 282,
+      "from": "DI-1",
+      "to": "ST-1"
+    },
+    {
+      "id": "STM-3",
+      "discipline": "storm",
+      "material": "RCP",
+      "diameter_in": 30,
+      "length_ft": 91,
+      "from": "ST-1",
+      "to": "OUT-1"
+    },
+    {
+      "id": "SS-1",
+      "discipline": "sanitary",
+      "material": "PVC",
+      "diameter_in": 8,
+      "length_ft": 208,
+      "invert_start": 738.5,
+      "slope_pct": 0.6
+    },
+    {
+      "id": "SS-2",
+      "discipline": "sanitary",
+      "material": "PVC",
+      "diameter_in": 8,
+      "length_ft": 206,
+      "slope_pct": 0.6
+    },
+    {
+      "id": "SS-3",
+      "discipline": "sanitary",
+      "material": "PVC",
+      "diameter_in": 10,
+      "length_ft": 179,
+      "slope_pct": 0.5
+    },
+    {
+      "id": "WM-1",
+      "discipline": "water",
+      "material": "DI",
+      "diameter_in": 12,
+      "length_ft": 1720,
+      "description": "Loop: 610+610+250+250"
+    }
+  ],
+  "expected_summary": {
+    "total_pipes": 7,
+    "storm_pipes": 3,
+    "sanitary_pipes": 3,
+    "water_pipes": 1,
+    "total_lf": 2955
+  }
+}
+

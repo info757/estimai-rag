@@ -34,6 +34,7 @@ numpy>=1.24.0
 
 # HTTP Client
 httpx>=0.25.0
+nest-asyncio>=1.5.0
 
 # Testing
 pytest>=7.4.0

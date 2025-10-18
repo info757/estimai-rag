@@ -66,48 +66,82 @@ async def analyze_pdf_page_with_vision(
     # System prompt
     system_prompt = """You are an expert civil engineer analyzing utility construction plans.
 
-Your task: Identify ALL utility pipes and extract complete information.
+YOUR CRITICAL TASK: Find and extract EVERY SINGLE pipe shown on this drawing, from BOTH plan view AND profile view sections.
 
-Read the drawing systematically:
+STEP-BY-STEP ANALYSIS:
 
-1. LEGEND: Find and read the legend to understand symbols, colors, abbreviations
-2. SCALE: Note the horizontal and vertical scales
-3. UTILITY LINES: Identify water mains, sanitary sewers, storm drains
-4. ELEVATIONS: Extract invert elevations (IE/INV) from labels and profile views
-5. DETAILS: Material, diameter, length for each pipe
+1. IDENTIFY ALL VIEWS ON THE PAGE:
+   - Plan View: Top-down map showing pipe routes, structures, and connections
+   - Profile View: Side view showing pipe slopes and elevations
+   - Each view shows pipes - extract from BOTH
 
-CRITICAL for elevations:
-- Elevation values are typically 100-500 feet above sea level
-- In profile views, read Y-axis grid for elevations (e.g., 410', 420', 430')
-- Don't confuse station numbers (0+00, 1+00, 2+00) with elevations
-- Invert = bottom inside of pipe
+2. READ THE LEGEND FIRST:
+   - Find abbreviations (STM/SD=Storm, SS=Sanitary, WM=Water, etc.)
+   - Identify line types and colors (solid, dashed, blue, green, brown)
+   - Note material codes (RCP, PVC, DI, HDPE, etc.)
 
-Be accurate - only report what you can clearly see."""
+3. SCAN PLAN VIEW - Look for:
+   - Blue lines = Storm drain pipes
+   - Brown/tan lines = Sanitary sewer pipes
+   - Green lines or dashed lines = Water mains
+   - Labels near lines showing: size (18"), material (RCP), length (250 LF)
+   - Structure symbols: circles (manholes/inlets), squares (valves/hydrants)
+
+4. SCAN PROFILE VIEW - Look for:
+   - Sloped lines showing pipe runs
+   - Labels directly on pipes: "8\" PVC", "18\" RCP"
+   - Invert elevations (IE = 738.5)
+   - Length and slope labels (L=200', S=0.6%)
+
+5. EXTRACT EVERY PIPE YOU FIND:
+   - If you see a line with a label like "18\" RCP STM" → that's a storm pipe
+   - If you see "12\" DI WM" or "12\" DI WATER MAIN" → that's a water pipe
+   - If you see "8\" PVC SS" → that's a sanitary pipe
+   - Even if some details are missing, extract what you can see
+
+CRITICAL: Don't stop at just the profile view! Also extract pipes from the plan view even if they have less detail."""
     
     # User prompt
-    user_prompt = """Analyze this utility construction plan.
+    user_prompt = """Analyze this utility construction plan and extract EVERY pipe you can find.
 
-For each pipe, extract:
-- discipline: "storm", "sanitary", or "water"
-- length_ft: length in feet
-- material: pipe material (PVC, DI, RCP, concrete, etc.)
-- dia_in: diameter in inches
-- invert_in_ft: invert elevation at start (if shown)
-- invert_out_ft: invert elevation at end (if shown)
-- ground_elev_ft: ground surface elevation (if shown)
+LOOK IN THESE LOCATIONS:
+1. Plan View (top section) - pipes drawn as lines connecting structures
+2. Profile View (bottom section) - pipes shown with slopes and elevations
+3. Any labels near pipe lines
 
-Return JSON:
+For EACH pipe you find, extract:
+- discipline: "storm", "sanitary", or "water" (look for: STM/SD=storm, SS=sanitary, WM/W=water)
+- length_ft: length in feet (look for "250 LF", "200'", "L=250", etc.)
+- material: (PVC, DI, RCP, HDPE, Concrete, etc.)
+- dia_in: diameter in inches (look for: 18", 8", 12", etc.)
+- invert_in_ft: start invert elevation (IE/INV values, typically 700-750 range)
+- invert_out_ft: end invert elevation
+- ground_elev_ft: ground surface elevation
+
+IMPORTANT: 
+- If a pipe label says "18\" RCP STM" → {discipline: "storm", material: "RCP", dia_in: 18}
+- If you see "12\" DI WATER MAIN" → {discipline: "water", material: "DI", dia_in: 12}
+- If you see "8\" PVC SS" → {discipline: "sanitary", material: "PVC", dia_in: 8}
+- Extract pipes from BOTH plan view AND profile view - they're separate pipes!
+
+Return JSON with ALL pipes found:
 {
-  "page_summary": "Brief description of what's on this page",
+  "page_summary": "Plan view shows X utilities, profile view shows Y pipes",
   "pipes": [
     {
       "discipline": "storm",
       "length_ft": 245.0,
       "material": "RCP",
       "dia_in": 18,
-      "invert_in_ft": 420.5,
-      "invert_out_ft": 418.2,
-      "ground_elev_ft": 425.0
+      "source": "plan_view"
+    },
+    {
+      "discipline": "sanitary",
+      "length_ft": 200.0,
+      "material": "PVC",
+      "dia_in": 8,
+      "invert_in_ft": 738.5,
+      "source": "profile_view"
     }
   ]
 }"""
@@ -202,6 +236,11 @@ def process_pdf_with_vision(
     
     # Run async code in sync context
     import asyncio
+    import nest_asyncio
+    
+    # Allow nested event loops (needed for FastAPI)
+    nest_asyncio.apply()
+    
     try:
         loop = asyncio.get_event_loop()
     except RuntimeError:

@@ -134,7 +134,7 @@ def create_realistic_site_pdf(filename):
     
     c.setFont("Helvetica", 10)
     c.drawString(1*inch, 10.2*inch, "UTILITY PLAN - STORM, SEWER, WATER")
-    c.drawString(1*inch, 10.0*inch, "Sheet C-301")
+    c.drawString(1*inch, 10.0*inch, "Sheet C-301 | PLAN VIEW: ALL UTILITIES + SEWER PROFILE")
     c.drawString(5*inch, 10.2*inch, "Scale: 1\" = 20'")
     c.drawString(5*inch, 10.0*inch, "North: Up")
     
@@ -167,18 +167,18 @@ def create_realistic_site_pdf(filename):
     origin_y = 1.5*inch
     scale = 20  # ft per inch
     
-    # Storm structures
+    # Storm structures (BLUE)
     c.setStrokeColorRGB(0, 0, 0.8)
     c.setFillColorRGB(0, 0, 0.8)
-    c.setFont("Helvetica", 7)
+    c.setFont("Helvetica", 8)
     
     for struct in SCHEMA["storm"]["structures"]:
         x_pdf, y_pdf = ft_to_pdf(struct["pt"][0], struct["pt"][1], scale, origin_x, origin_y)
-        c.circle(x_pdf, y_pdf, 3, fill=0, stroke=1)
+        c.circle(x_pdf, y_pdf, 5, fill=0, stroke=1)
         c.drawString(x_pdf + 5, y_pdf + 5, struct["id"])
     
-    # Storm pipes
-    c.setLineWidth(2)
+    # Storm pipes (thicker for visibility)
+    c.setLineWidth(3)
     for pipe in SCHEMA["storm"]["pipes"]:
         from_pt = next(s["pt"] for s in SCHEMA["storm"]["structures"] if s["id"] == pipe["from"])
         to_pt = next(s["pt"] for s in SCHEMA["storm"]["structures"] if s["id"] == pipe["to"])
@@ -188,12 +188,14 @@ def create_realistic_site_pdf(filename):
         
         c.line(x1, y1, x2, y2)
         
-        # Label
+        # Label with clear material and size
         mid_x, mid_y = (x1+x2)/2, (y1+y2)/2
         length = calc_pipe_length(from_pt, to_pt)
         c.setFillColorRGB(0, 0, 0)
-        c.drawString(mid_x, mid_y + 8, f"{pipe['size_in']}\" {pipe['material']}")
-        c.drawString(mid_x, mid_y - 2, f"{length:.0f} LF")
+        c.setFont("Helvetica-Bold", 9)
+        c.drawString(mid_x, mid_y + 12, f"{pipe['size_in']}\" {pipe['material']} STM")
+        c.setFont("Helvetica", 8)
+        c.drawString(mid_x, mid_y + 2, f"{length:.0f} LF, {pipe['slope_pct']}%")
     
     # Sewer manholes
     c.setStrokeColorRGB(0.6, 0.3, 0)
@@ -220,15 +222,19 @@ def create_realistic_site_pdf(filename):
         
         c.line(x1, y1, x2, y2)
         
-        # Label
+        # Label with clear material and size  
         mid_x, mid_y = (x1+x2)/2, (y1+y2)/2 - 12
         length = calc_pipe_length(from_pt, to_pt)
         c.setFillColorRGB(0, 0, 0)
-        c.drawString(mid_x, mid_y, f"{pipe['size_in']}\" {pipe['material']} SS")
+        c.setFont("Helvetica-Bold", 9)
+        c.drawString(mid_x, mid_y + 4, f"{pipe['size_in']}\" {pipe['material']} SS")
+        c.setFont("Helvetica", 8)
+        c.drawString(mid_x, mid_y - 6, f"{length:.0f} LF")
     
-    # Water main
+    # Water main (GREEN - thicker and dashed for visibility)
     c.setStrokeColorRGB(0, 0.6, 0)
-    c.setLineWidth(2)
+    c.setLineWidth(3)
+    c.setDash(6, 3)  # Dashed line pattern
     
     path = SCHEMA["water"]["mains"][0]["path_ft"]
     for i in range(len(path) - 1):
@@ -236,10 +242,23 @@ def create_realistic_site_pdf(filename):
         x2, y2 = ft_to_pdf(path[i+1][0], path[i+1][1], scale, origin_x, origin_y)
         c.line(x1, y1, x2, y2)
     
-    # Water main label
+    c.setDash()  # Reset to solid line
+    
+    # Water main label - add multiple labels for visibility
     c.setFillColorRGB(0, 0, 0)
+    c.setFont("Helvetica-Bold", 9)
+    
+    # Top label
     x_mid, y_mid = ft_to_pdf(400, 570, scale, origin_x, origin_y)
-    c.drawString(x_mid, y_mid + 10, "12\" DI WM")
+    c.drawString(x_mid - 10, y_mid + 12, "12\" DI WATER MAIN")
+    
+    # Side label
+    x_side, y_side = ft_to_pdf(730, 440, scale, origin_x, origin_y)
+    c.drawString(x_side + 5, y_side, "12\" DI WM")
+    
+    # Bottom label
+    x_bot, y_bot = ft_to_pdf(400, 320, scale, origin_x, origin_y)
+    c.drawString(x_bot - 10, y_bot - 12, "12\" DI WM")
     
     # Hydrants
     c.setFillColorRGB(0, 0.6, 0)
