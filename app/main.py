@@ -176,8 +176,9 @@ async def takeoff(
                     "findings_summary": str(res.get("findings", {}))[:200] + "..."
                 })
         
-        # Extract user alerts if present
-        user_alerts = result.get("researcher_results", {}).get("user_alerts")
+        # Extract user alerts if present (from consolidated_data)
+        consolidated = result.get("consolidated_data", {})
+        user_alerts = consolidated.get("user_alerts")
         
         logger.info(
             f"Takeoff complete: {processing_time:.2f}s, "

@@ -610,17 +610,27 @@ Return JSON:
             # Query RAG for material specs
             rag_results = retriever.retrieve_hybrid(
                 query=f"{material} pipe material specifications",
-                k=3,
+                k=5,
                 discipline=None
             )
             
-            # Check if material is well-documented in RAG
-            if len(rag_results) >= 2:  # At least 2 relevant docs = known material
+            # Check if material is ACTUALLY mentioned in retrieved content
+            # Not just "did we get generic pipe results?"
+            material_found_in_content = False
+            if rag_results:
+                for result in rag_results:
+                    content = result.get('content', '').upper()
+                    # Check if the exact material abbreviation appears in the content
+                    if material in content:
+                        material_found_in_content = True
+                        break
+            
+            if material_found_in_content:
                 known_materials.add(material)
-                logger.info(f"✓ {material}: Found in knowledge base ({len(rag_results)} standards)")
+                logger.info(f"✓ {material}: Found in knowledge base (explicitly mentioned in standards)")
             else:
                 unknown_materials.add(material)
-                logger.warning(f"⚠️  {material}: Not in knowledge base (only {len(rag_results)} results)")
+                logger.warning(f"⚠️  {material}: NOT in knowledge base (material not mentioned in any standard)")
                 
                 # Try to resolve via Tavily API
                 logger.info(f"[api] Searching external sources for material: '{material}'")
