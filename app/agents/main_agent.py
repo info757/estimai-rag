@@ -76,27 +76,49 @@ class MainAgent:
         logger.info(f"[Main Agent] Analyzing PDF: {pdf_path}")
         
         try:
-            # Use vision processor to analyze PDF
-            from app.vision_processor import process_pdf_with_vision
+            # Use Vision Coordinator with specialized agents
+            from app.vision.coordinator import VisionCoordinator
+            import asyncio
+            from concurrent.futures import ThreadPoolExecutor
             
-            vision_results = process_pdf_with_vision(pdf_path, max_pages=10)
+            # Create coordinator
+            coordinator = VisionCoordinator()
             
-            pipes_found = len(vision_results.get("pipes", []))
+            # Run async code in a separate thread to avoid event loop conflicts
+            def run_vision_async():
+                """Helper to run async Vision coordinator in new event loop."""
+                new_loop = asyncio.new_event_loop()
+                asyncio.set_event_loop(new_loop)
+                try:
+                    return new_loop.run_until_complete(coordinator.analyze_multipage(
+                        pdf_path=pdf_path,
+                        max_pages=10,
+                        agents_to_deploy=["pipes"],  # Single general-purpose agent
+                        dpi=300  # High resolution
+                    ))
+                finally:
+                    new_loop.close()
+            
+            # Execute in thread pool
+            with ThreadPoolExecutor(max_workers=1) as executor:
+                future = executor.submit(run_vision_async)
+                vision_results = future.result()
+            
+            logger.info(f"[Main Agent] Vision analysis complete. Raw extraction: {len(vision_results.get('pipes', []))} pipes")
+            
+            pipes_found = vision_results.get("total_pipes", 0)
             pages_processed = vision_results.get("num_pages_processed", 0)
+            discipline_counts = vision_results.get("discipline_counts", {})
             
             # Create summary for supervisor
             pdf_summary = f"""PDF Analysis Results:
 - Pages processed: {pages_processed}
-- Total pipes detected: {pipes_found}
+- Total pipes detected (raw): {pipes_found}
+- Vision analysis: GPT-4o pipe extraction
 - Page summaries: {' | '.join(vision_results.get('page_summaries', []))}
 
 Pipe breakdown:
 """
-            # Count by discipline
-            from collections import Counter
-            disciplines = [p.get("discipline") for p in vision_results.get("pipes", []) if p.get("discipline")]
-            discipline_counts = Counter(disciplines)
-            
             for disc, count in discipline_counts.items():
                 pdf_summary += f"- {disc}: {count} pipes\n"
             
@@ -118,7 +140,9 @@ Pipe breakdown:
         
         except Exception as e:
             logger.error(f"[Main Agent] PDF analysis failed: {e}")
+            logger.error(f"[Main Agent] Exception type: {type(e).__name__}")
             import traceback
+            logger.error(f"[Main Agent] Full traceback:")
             traceback.print_exc()
             
             # Fallback: basic summary
@@ -130,11 +154,14 @@ Pipe breakdown:
     
     def supervise_research_node(self, state: AgentState) -> AgentState:
         """
-        Node 2: Call supervisor to coordinate researchers.
+        Node 2: Call supervisor to validate Vision results (NO extraction).
+        
+        Vision is single source of truth for pipe counts.
+        Supervisor only validates unknowns via RAG and deduplicates.
         """
         pdf_summary = state["pdf_summary"]
         
-        logger.info("[Main Agent] Calling supervisor...")
+        logger.info("[Main Agent] Calling supervisor (validation mode)...")
         
         # Create supervisor state (with vision_result for unknown detection)
         vision_result = state.get("final_report", {}).get("vision_results", {})
@@ -145,11 +172,11 @@ Pipe breakdown:
             "researcher_results": {},
             "consolidated_data": {},
             "conflicts": [],
-            "vision_result": vision_result  # Pass for unknown detection
+            "vision_result": vision_result  # Pass for validation and deduplication
         }
         
-        # Run supervisor
-        result = self.supervisor.supervise(supervisor_state)
+        # Run supervisor in VALIDATION-ONLY mode (no extraction)
+        result = self.supervisor.validate_and_enrich(supervisor_state)
         
         logger.info(
             f"[Main Agent] Supervisor complete. "
@@ -184,28 +211,20 @@ Pipe breakdown:
         researcher_results = state["final_report"].get("researcher_results", {})
         consolidated = state["final_report"].get("consolidated_data", {})
         
-        # Count pipes by discipline from vision
-        storm_count = len([p for p in vision_pipes if p.get("discipline") == "storm"])
-        sanitary_count = len([p for p in vision_pipes if p.get("discipline") == "sanitary"])
-        water_count = len([p for p in vision_pipes if p.get("discipline") == "water"])
+        # Trust Supervisor's deduplicated summary
+        supervisor_summary = consolidated["summary"]
         
-        # Sum lengths
-        storm_lf = sum(p.get("length_ft", 0) for p in vision_pipes if p.get("discipline") == "storm")
-        sanitary_lf = sum(p.get("length_ft", 0) for p in vision_pipes if p.get("discipline") == "sanitary")
-        water_lf = sum(p.get("length_ft", 0) for p in vision_pipes if p.get("discipline") == "water")
-        
-        # Create TakeoffSummary from vision + RAG validation
         summary = TakeoffSummary(
-            total_pipes=len(vision_pipes),
-            storm_pipes=storm_count,
-            sanitary_pipes=sanitary_count,
-            water_pipes=water_count,
-            storm_lf=storm_lf,
-            sanitary_lf=sanitary_lf,
-            water_lf=water_lf,
-            total_lf=storm_lf + sanitary_lf + water_lf,
-            avg_confidence=consolidated.get("overall_confidence", 0.75),
-            validation_flags_count=len(consolidated.get("validation_issues", []))
+            total_pipes=supervisor_summary["total_pipes"],
+            storm_pipes=supervisor_summary["storm_pipes"],
+            sanitary_pipes=supervisor_summary["sanitary_pipes"],
+            water_pipes=supervisor_summary["water_pipes"],
+            storm_lf=supervisor_summary["storm_lf"],
+            sanitary_lf=supervisor_summary["sanitary_lf"],
+            water_lf=supervisor_summary["water_lf"],
+            total_lf=supervisor_summary["total_lf"],
+            avg_confidence=consolidated["overall_confidence"],
+            validation_flags_count=0
         )
         
         # Convert vision pipes to PipeDetection format
@@ -214,16 +233,16 @@ Pipe breakdown:
         for i, vp in enumerate(vision_pipes):
             pipe = PipeDetection(
                 pipe_id=f"pipe_{i}",
-                discipline=vp.get("discipline", "storm"),
-                material=vp.get("material"),
-                diameter_in=vp.get("dia_in"),
-                length_ft=vp.get("length_ft"),
+                discipline=vp["discipline"],
+                material=vp["material"],
+                diameter_in=vp["diameter_in"],
+                length_ft=vp["length_ft"],
                 invert_in_ft=vp.get("invert_in_ft"),
                 invert_out_ft=vp.get("invert_out_ft"),
-                ground_level_ft=vp.get("ground_elev_ft"),
-                depth_ft=vp.get("ground_elev_ft", 0) - vp.get("invert_in_ft", 0) if vp.get("ground_elev_ft") and vp.get("invert_in_ft") else None,
+                ground_level_ft=vp.get("ground_level_ft"),
+                depth_ft=vp.get("depth_ft"),
                 confidence=0.8,
-                retrieved_context=[],  # Would include researcher contexts
+                retrieved_context=[],
                 validation_flags=[]
             )
             pipes.append(pipe)

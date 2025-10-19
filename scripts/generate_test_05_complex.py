@@ -65,12 +65,12 @@ def create_complex_realistic_pdf(filename):
     c.drawString(1.3*inch, 7.2*inch, "NYLOPLAST")
     c.drawString(1.4*inch, 7.4*inch, "CB-101")
     
-    c.drawString(3*inch, 7.2*inch, "24\" FPVC SD")
-    c.drawString(3*inch, 7.4*inch, "380 LF")
+    c.drawString(3*inch, 7.2*inch, "24\" FPVC STORM")
+    c.drawString(3*inch, 7.4*inch, "350 LF")
     c.drawString(2.8*inch, 6.8*inch, "TR-FLEX Joints")
     
     c.drawString(6.3*inch, 7.2*inch, "OUTLET")
-    c.drawString(6.4*inch, 7.4*inch, "w/ SRPE")
+    c.drawString(6.4*inch, 7.4*inch, "TO CREEK")
     
     # Sanitary with HDD callout
     c.setStrokeColorRGB(0, 0.5, 0)
@@ -80,21 +80,22 @@ def create_complex_realistic_pdf(filename):
     c.setDash([])
     c.setFillColorRGB(0, 0, 0)
     c.drawString(1.4*inch, 6.2*inch, "MH-201")
-    c.drawString(3*inch, 6.2*inch, "18\" FPVC SS")
-    c.drawString(3*inch, 6.4*inch, "450 LF via HDD")
+    c.drawString(3*inch, 6.2*inch, "12\" SRPE SANITARY")
+    c.drawString(3*inch, 6.4*inch, "280 LF via HDD")
     c.drawString(2.8*inch, 5.8*inch, "(under wetland)")
     c.drawString(6.3*inch, 6.2*inch, "MH-202")
     
-    # Existing pipe for CIPP rehab
-    c.setStrokeColorRGB(0.7, 0, 0)
-    c.setDash(3, 3)
-    c.line(1.5*inch, 5*inch, 4.5*inch, 5*inch)
+    # Water main (NEW PIPE)
+    c.setStrokeColorRGB(0, 0.4, 0.8)
+    c.setDash(6, 3)
+    c.line(1.5*inch, 5*inch, 6.5*inch, 5*inch)
     
     c.setDash([])
-    c.setFillColorRGB(0.7, 0, 0)
-    c.drawString(2.5*inch, 5.2*inch, "EXISTING 12\" RCP")
-    c.drawString(2.3*inch, 5.4*inch, "CIPP REHAB REQUIRED")
-    c.drawString(2.5*inch, 4.8*inch, "(See Detail 7/C5.1)")
+    c.setFillColorRGB(0, 0, 0)
+    c.drawString(1.4*inch, 5.2*inch, "HYD-301")
+    c.drawString(3*inch, 5.2*inch, "8\" DI WATER MAIN")
+    c.drawString(3*inch, 5.4*inch, "420 LF")
+    c.drawString(6.3*inch, 5.2*inch, "GV-302")
     
     # PROFILE VIEW
     c.setFont("Helvetica-Bold", 11)

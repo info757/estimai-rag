@@ -86,7 +86,9 @@ Return JSON list of tasks:
 Only deploy researchers relevant to what's actually in the PDF."""
         
         messages = [
-            SystemMessage(content="You are a construction takeoff supervisor coordinating specialized researchers."),
+            SystemMessage(content="""You are a construction estimating supervisor that leads a team of construction estimators, each with expertise in specific areas of performing takeoff on construction documents. 
+
+Your expertise is in deciding which researcher/estimator should perform takeoff on each part of the construction blueprint documents, vector and raster construction pdfs."""),
             HumanMessage(content=prompt)
         ]
         
@@ -276,24 +278,32 @@ Only deploy researchers relevant to what's actually in the PDF."""
     
     def consolidate_findings(
         self,
-        researcher_results: Dict[str, ResearcherState]
+        researcher_results: Dict[str, ResearcherState],
+        vision_pipes: list = None
     ) -> Dict[str, Any]:
         """
         Consolidate and validate findings from all researchers.
         
+        Includes intelligent deduplication of pipes from multiple views.
+        
         Args:
             researcher_results: Results from execute_research
+            vision_pipes: Raw pipe list from Vision agents (may contain duplicates)
         
         Returns:
-            Consolidated takeoff data
+            Consolidated takeoff data with deduplicated pipes
         """
         logger.info("Consolidating researcher findings...")
+        
+        # If we have Vision pipes, add deduplication step
+        if vision_pipes:
+            logger.info(f"Deduplicating {len(vision_pipes)} Vision detections...")
         
         # Format results for LLM (skip user_alerts key - not a researcher)
         findings_text = ""
         for name, result in researcher_results.items():
-            # Skip meta keys like user_alerts
-            if name in ['user_alerts']:
+            # Skip meta keys like user_alerts, or None keys
+            if not name or name in ['user_alerts']:
                 continue
                 
             findings_text += f"\n## {name.upper()} Researcher\n"
@@ -305,17 +315,25 @@ Only deploy researchers relevant to what's actually in the PDF."""
             if result.get('unknowns_resolved'):
                 findings_text += f"Unknowns Resolved: {', '.join(result['unknowns_resolved'])}\n"
         
-        prompt = f"""Consolidate findings from specialized researchers into a unified takeoff report.
+        # Build Vision pipe summary for deduplication
+        vision_summary = ""
+        if vision_pipes:
+            vision_summary = f"\n## VISION AGENT DETECTIONS ({len(vision_pipes)} pipes, may include duplicates)\n\n"
+            for i, p in enumerate(vision_pipes, 1):
+                vision_summary += f"{i}. {p.get('discipline', '?')} - {p.get('diameter_in', '?')}\" {p.get('material', '?')} - {p.get('length_ft', '?')} LF"
+                if p.get('from_structure'):
+                    vision_summary += f" (from {p.get('from_structure')} to {p.get('to_structure')})"
+                vision_summary += f" [source: {p.get('source', '?')}]\n"
+        
+        prompt = f"""You are an expert at reading construction blueprint documents and vector and raster pdfs.
+
+{vision_summary}
 
 {findings_text}
 
-Your tasks:
-1. **Aggregate Counts**: Total pipes by discipline (storm, sanitary, water)
-2. **Aggregate Lengths**: Total linear feet by discipline
-3. **Extract Details**: Materials, diameters, elevations found
-4. **Identify Conflicts**: Do any researchers contradict each other?
-5. **Assess Quality**: Overall confidence and completeness
-6. **Flag Issues**: Any validation problems or missing data
+If you see a construction item like a pipe with the same label more than once then don't count it multiple times. It is simply a construction item being referenced again from a different view or perhaps giving us more information about it. Analyze for new, important information but do not count it again when you see it has the same naming convention you already saw and counted.
+
+Calculate total unique pipes by type and their total lengths.
 
 Return JSON:
 {{
@@ -329,12 +347,8 @@ Return JSON:
         "water_lf": float,
         "total_lf": float
     }},
-    "materials_found": ["PVC", "DI", "RCP"],
-    "diameters_found": [8, 12, 18],
-    "elevations_extracted": bool,
-    "conflicts": [],
+    "materials_found": [],
     "overall_confidence": 0.0-1.0,
-    "validation_issues": [],
     "recommendations": ""
 }}"""
         
@@ -345,35 +359,43 @@ Return JSON:
         
         try:
             response = self.llm.invoke(messages)
-            
-            # Just use text consolidation - no JSON parsing!
             consolidation_text = response.content
             
-            # Calculate simple summary from vision results if available
-            consolidated = {
-                "summary": {
-                    "storm_pipes": 0,
-                    "sanitary_pipes": 0,
-                    "water_pipes": 0,
-                    "total_pipes": 0,
-                    "storm_lf": 0.0,
-                    "sanitary_lf": 0.0,
-                    "water_lf": 0.0,
-                    "total_lf": 0.0
-                },
-                "consolidation_analysis": consolidation_text,
-                "materials_found": [],
-                "diameters_found": [],
-                "elevations_extracted": False,
-                "conflicts": [],
-                "overall_confidence": sum(r.get("confidence", 0) for r in researcher_results.values()) / len(researcher_results) if researcher_results else 0.0,
-                "validation_issues": [],
-                "recommendations": "Review researcher findings"
-            }
+            # Try to parse JSON from LLM response (for deduplication results)
+            import re
+            import json
             
-            logger.info(
-                f"Consolidation complete. Overall confidence: {consolidated['overall_confidence']:.2f}"
-            )
+            json_match = re.search(r'\{.*\}', consolidation_text, re.DOTALL)
+            if json_match:
+                try:
+                    llm_result = json.loads(json_match.group())
+                    logger.info(f"✅ Supervisor parsed deduplication result")
+                    
+                    # Use LLM's deduplicated counts
+                    consolidated = {
+                        "summary": llm_result.get("summary", {}),
+                        "consolidation_analysis": consolidation_text,
+                        "deduplication_notes": llm_result.get("deduplication_notes", ""),
+                        "materials_found": llm_result.get("materials_found", []),
+                        "diameters_found": llm_result.get("diameters_found", []),
+                        "elevations_extracted": llm_result.get("elevations_extracted", False),
+                        "conflicts": llm_result.get("conflicts", []),
+                        "overall_confidence": llm_result.get("overall_confidence", 0.75),
+                        "validation_issues": llm_result.get("validation_issues", []),
+                        "recommendations": llm_result.get("recommendations", "")
+                    }
+                    
+                    logger.info(
+                        f"Consolidation complete. Deduplicated: {consolidated['summary'].get('total_pipes', 0)} unique pipes. "
+                        f"Overall confidence: {consolidated['overall_confidence']:.2f}"
+                    )
+                    
+                except json.JSONDecodeError:
+                    logger.warning("Failed to parse Supervisor JSON, using fallback")
+                    consolidated = self._fallback_consolidation(researcher_results, consolidation_text)
+            else:
+                logger.warning("No JSON found in Supervisor response, using fallback")
+                consolidated = self._fallback_consolidation(researcher_results, consolidation_text)
             
             return consolidated
         
@@ -401,6 +423,249 @@ Return JSON:
                 "recommendations": "Manual review required"
             }
     
+    def _deduplicate_vision_only(self, vision_pipes: List[Dict[str, Any]]) -> Dict[str, Any]:
+        """
+        Deduplicate Vision pipes WITHOUT researcher input.
+        
+        Vision is single source of truth. This method only removes duplicates
+        from multi-page/multi-view scenarios using LLM-based intelligent deduplication.
+        
+        Args:
+            vision_pipes: List of pipes detected by Vision
+        
+        Returns:
+            Consolidated result with deduplicated pipes
+        """
+        if not vision_pipes:
+            return {
+                "summary": {
+                    "total_pipes": 0,
+                    "storm_pipes": 0,
+                    "sanitary_pipes": 0,
+                    "water_pipes": 0,
+                    "storm_lf": 0.0,
+                    "sanitary_lf": 0.0,
+                    "water_lf": 0.0,
+                    "total_lf": 0.0
+                },
+                "materials_found": [],
+                "overall_confidence": 0.0,
+                "validation_issues": [],
+                "recommendations": ""
+            }
+        
+        # Use LLM to deduplicate (same prompt as consolidate_findings)
+        vision_summary = f"Vision detected {len(vision_pipes)} pipes from construction document."
+        
+        prompt = f"""You are an expert at reading construction blueprint documents and vector and raster pdfs.
+
+{vision_summary}
+
+Vision Detections:
+{self._format_pipes_for_llm(vision_pipes)}
+
+If you see a construction item like a pipe with the same label more than once then don't count it multiple times. It is simply a construction item being referenced again from a different view or perhaps giving us more information about it. Analyze for new, important information but do not count it again when you see it has the same naming convention you already saw and counted.
+
+Calculate the total unique pipes by type and their total lengths.
+
+Return JSON:
+{{
+    "summary": {{
+        "storm_pipes": int,
+        "sanitary_pipes": int,
+        "water_pipes": int,
+        "total_pipes": int,
+        "storm_lf": float,
+        "sanitary_lf": float,
+        "water_lf": float,
+        "total_lf": float
+    }},
+    "materials_found": [],
+    "overall_confidence": 0.0-1.0,
+    "recommendations": ""
+}}"""
+
+        try:
+            messages = [
+                SystemMessage(content="You are an expert construction estimator."),
+                HumanMessage(content=prompt)
+            ]
+            
+            response = self.llm.invoke(messages)
+            import json
+            import re
+            
+            content = response.content
+            json_match = re.search(r'\{.*\}', content, re.DOTALL)
+            
+            if json_match:
+                consolidated = json.loads(json_match.group())
+                logger.info("✅ Supervisor parsed deduplication result")
+                return consolidated
+            else:
+                raise ValueError("No JSON found in response")
+        
+        except Exception as e:
+            logger.warning(f"LLM deduplication failed ({e}), using fallback count")
+            # Fallback: naive count (no deduplication)
+            storm_count = sum(1 for p in vision_pipes if p.get("discipline") == "storm")
+            sanitary_count = sum(1 for p in vision_pipes if p.get("discipline") == "sanitary")
+            water_count = sum(1 for p in vision_pipes if p.get("discipline") == "water")
+            
+            return {
+                "summary": {
+                    "storm_pipes": storm_count,
+                    "sanitary_pipes": sanitary_count,
+                    "water_pipes": water_count,
+                    "total_pipes": len(vision_pipes),
+                    "storm_lf": sum(p.get("length_ft", 0) for p in vision_pipes if p.get("discipline") == "storm"),
+                    "sanitary_lf": sum(p.get("length_ft", 0) for p in vision_pipes if p.get("discipline") == "sanitary"),
+                    "water_lf": sum(p.get("length_ft", 0) for p in vision_pipes if p.get("discipline") == "water"),
+                    "total_lf": sum(p.get("length_ft", 0) for p in vision_pipes)
+                },
+                "materials_found": list(set(p.get("material", "") for p in vision_pipes)),
+                "overall_confidence": 0.8,
+                "validation_issues": ["LLM deduplication failed - using naive count"],
+                "recommendations": ""
+            }
+    
+    def _format_pipes_for_llm(self, pipes: List[Dict[str, Any]]) -> str:
+        """Format pipes for LLM prompt."""
+        formatted = []
+        for i, pipe in enumerate(pipes, 1):
+            formatted.append(
+                f"{i}. {pipe.get('discipline', 'unknown')} - "
+                f"{pipe.get('diameter_in', '?')}\" {pipe.get('material', '?')} - "
+                f"{pipe.get('length_ft', 0)} LF"
+            )
+        return "\n".join(formatted)
+    
+    def _fallback_consolidation(
+        self,
+        researcher_results: Dict[str, ResearcherState],
+        consolidation_text: str
+    ) -> Dict[str, Any]:
+        """Fallback when LLM doesn't return valid JSON."""
+        return {
+            "summary": {
+                "storm_pipes": 0,
+                "sanitary_pipes": 0,
+                "water_pipes": 0,
+                "total_pipes": 0,
+                "storm_lf": 0.0,
+                "sanitary_lf": 0.0,
+                "water_lf": 0.0,
+                "total_lf": 0.0
+            },
+            "consolidation_analysis": consolidation_text,
+            "deduplication_notes": "Deduplication failed - counts may include duplicates",
+            "materials_found": [],
+            "diameters_found": [],
+            "elevations_extracted": False,
+            "conflicts": [],
+            "overall_confidence": sum(r.get("confidence", 0) for r in researcher_results.values()) / len(researcher_results) if researcher_results else 0.0,
+            "validation_issues": ["Consolidation JSON parsing failed"],
+            "recommendations": "Manual review required"
+        }
+    
+    def validate_and_enrich(self, state: SupervisorState) -> SupervisorState:
+        """
+        Vision-First validation workflow - NO extraction, only validation.
+        
+        Vision is the single source of truth for counts.
+        Researchers are ONLY used to validate unknown materials via RAG.
+        
+        Args:
+            state: SupervisorState with PDF summary and Vision results
+        
+        Returns:
+            Updated state with validated, deduplicated Vision pipes
+        """
+        pdf_summary = state["pdf_summary"]
+        vision_result = state.get("vision_result", {})
+        vision_pipes = vision_result.get("pipes", []) if vision_result else []
+        
+        logger.info("=== SUPERVISOR STARTING (VALIDATION MODE) ===")
+        logger.info(f"Vision provided {len(vision_pipes)} pipes (source of truth)")
+        
+        # Step 1: Extract unique materials from Vision pipes
+        logger.info("Checking materials against RAG knowledge base...")
+        unique_materials = set()
+        for pipe in vision_pipes:
+            material = (pipe.get("material") or "").strip().upper()
+            if material and material not in ["", "UNKNOWN", "N/A"]:
+                unique_materials.add(material)
+        
+        logger.info(f"Found {len(unique_materials)} unique materials: {', '.join(sorted(unique_materials))}")
+        
+        # Step 2: Query RAG for each material to validate
+        from app.rag.retriever import HybridRetriever
+        retriever = HybridRetriever()
+        
+        known_materials = set()
+        unknown_materials = set()
+        researcher_results = {}
+        
+        for material in unique_materials:
+            # Query RAG for material specs
+            rag_results = retriever.retrieve_hybrid(
+                query=f"{material} pipe material specifications",
+                k=3,
+                discipline=None
+            )
+            
+            # Check if material is well-documented in RAG
+            if len(rag_results) >= 2:  # At least 2 relevant docs = known material
+                known_materials.add(material)
+                logger.info(f"✓ {material}: Found in knowledge base ({len(rag_results)} standards)")
+            else:
+                unknown_materials.add(material)
+                logger.warning(f"⚠️  {material}: Not in knowledge base (only {len(rag_results)} results)")
+                
+                # Try to resolve via Tavily API
+                logger.info(f"[api] Searching external sources for material: '{material}'")
+                api_result = self.api_researcher.analyze(
+                    state={"task": f"Construction pipe {material} material specifications ASTM standards"}
+                )
+                researcher_results[f"api_{material}"] = {
+                    "researcher_name": "api",
+                    "task": f"Research {material} material",
+                    "findings": api_result.get("findings", {}),
+                    "retrieved_context": api_result.get("retrieved_context", []),
+                    "confidence": api_result.get("confidence", 0.6)
+                }
+        
+        # Summary
+        if unknown_materials:
+            logger.error(f"⚠️  {len(unknown_materials)} unknown material(s) could not be validated: {', '.join(sorted(unknown_materials))}")
+        else:
+            logger.info("✓ All detected materials found in knowledge base")
+        
+        # Step 3: Deduplicate Vision pipes (same logic as before)
+        logger.info("Consolidating researcher findings...")
+        logger.info(f"Deduplicating {len(vision_pipes)} Vision detections...")
+        
+        consolidated = self._deduplicate_vision_only(vision_pipes)
+        
+        # Add unknown alerts
+        if unknown_materials:
+            consolidated["user_alerts"] = {
+                "severity": "CRITICAL" if len(unknown_materials) > 2 else "WARNING",
+                "message": f"{len(unknown_materials)} unknown materials detected: {', '.join(sorted(unknown_materials))}",
+                "unknown_materials": list(unknown_materials)
+            }
+        
+        logger.info(f"Consolidation complete. Deduplicated: {consolidated['summary']['total_pipes']} unique pipes. Overall confidence: {consolidated['overall_confidence']:.2f}")
+        logger.info("=== SUPERVISOR COMPLETE ===")
+        
+        return {
+            "pdf_summary": pdf_summary,
+            "assigned_tasks": [],  # No extraction tasks
+            "researcher_results": researcher_results,
+            "consolidated_data": consolidated,
+            "conflicts": []  # No conflicts since Vision is single source
+        }
+    
     def supervise(self, state: SupervisorState) -> SupervisorState:
         """
         Main supervision workflow.
@@ -426,8 +691,12 @@ Return JSON:
             vision_result=vision_result  # Enable unknown detection
         )
         
-        # Step 3: Consolidate findings
-        consolidated = self.consolidate_findings(researcher_results)
+        # Step 3: Consolidate findings (with Vision pipes for deduplication)
+        vision_pipes = vision_result.get("pipes", []) if vision_result else []
+        consolidated = self.consolidate_findings(
+            researcher_results,
+            vision_pipes=vision_pipes
+        )
         
         # Step 4: Identify conflicts
         conflicts = consolidated.get("conflicts", [])
@@ -474,7 +743,7 @@ Return JSON:
         pipes = vision_result.get("pipes", [])
         
         for pipe in pipes:
-            material = pipe.get("material", "").upper().strip()
+            material = (pipe.get("material") or "").strip().upper()
             if material and material not in ["", "UNKNOWN", "N/A"]:
                 detected_materials.add(material)
         
@@ -493,7 +762,7 @@ Return JSON:
             
             if not found_in_rag:
                 # Find which pipe(s) use this material
-                example_pipes = [p for p in pipes if p.get("material", "").upper() == material]
+                example_pipes = [p for p in pipes if (p.get("material") or "").upper() == material]
                 example = example_pipes[0] if example_pipes else {}
                 
                 unknowns.append({
