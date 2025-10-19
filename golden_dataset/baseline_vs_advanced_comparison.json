@@ -1,0 +1,45 @@
+{
+  "tests": [
+    {
+      "pdf": "test_01_simple_storm.pdf",
+      "baseline_count": 1,
+      "advanced_count": 1,
+      "baseline_time": 5.999216318130493,
+      "advanced_time": 9.553213357925415,
+      "alerts": false
+    },
+    {
+      "pdf": "test_02_multi_utility.pdf",
+      "baseline_count": 3,
+      "advanced_count": 3,
+      "baseline_time": 7.337186098098755,
+      "advanced_time": 22.34514594078064,
+      "alerts": false
+    },
+    {
+      "pdf": "test_03_validation.pdf",
+      "baseline_count": 1,
+      "advanced_count": 1,
+      "baseline_time": 3.865464925765991,
+      "advanced_time": 9.270331859588623,
+      "alerts": false
+    },
+    {
+      "pdf": "test_04_abbreviations.pdf",
+      "baseline_count": 3,
+      "advanced_count": 3,
+      "baseline_time": 7.431421995162964,
+      "advanced_time": 12.968321084976196,
+      "alerts": false
+    },
+    {
+      "pdf": "test_05_complex_realistic.pdf",
+      "baseline_count": 3,
+      "advanced_count": 3,
+      "baseline_time": 6.749040126800537,
+      "advanced_time": 18.204555988311768,
+      "alerts": true
+    }
+  ],
+  "evaluation_date": "2025-10-19"
+}

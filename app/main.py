@@ -128,6 +128,75 @@ def takeoff_simple(request: SimpleRequest):
         }
 
 
+@app.post("/takeoff_baseline")
+async def takeoff_baseline(file: UploadFile = File(...)):
+    """
+    Baseline endpoint - Vision-only extraction (no RAG, no Tavily).
+    
+    For RAGAS evaluation comparison and ongoing performance benchmarking.
+    
+    Args:
+        file: PDF file upload
+    
+    Returns:
+        Raw Vision extraction results without validation
+    """
+    start_time = time.time()
+    
+    logger.info(f"Baseline takeoff (Vision-only): {file.filename}")
+    
+    try:
+        # Save uploaded file
+        file_path = UPLOAD_DIR / file.filename
+        with open(file_path, "wb") as f:
+            content = await file.read()
+            f.write(content)
+        
+        # Run Vision extraction only (async)
+        from app.vision.coordinator import VisionCoordinator
+        import asyncio
+        
+        coordinator = VisionCoordinator()
+        vision_results = await coordinator.analyze_multipage(
+            pdf_path=str(file_path),
+            max_pages=10,
+            agents_to_deploy=["pipes"],
+            dpi=300
+        )
+        
+        processing_time = time.time() - start_time
+        
+        # Format as baseline result (no RAG, no validation)
+        pipes = vision_results.get("pipes", [])
+        
+        return {
+            "filename": file.filename,
+            "method": "baseline_vision_only",
+            "result": {
+                "summary": {
+                    "total_pipes": len(pipes),
+                    "storm_pipes": sum(1 for p in pipes if p.get("discipline") == "storm"),
+                    "sanitary_pipes": sum(1 for p in pipes if p.get("discipline") == "sanitary"),
+                    "water_pipes": sum(1 for p in pipes if p.get("discipline") == "water"),
+                    "total_lf": sum(p.get("length_ft", 0) for p in pipes)
+                },
+                "pipes": pipes,
+                "validation": "none",
+                "rag_context": "not_used",
+                "unknown_detection": "disabled"
+            },
+            "processing_time_sec": processing_time
+        }
+    
+    except Exception as e:
+        logger.error(f"Baseline takeoff failed: {e}")
+        return {
+            "error": str(e),
+            "method": "baseline_vision_only",
+            "processing_time_sec": time.time() - start_time
+        }
+
+
 @app.post("/takeoff")
 async def takeoff(
     file: UploadFile = File(...),
