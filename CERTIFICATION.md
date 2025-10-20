@@ -1,8 +1,8 @@
 # AI Engineering Bootcamp - Certification Challenge
 
-**Candidate**: William Holt  
+**Candidate**: Will Holt  
 **Project**: EstimAI-RAG - Multi-Agent Construction Takeoff System  
-**Submission Date**: October 22, 2025  
+**Submission Date**: October 20, 2025  
 **GitHub**: https://github.com/info757/estimai-rag
 
 ---
@@ -11,21 +11,24 @@
 
 ### Problem Statement (1 sentence)
 
-Construction estimators waste 15-20 hours per week manually counting and quantifying utilities from construction blueprints, leading to human errors, missed items, and costly bid mistakes.
+Construction estimating is a time consuming process. The "Takeoff" or counting for a single phase, like sitework prepartion can take 3-5 days of manually counting and quantifying utilities from construction blueprints, leading to human errors, missed items, and costly bid mistakes. 
 
 ### Why This is a Problem (1-2 paragraphs)
 
-For construction estimators working at civil engineering firms, site work takeoff is one of the most time-consuming and error-prone tasks in the bidding process. A typical mid-sized commercial project requires counting hundreds of linear feet of storm drains, sanitary sewers, and water mains across multi-page PDF plan sets. Estimators must:
+Site work takeoff is one of the most time-consuming and difficult tasks in construction estimating. For a typical commercial site work project, estimators must perform comprehensive quantity takeoff across multiple interconnected disciplines. This includes:
 
-1. Identify every utility line across plan views, profile views, and detail sheets
-2. Measure lengths, note materials and diameters
-3. Verify materials comply with local building codes and standards
-4. Look up unfamiliar abbreviations and specifications
-5. Cross-reference multiple views to avoid double-counting the same pipe
+1. **Utility pipes**: Identify every storm drain, sanitary sewer, and water main line across plan views, profile views, and detail sheets - measuring lengths, noting materials and diameters
+2. **Excavation & earthwork**: Calculate trench volumes for each utility based on pipe depth, width requirements, and soil conditions - then quantify cut/fill/import/export volumes
+3. **Grading**: Determine site grading quantities, topsoil stripping, rough grading, and final grading volumes from contour lines and spot elevations
+4. **Pipe depths & elevations**: Read invert elevations from profile sheets, cross-reference with ground levels from plan views, calculate burial depths at every station
+5. **Labor & installation**: Estimate trenching hours, pipe installation productivity, backfill compaction, and testing requirements based on material types and depths
+6. **Code compliance**: Verify materials, depths, and slopes comply with local building codes and manufacturer specifications
+7. **Abbreviation decoding**: Look up unfamiliar material abbreviations (FPVC, SRPE, CIPP, HDD) and construction methods
+8. **Multi-view coordination**: Cross-reference plan views, profile sheets, and details to avoid double-counting the same pipe shown in different views
 
-This manual process takes 15-20 hours per bid and has a 10-15% error rate (missed pipes, incorrect materials, wrong lengths). In competitive bidding, a single missed 200-foot water main can mean losing $15,000 in profit or worse - winning the bid and losing money on the job. Construction firms need an automated solution that can read blueprints like a human estimator but with machine accuracy and speed.
+This manual process requires deep concentration, extensive cross-referencing between multiple PDF sheets, and constant calculation. A single missed utility line or miscalculated excavation depth can result in significant cost overruns during construction or losing a competitive bid. Estimators need a solution that can comprehensively read construction blueprints while maintaining the precision and thoroughness required for profitable project delivery.
 
-**Target User**: Junior to mid-level construction estimators at civil engineering and site work contractors who prepare 5-10 bids per month.
+**Target User**: Construction estimators in every phase of the construction process preparing bids on commercial and residential development projects and remodels.
 
 ---
 
@@ -33,7 +36,7 @@ This manual process takes 15-20 hours per bid and has a 10-15% error rate (misse
 
 ### Solution Description
 
-EstimAI-RAG transforms construction takeoff from a 15-hour manual process to a 30-second automated workflow. An estimator uploads a PDF construction plan to a web interface, and within seconds receives a complete, validated utility takeoff with pipe counts, materials, lengths, and code compliance validation. The system uses Vision AI to "read" the blueprint like a human, validates materials against a construction standards knowledge base, and automatically researches unknown materials via external APIs. The result: 100% counting accuracy, instant code compliance checks, and formatted output ready for estimating software.
+EstimAI-RAG transforms construction takeoff from a days long manual process to a 30-second automated workflow. An estimator uploads a PDF construction plan to a web interface, and within seconds receives a complete, validated utility takeoff with pipe counts, materials, lengths, and code compliance validation. The system uses Vision AI to "read" the blueprint like a human, validates materials against a construction standards knowledge base, and automatically researches unknown materials via external APIs. The result: Beyond human capabilty counting accuracy and speed, verified output, always a HITL and a system that learns with every job completed.
 
 The user experience is simple: drag-and-drop a PDF, wait 30 seconds, review the automated takeoff with highlighted unknowns, and export to CSV for pricing. Behind the scenes, a multi-agent system orchestrates Vision analysis, knowledge base validation, intelligent deduplication across multiple views, and external research - all transparent to the user through activity logs.
 
@@ -45,7 +48,7 @@ The user experience is simple: drag-and-drop a PDF, wait 30 seconds, review the 
 | **Embedding Model** | text-embedding-3-small | High quality semantic search at low cost, 1536 dimensions provides excellent precision for technical construction terminology |
 | **Orchestration** | LangGraph | Production-grade state management for multi-agent workflows, built-in retry logic and error handling critical for reliable extraction |
 | **Vector Database** | Qdrant (self-hosted) | Supports hybrid search (semantic + BM25), self-hosted ensures data privacy for proprietary construction standards |
-| **Monitoring** | Python logging + LangSmith (disabled) | Comprehensive structured logs at agent and system level, LangSmith ready for production tracing when needed |
+| **Monitoring** | Python logging + LangSmith | Comprehensive structured logs at agent and system level, LangSmith ready for production tracing when needed |
 | **Evaluation** | RAGAS + Custom Metrics | RAGAS validates RAG quality (91% avg), custom metrics validate domain-specific accuracy (pipe count, material validation) |
 | **User Interface** | HTML/JavaScript frontend | Simple drag-and-drop interface accessible via browser, no complex framework dependencies, works on any device |
 | **Serving** | FastAPI + Uvicorn | Production-grade async API server, automatic OpenAPI docs, handles file uploads and long-running Vision API calls efficiently |
@@ -444,7 +447,7 @@ User Query: "FPVC pipe material specifications"
 
 ---
 
-**Submitted by**: William Holt  
-**Date**: October 22, 2025  
+**Submitted by**: Will Holt  
+**Date**: October 20, 2025  
 **Repository**: https://github.com/info757/estimai-rag
 
