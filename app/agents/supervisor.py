@@ -568,6 +568,41 @@ Return JSON:
             "recommendations": "Manual review required"
         }
     
+    def _looks_like_abbreviation(self, material: str) -> bool:
+        """
+        Check if material looks like an abbreviation that needs legend decoding.
+        
+        Edge cases handled:
+        - Single char abbreviations (C, I, V) - included
+        - Mixed case (Pvc, PVC, pvc) - ALL included (drawing standards vary)
+        - Multi-word materials (Ductile Iron) - excluded
+        - Very long strings (Polyethylene) - excluded
+        - Numeric-only strings (12, 24) - excluded
+        
+        Philosophy: Better to over-ask the Legend Researcher than miss an abbreviation.
+        If it's not in the legend, Legend Researcher returns nothing (no harm done).
+        """
+        if not material:
+            return False
+        
+        material_core = material.strip()
+        
+        # Exclude multi-word materials (already expanded)
+        if ' ' in material_core:
+            return False  # "Ductile Iron" is not an abbreviation
+        
+        # Exclude very long strings (not abbreviations)
+        if len(material_core) > 6:
+            return False  # "Polyethylene" is not an abbreviation
+        
+        # Exclude purely numeric strings
+        if material_core.isdigit():
+            return False  # "12" is not a material abbreviation
+        
+        # Include anything 1-6 chars with letters (regardless of case)
+        return any(c.isalpha() for c in material_core)
+        # Includes: "FPVC", "Pvc", "C", "DI", "pvc", "RCP"
+    
     def validate_and_enrich(self, state: SupervisorState) -> SupervisorState:
         """
         Vision-First validation workflow - NO extraction, only validation.
@@ -598,7 +633,59 @@ Return JSON:
         
         logger.info(f"Found {len(unique_materials)} unique materials: {', '.join(sorted(unique_materials))}")
         
-        # Step 2: Query RAG for each material to validate
+        # Step 1.5: NEW - Decode abbreviations using legend (Vision or text extraction)
+        logger.info("Attempting to decode abbreviations from PDF legend...")
+        abbreviations = {}  # Maps abbreviation -> full name
+        
+        # Try Vision-extracted legend first
+        vision_legend = vision_result.get("legend", {})
+        if vision_legend:
+            logger.info(f"Vision extracted legend with {len(vision_legend)} entries")
+            for material in unique_materials:
+                if self._looks_like_abbreviation(material):
+                    decoded = vision_legend.get(material)
+                    if not decoded:
+                        for abbrev, full_name in vision_legend.items():
+                            if abbrev.upper() == material.upper():
+                                decoded = full_name
+                                break
+                    if decoded:
+                        abbreviations[material] = decoded
+                        logger.info(f"📖 Vision legend: {material} → {decoded}")
+        
+        # Fallback: Extract legend directly from PDF text (if Vision didn't extract it)
+        if not abbreviations and state.get("pdf_path"):
+            logger.info("Attempting text-based legend extraction from PDF file...")
+            try:
+                import fitz  # PyMuPDF
+                import re
+                
+                pdf_path = state.get("pdf_path")
+                doc = fitz.open(pdf_path)
+                pdf_text = ""
+                # Extract text from first 2 pages (legend usually on page 1)
+                for page_num in range(min(2, len(doc))):
+                    pdf_text += doc[page_num].get_text()
+                doc.close()
+                
+                # Look for patterns like "FPVC = Fabric-Reinforced PVC Pipe"
+                legend_pattern = r'([A-Z]{2,6})\s*=\s*([^(\n]+?)(?:\s*\(|$|\n)'
+                matches = re.findall(legend_pattern, pdf_text)
+                if matches:
+                    logger.info(f"Found {len(matches)} legend entries via text extraction")
+                    for abbrev, full_name in matches:
+                        abbrev_clean = abbrev.strip().upper()
+                        full_name_clean = full_name.strip()
+                        if abbrev_clean in unique_materials:
+                            abbreviations[abbrev_clean] = full_name_clean
+                            logger.info(f"📖 Text legend: {abbrev_clean} → {full_name_clean}")
+            except Exception as e:
+                logger.warning(f"Text-based legend extraction failed: {e}")
+        
+        if not abbreviations:
+            logger.info("No abbreviations decoded (either no legend or no abbreviations needed decoding)")
+        
+        # Step 2: Query RAG for each material to validate (use decoded names if available)
         from app.rag.retriever import HybridRetriever
         retriever = HybridRetriever()
         
@@ -607,9 +694,16 @@ Return JSON:
         researcher_results = {}
         
         for material in unique_materials:
+            # Use decoded material name if available, otherwise use original
+            search_name = abbreviations.get(material, material)
+            search_query = f"{search_name} pipe material specifications"
+            
+            if material in abbreviations:
+                logger.info(f"Searching RAG for '{material}' using decoded name '{search_name}'")
+            
             # Query RAG for material specs
             rag_results = retriever.retrieve_hybrid(
-                query=f"{material} pipe material specifications",
+                query=search_query,
                 k=5,
                 discipline=None
             )
@@ -620,22 +714,33 @@ Return JSON:
             if rag_results:
                 for result in rag_results:
                     content = result.get('content', '').upper()
-                    # Check if the exact material abbreviation appears in the content
-                    if material in content:
+                    # Check if either the abbreviation OR decoded name appears in content
+                    search_terms = [material.upper()]
+                    if material in abbreviations:
+                        search_terms.append(abbreviations[material].upper())
+                    
+                    if any(term in content for term in search_terms):
                         material_found_in_content = True
                         break
             
             if material_found_in_content:
                 known_materials.add(material)
-                logger.info(f"✓ {material}: Found in knowledge base (explicitly mentioned in standards)")
+                if material in abbreviations:
+                    logger.info(f"✓ {material} ({abbreviations[material]}): Found in knowledge base via legend decoding!")
+                else:
+                    logger.info(f"✓ {material}: Found in knowledge base (explicitly mentioned in standards)")
             else:
                 unknown_materials.add(material)
-                logger.warning(f"⚠️  {material}: NOT in knowledge base (material not mentioned in any standard)")
+                if material in abbreviations:
+                    logger.warning(f"⚠️  {material} ({abbreviations[material]}): NOT in knowledge base even after legend decoding")
+                else:
+                    logger.warning(f"⚠️  {material}: NOT in knowledge base (material not mentioned in any standard)")
                 
                 # Try to resolve via Tavily API
-                logger.info(f"[api] Searching external sources for material: '{material}'")
+                tavily_search = abbreviations.get(material, material)
+                logger.info(f"[api] Searching external sources for material: '{tavily_search}'")
                 api_result = self.api_researcher.analyze(
-                    state={"task": f"Construction pipe {material} material specifications ASTM standards"}
+                    state={"task": f"Construction pipe {tavily_search} material specifications ASTM standards"}
                 )
                 researcher_results[f"api_{material}"] = {
                     "researcher_name": "api",
@@ -657,12 +762,21 @@ Return JSON:
         
         consolidated = self._deduplicate_vision_only(vision_pipes)
         
-        # Add unknown alerts
+        # Add unknown alerts (include decoded names for better UX)
         if unknown_materials:
+            # Format unknown materials with decoded names if available
+            formatted_unknowns = []
+            for mat in sorted(unknown_materials):
+                if mat in abbreviations:
+                    formatted_unknowns.append(f"{mat} ({abbreviations[mat]})")
+                else:
+                    formatted_unknowns.append(mat)
+            
             consolidated["user_alerts"] = {
                 "severity": "CRITICAL" if len(unknown_materials) > 2 else "WARNING",
-                "message": f"{len(unknown_materials)} unknown materials detected: {', '.join(sorted(unknown_materials))}",
-                "unknown_materials": list(unknown_materials)
+                "message": f"{len(unknown_materials)} unknown materials detected: {', '.join(formatted_unknowns)}",
+                "unknown_materials": list(unknown_materials),
+                "decoded_materials": {mat: abbreviations.get(mat, mat) for mat in unknown_materials}
             }
         
         logger.info(f"Consolidation complete. Deduplicated: {consolidated['summary']['total_pipes']} unique pipes. Overall confidence: {consolidated['overall_confidence']:.2f}")

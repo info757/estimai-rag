@@ -172,7 +172,8 @@ Pipe breakdown:
             "researcher_results": {},
             "consolidated_data": {},
             "conflicts": [],
-            "vision_result": vision_result  # Pass for validation and deduplication
+            "vision_result": vision_result,  # Pass for validation and deduplication
+            "pdf_path": state.get("pdf_path")  # NEW: For legend extraction
         }
         
         # Run supervisor in VALIDATION-ONLY mode (no extraction)
