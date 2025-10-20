@@ -51,3 +51,10 @@ dist/
 # Logs
 *.log
 logs/
+backend_*.log
+
+# Test artifacts
+test_*.json
+*_result.json
+*_test.json
+test_render.png

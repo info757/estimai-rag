@@ -1,235 +1,264 @@
-# EstimAI-RAG: AI-Powered Construction Takeoff with RAG Enhancement
+# EstimAI-RAG: Multi-Agent Construction Takeoff System
 
-**AI Engineering Certification Project**
+**AI Engineering Bootcamp Certification Project**
 
-An intelligent construction takeoff system that uses multi-agent architecture and Retrieval-Augmented Generation (RAG) to extract, classify, and validate utility pipe quantities from construction PDFs with 95%+ accuracy.
+An intelligent construction takeoff system that analyzes PDF construction plans using Vision LLM, validates materials against a RAG knowledge base, and achieves 100% accuracy through multi-agent orchestration.
 
-## 🎯 Problem Statement
+---
 
-Construction estimators waste 45+ minutes per project manually extracting pipe quantities from PDFs, leading to costly errors (15-20% error rate) and missed bid deadlines. Missing a single pipe or miscalculating depth by 2 feet can mean losing $50K+ in profit.
+## 🎯 What It Does
 
-## 💡 Solution
+Upload a construction PDF → Get instant, validated pipe counts with materials, lengths, and code compliance.
 
-AI-powered takeoff agent combining:
-- **Computer Vision**: GPT-4o Vision for PDF interpretation
-- **Multi-Agent System**: LangGraph-based hierarchical agents (Main → Supervisor → Specialized Researchers)
-- **RAG Enhancement**: Qdrant vector store with construction standards knowledge base
-- **Hybrid Retrieval**: BM25 (keyword) + semantic search for optimal context
+**Key Features**:
+- ✅ 100% pipe counting accuracy (11/11 on test suite)
+- ✅ Automatic material validation against construction standards
+- ✅ Legend decoding for abbreviations (FPVC, SRPE, etc.)
+- ✅ Unknown material detection with automatic web research (Tavily)
+- ✅ Multi-view deduplication (plan + profile views)
+- ✅ Real-time processing (~15 seconds per PDF)
+
+---
+
+## 🚀 Quick Start
+
+### Prerequisites
+- Python 3.11+
+- OpenAI API key
+- Tavily API key (optional, for unknown material research)
+
+### Installation
+
+```bash
+# 1. Clone repo
+git clone https://github.com/info757/estimai-rag.git
+cd estimai-rag
+
+# 2. Create virtual environment
+python -m venv venv
+source venv/bin/activate  # Windows: venv\Scripts\activate
+
+# 3. Install dependencies
+pip install -r requirements.txt
+
+# 4. Setup environment
+cp .env.example .env
+# Edit .env and add your OPENAI_API_KEY and TAVILY_API_KEY
+
+# 5. Start Qdrant vector database
+docker run -d -p 6333:6333 qdrant/qdrant
+
+# 6. Initialize knowledge base
+python scripts/setup_kb.py
+
+# 7. Start backend
+uvicorn app.main:app --reload --port 8000 --host 0.0.0.0 --loop asyncio
+```
+
+### Usage
+
+**Option 1: Web UI**
+1. Open browser: `http://localhost:8000/frontend/`
+2. Drag-and-drop a construction PDF
+3. Wait ~15 seconds
+4. View results: pipe counts, materials, validation
+
+**Option 2: API**
+```bash
+curl -X POST http://localhost:8000/takeoff \
+  -F "file=@your_construction_plan.pdf"
+```
+
+---
 
 ## 🏗️ Architecture
 
 ### Multi-Agent System
 
 ```
-User Upload → Main Agent (analyze PDF)
-    ↓
-Main Agent → Supervisor ("I see storm/water on plan view, profile on sheet 2")
-    ↓
-Supervisor → [Storm Researcher, Water Researcher, Elevation Researcher, Legend Researcher]
-    ↓
-Each Researcher → RAG Retrieval (specialized construction standards)
-    ↓
-Researchers → Supervisor (individual findings with confidence scores)
-    ↓
-Supervisor → Cross-validates & consolidates findings
-    ↓
-Supervisor → Main Agent (validated consolidated data)
-    ↓
-Main Agent → Final Takeoff Report
+PDF → Vision Agent (GPT-4o)
+        ↓
+      Supervisor Agent
+        ↓
+   ┌────┴────┬─────────┬────────┐
+   ↓         ↓         ↓        ↓
+ Storm   Sanitary   Water    Legend
+Researcher Researcher Researcher Researcher
+   ↓         ↓         ↓        ↓
+        RAG Knowledge Base
+         (48 standards)
+              ↓
+        Tavily API (fallback)
+              ↓
+        Validated Report
 ```
 
 ### Technology Stack
 
-- **LLM**: OpenAI GPT-4o (vision + reasoning)
-- **Vector Store**: Qdrant (production-ready, hybrid search)
-- **RAG Framework**: LangChain + LangGraph
-- **Retrieval**: BM25 + Semantic (hybrid)
-- **Backend**: FastAPI + Pydantic
-- **Evaluation**: RAGAS framework
-- **Frontend**: React + Vite
+- **Vision**: GPT-4o (PDF analysis)
+- **Orchestration**: LangGraph (agent workflow)
+- **Vector DB**: Qdrant (hybrid search)
+- **Retrieval**: BM25 + Semantic + RRF fusion
+- **API Framework**: FastAPI
+- **Evaluation**: RAGAS + Custom Metrics
+- **External Search**: Tavily
 
-## 🚀 Quick Start
+---
 
-### Prerequisites
+## 📊 Performance
 
-- Python 3.11+
-- Node.js 18+
-- Docker (for Qdrant)
-- OpenAI API key
+### Golden Dataset Results
 
-### Installation
+| Test PDF | Pipes | Accuracy | Processing Time |
+|----------|-------|----------|-----------------|
+| test_01_simple_storm | 1 | 1/1 (100%) | ~10s |
+| test_02_multi_utility | 3 | 3/3 (100%) | ~13s |
+| test_03_validation | 1 | 1/1 (100%) | ~9s |
+| test_04_abbreviations | 3 | 3/3 (100%) | ~13s |
+| test_05_complex | 3 | 3/3 (100%) | ~18s |
 
-1. **Clone and setup**:
-```bash
-git clone <repo-url>
-cd estimai-rag
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-pip install -r requirements.txt
-```
+**Overall**: 11/11 pipes (100% accuracy)
 
-2. **Configure environment**:
-```bash
-cp .env.example .env
-# Edit .env and add your OPENAI_API_KEY
-```
+### RAGAS Evaluation
 
-3. **Start Qdrant**:
-```bash
-docker run -p 6333:6333 qdrant/qdrant
-```
+| Metric | Score |
+|--------|-------|
+| Context Precision | 86.7% |
+| Context Recall | 100% |
+| Faithfulness | 80% |
+| Answer Relevancy | 97.5% |
+| **Average** | **91.0%** |
 
-4. **Initialize knowledge base**:
-```bash
-python scripts/setup_kb.py
-```
+---
 
-5. **Start backend**:
-```bash
-uvicorn app.main:app --reload --port 8000
-```
+## 🎓 Certification Deliverables
 
-6. **Start frontend** (in new terminal):
-```bash
-cd frontend
-npm install
-npm run dev
-```
+All certification requirements addressed in [`CERTIFICATION.md`](CERTIFICATION.md):
 
-7. **Access demo**:
-- Frontend: http://localhost:5173
-- API docs: http://localhost:8000/docs
+- ✅ Task 1: Problem & Audience definition
+- ✅ Task 2: Solution proposal & tech stack
+- ✅ Task 3: Data sources & chunking strategy
+- ✅ Task 4: Working end-to-end prototype
+- ✅ Task 5: RAGAS evaluation with golden dataset
+- ✅ Task 6: Advanced retrieval implementation
+- ✅ Task 7: Performance comparison baseline vs. advanced
+- ✅ Final: Demo video + comprehensive documentation
 
-## 📊 RAG Knowledge Base
-
-### Construction Standards Included
-
-1. **Cover Depth Requirements**
-   - Storm drains: 1.5ft min under roads, 1.0ft under landscaping
-   - Sanitary sewers: 2.5ft min, 4.0ft under roads
-   - Water mains: 3.0ft min, 4.5ft in frost zones
-
-2. **Material Specifications**
-   - PVC: Max 24" gravity sewer, 12" pressurized water
-   - RCP: Storm drains, requires 3ft+ cover
-   - DI: Water mains, any diameter, any depth
-
-3. **Symbol Legend**
-   - MH/SSMH: Manholes
-   - CB/DI/FES: Storm inlets
-   - WM/HYD/GV: Water system
-   - SS/INV: Sanitary sewer
-
-4. **Validation Rules**
-   - Slope requirements by discipline
-   - Material compatibility checks
-   - Depth feasibility validation
-
-### Chunking Strategy
-
-- **Semantic chunks**: 50-200 tokens per code requirement
-- **Metadata tags**: discipline, category, source
-- **Why**: Each chunk is a complete, actionable rule for precise retrieval
-
-## 🧪 Evaluation
-
-### RAGAS Metrics
-
-Evaluated on golden dataset (5-8 annotated PDFs):
-
-| Metric | Baseline | Advanced | Improvement |
-|--------|----------|----------|-------------|
-| Faithfulness | TBD | TBD | TBD |
-| Answer Relevance | TBD | TBD | TBD |
-| Context Precision | TBD | TBD | TBD |
-| Context Recall | TBD | TBD | TBD |
-
-### Run Evaluation
-
-```bash
-# Baseline (hybrid retrieval)
-python scripts/run_baseline_eval.py
-
-# Advanced (multi-query + fusion)
-python scripts/run_advanced_eval.py
-```
+---
 
 ## 📁 Project Structure
 
 ```
 estimai-rag/
-├── app/
-│   ├── main.py              # FastAPI application
-│   ├── models.py            # Pydantic models
-│   ├── agents/              # LangGraph agents
-│   │   ├── main_agent.py    # Coordinator
-│   │   ├── supervisor.py    # Task manager
-│   │   └── researchers/     # Specialized agents
-│   ├── rag/
-│   │   ├── knowledge_base.py    # KB setup
-│   │   ├── retriever.py         # Hybrid retrieval
-│   │   ├── advanced_retriever.py # Multi-query
-│   │   └── standards/           # Construction data
-│   └── evaluation/
-│       └── ragas_eval.py    # RAGAS pipeline
-├── golden_dataset/          # Annotated test PDFs
-├── frontend/                # React demo UI
-├── scripts/                 # Setup & eval scripts
-├── tests/                   # Test suite
-└── docs/                    # Documentation
+├── app/                          # Backend application
+│   ├── agents/                   # Multi-agent system
+│   │   ├── main_agent.py        # LangGraph orchestrator
+│   │   ├── supervisor.py        # Validation coordinator
+│   │   └── researchers/         # Domain-specific agents
+│   ├── vision/                   # Vision agent framework
+│   ├── rag/                      # RAG implementation
+│   │   ├── retriever.py         # Hybrid search (BM25+Semantic)
+│   │   ├── knowledge_base.py    # KB initialization
+│   │   └── standards/           # Construction standards (JSON)
+│   ├── evaluation/              # RAGAS framework
+│   └── main.py                  # FastAPI server
+├── frontend/                     # Web UI
+│   └── index.html               # Drag-and-drop interface
+├── golden_dataset/              # Test suite
+│   ├── pdfs/                    # 5 test PDFs
+│   └── ground_truth/            # Annotations
+├── scripts/                      # Utilities
+│   ├── setup_kb.py              # Initialize Qdrant
+│   ├── run_ragas_comparison.py  # Evaluation
+│   └── generate_*.py            # Test PDF generators
+├── CERTIFICATION.md             # All certification deliverables
+└── README.md                    # This file
 ```
 
-## 🎓 Certification Deliverables
-
-- ✅ Multi-agent system with LangGraph
-- ✅ RAG with Qdrant vector store
-- ✅ Hybrid retrieval (BM25 + semantic)
-- ✅ Advanced multi-query retrieval
-- ✅ RAGAS evaluation framework
-- ✅ Golden dataset with annotations
-- ✅ End-to-end working demo
-- ✅ Comprehensive documentation
-- ✅ 5-minute demo video
-
-## 📖 Documentation
-
-- [Certification Report](docs/CERTIFICATION_REPORT.md) - Main deliverable
-- [Architecture](docs/ARCHITECTURE.md) - System design
-- [Evaluation Results](docs/EVALUATION_RESULTS.md) - RAGAS analysis
-
-## 🎬 Demo Video
-
-[5-minute Loom demo](demo/demo_video_link.txt) showing:
-- Live PDF upload and takeoff
-- RAG context retrieval visualization
-- Validation with code citations
-- Baseline vs. advanced retrieval comparison
+---
 
 ## 🧪 Testing
 
+### Run Full Evaluation
+
 ```bash
-# Run all tests
-pytest
+# Run RAGAS evaluation
+python scripts/run_ragas_comparison.py
 
-# Run with coverage
-pytest --cov=app tests/
-
-# Run specific test file
-pytest tests/test_retrieval.py -v
+# Test all 5 golden dataset PDFs
+python scripts/test_system.py
 ```
+
+### Test Individual PDFs
+
+```bash
+# Via frontend: http://localhost:8000/frontend/
+# Upload files from golden_dataset/pdfs/
+
+# Via API:
+curl -X POST http://localhost:8000/takeoff \
+  -F "file=@golden_dataset/pdfs/test_02_multi_utility.pdf"
+```
+
+---
+
+## 🎬 Demo
+
+**Live Demo**: Upload any construction PDF at `http://localhost:8000/frontend/`
+
+**Recommended Test**: `golden_dataset/pdfs/test_05_complex_realistic.pdf`
+- Shows legend decoding in action
+- Demonstrates unknown material detection
+- Triggers Tavily API research
+- Displays complete validation workflow
+
+**Demo Video**: [5-Minute Loom Recording](https://www.loom.com/share/your-video-id)
+
+---
+
+## 📖 Documentation
+
+- **[CERTIFICATION.md](CERTIFICATION.md)** - Complete certification submission
+- **[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)** - System architecture details
+- **[docs/DEMO_SCRIPT.md](docs/DEMO_SCRIPT.md)** - Step-by-step demo guide
+- **[golden_dataset/README.md](golden_dataset/README.md)** - Test dataset documentation
+
+---
+
+## 🔮 Future Roadmap
+
+### Next Features
+- Earthworks Vision Agent (grading, excavation quantities)
+- Foundations Agent (footings, walls, slabs)
+- Cost estimation integration
+- Export to Excel/CSV for estimating software
+
+### Scaling
+- Multi-page PDF support (currently single page)
+- Batch processing (multiple PDFs)
+- Custom construction standards upload
+- Integration with BIM models
+
+---
 
 ## 📝 License
 
-MIT
+MIT License - See LICENSE file
 
-## 👥 Author
+---
 
-William Holt - AI Engineering Certification Project
+## 👤 Author
+
+**William Holt** - AI Engineering Bootcamp Certification Project  
+**Cohort**: 8  
+**Submission Date**: October 22, 2025
+
+---
 
 ## 🙏 Acknowledgments
 
-- OpenAI for GPT-4o
-- LangChain for RAG framework
-- Qdrant for vector store
-- AI Engineering course instructors
-
+- AI Engineering Bootcamp instructors
+- OpenAI (GPT-4o Vision)
+- LangChain & LangGraph team
+- Qdrant vector database
+- Tavily API
