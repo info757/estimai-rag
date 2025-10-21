@@ -1,0 +1,450 @@
+{
+  "pdf_name": "Dawn Ridge Homes.pdf",
+  "total_legend_entries": 56,
+  "pages_with_legends": [
+    2,
+    3,
+    4,
+    6,
+    7,
+    8,
+    9,
+    14
+  ],
+  "legend_entries": [
+    {
+      "abbreviation": "R/W",
+      "full_name": "Right of Way",
+      "category": "general",
+      "source_page": 2,
+      "source_sheet": "MISCELLANEOUS NOTES"
+    },
+    {
+      "abbreviation": "P.O.B.",
+      "full_name": "Point of Beginning",
+      "category": "general",
+      "source_page": 2,
+      "source_sheet": "MISCELLANEOUS NOTES"
+    },
+    {
+      "abbreviation": "PROPERTY LINE",
+      "full_name": "Property Line",
+      "category": "symbol",
+      "source_page": 3,
+      "source_sheet": "LEGEND"
+    },
+    {
+      "abbreviation": "LIMITS OF DISTURBANCE",
+      "full_name": "Limits of Disturbance",
+      "category": "symbol",
+      "source_page": 3,
+      "source_sheet": "LEGEND"
+    },
+    {
+      "abbreviation": "CONSTRUCTION ENTRANCE",
+      "full_name": "Construction Entrance",
+      "category": "symbol",
+      "source_page": 3,
+      "source_sheet": "LEGEND"
+    },
+    {
+      "abbreviation": "SILT FENCE",
+      "full_name": "Silt Fence",
+      "category": "symbol",
+      "source_page": 3,
+      "source_sheet": "LEGEND"
+    },
+    {
+      "abbreviation": "TREE PROTECTION",
+      "full_name": "Tree Protection",
+      "category": "symbol",
+      "source_page": 3,
+      "source_sheet": "LEGEND"
+    },
+    {
+      "abbreviation": "OUTLET PROTECTION",
+      "full_name": "Outlet Protection",
+      "category": "symbol",
+      "source_page": 3,
+      "source_sheet": "LEGEND"
+    },
+    {
+      "abbreviation": "STRAW BALES",
+      "full_name": "Straw Bales",
+      "category": "symbol",
+      "source_page": 3,
+      "source_sheet": "LEGEND"
+    },
+    {
+      "abbreviation": "SNAP PAD",
+      "full_name": "Snap Pad",
+      "category": "symbol",
+      "source_page": 3,
+      "source_sheet": "LEGEND"
+    },
+    {
+      "abbreviation": "SILT FENCE OUTLET/STONE DAM",
+      "full_name": "Silt Fence Outlet/Stone Dam",
+      "category": "symbol",
+      "source_page": 3,
+      "source_sheet": "LEGEND"
+    },
+    {
+      "abbreviation": "SEDIMENT BASIN",
+      "full_name": "Sediment Basin",
+      "category": "symbol",
+      "source_page": 3,
+      "source_sheet": "LEGEND"
+    },
+    {
+      "abbreviation": "DESIGN WATER FOR SLOPES",
+      "full_name": "Design Water for Slopes",
+      "category": "symbol",
+      "source_page": 3,
+      "source_sheet": "LEGEND"
+    },
+    {
+      "abbreviation": "TOP SOIL (SEE DETAIL C-7.2)",
+      "full_name": "Top Soil (See Detail C-7.2)",
+      "category": "symbol",
+      "source_page": 3,
+      "source_sheet": "LEGEND"
+    },
+    {
+      "abbreviation": "STOCKPILE AREA",
+      "full_name": "Stockpile Area",
+      "category": "symbol",
+      "source_page": 3,
+      "source_sheet": "LEGEND"
+    },
+    {
+      "abbreviation": "CONCRETE WASHOUT AREA",
+      "full_name": "Concrete Washout Area",
+      "category": "symbol",
+      "source_page": 3,
+      "source_sheet": "LEGEND"
+    },
+    {
+      "abbreviation": "GRAVEL",
+      "full_name": "Gravel",
+      "category": "symbol",
+      "source_page": 3,
+      "source_sheet": "LEGEND"
+    },
+    {
+      "abbreviation": "AC PAVEMENT",
+      "full_name": "AC Pavement",
+      "category": "symbol",
+      "source_page": 3,
+      "source_sheet": "LEGEND"
+    },
+    {
+      "abbreviation": "PROPERTY LINE",
+      "full_name": "Property Line",
+      "category": "symbol",
+      "source_page": 4,
+      "source_sheet": "LEGEND"
+    },
+    {
+      "abbreviation": "LIMITS OF DISTURBANCE",
+      "full_name": "Limits of Disturbance",
+      "category": "symbol",
+      "source_page": 4,
+      "source_sheet": "LEGEND"
+    },
+    {
+      "abbreviation": "CONSTRUCTION ENTRANCE",
+      "full_name": "Construction Entrance",
+      "category": "symbol",
+      "source_page": 4,
+      "source_sheet": "LEGEND"
+    },
+    {
+      "abbreviation": "SILT FENCE",
+      "full_name": "Silt Fence",
+      "category": "symbol",
+      "source_page": 4,
+      "source_sheet": "LEGEND"
+    },
+    {
+      "abbreviation": "PROPOSED CONTOUR",
+      "full_name": "Proposed Contour",
+      "category": "symbol",
+      "source_page": 4,
+      "source_sheet": "LEGEND"
+    },
+    {
+      "abbreviation": "EXISTING CONTOUR",
+      "full_name": "Existing Contour",
+      "category": "symbol",
+      "source_page": 4,
+      "source_sheet": "LEGEND"
+    },
+    {
+      "abbreviation": "DIRECTIONAL FLOW ARROW",
+      "full_name": "Directional Flow Arrow",
+      "category": "symbol",
+      "source_page": 4,
+      "source_sheet": "LEGEND"
+    },
+    {
+      "abbreviation": "STORM DRAIN INLET PROTECTION",
+      "full_name": "Storm Drain Inlet Protection",
+      "category": "symbol",
+      "source_page": 4,
+      "source_sheet": "LEGEND"
+    },
+    {
+      "abbreviation": "RIP RAP PAD",
+      "full_name": "Rip Rap Pad",
+      "category": "symbol",
+      "source_page": 4,
+      "source_sheet": "LEGEND"
+    },
+    {
+      "abbreviation": "SILT FENCE OUTLET/STONE DAM",
+      "full_name": "Silt Fence Outlet/Stone Dam",
+      "category": "symbol",
+      "source_page": 4,
+      "source_sheet": "LEGEND"
+    },
+    {
+      "abbreviation": "TEMPORARY DIVERSION DIKE",
+      "full_name": "Temporary Diversion Dike",
+      "category": "symbol",
+      "source_page": 4,
+      "source_sheet": "LEGEND"
+    },
+    {
+      "abbreviation": "DESIGN WATER FOR SLOPES",
+      "full_name": "Design Water for Slopes",
+      "category": "symbol",
+      "source_page": 4,
+      "source_sheet": "LEGEND"
+    },
+    {
+      "abbreviation": "TOP OF BANK",
+      "full_name": "Top of Bank",
+      "category": "symbol",
+      "source_page": 4,
+      "source_sheet": "LEGEND"
+    },
+    {
+      "abbreviation": "WETLANDS",
+      "full_name": "Wetlands",
+      "category": "symbol",
+      "source_page": 4,
+      "source_sheet": "LEGEND"
+    },
+    {
+      "abbreviation": "100-YR. FLOODWAY",
+      "full_name": "100-Year Floodway",
+      "category": "symbol",
+      "source_page": 4,
+      "source_sheet": "LEGEND"
+    },
+    {
+      "abbreviation": "W",
+      "full_name": "Water Line",
+      "category": "symbol",
+      "source_page": 6,
+      "source_sheet": "LEGEND"
+    },
+    {
+      "abbreviation": "SS",
+      "full_name": "Sanitary Sewer",
+      "category": "symbol",
+      "source_page": 6,
+      "source_sheet": "LEGEND"
+    },
+    {
+      "abbreviation": "SD",
+      "full_name": "Storm Sewer",
+      "category": "symbol",
+      "source_page": 6,
+      "source_sheet": "LEGEND"
+    },
+    {
+      "abbreviation": "EXISTING GRADE",
+      "full_name": "Existing Grade",
+      "category": "symbol",
+      "source_page": 7,
+      "source_sheet": "GRADING LEGEND"
+    },
+    {
+      "abbreviation": "EXISTING STORM DRAIN",
+      "full_name": "Existing Storm Drain",
+      "category": "symbol",
+      "source_page": 7,
+      "source_sheet": "GRADING LEGEND"
+    },
+    {
+      "abbreviation": "PROPOSED GRADE",
+      "full_name": "Proposed Grade",
+      "category": "symbol",
+      "source_page": 7,
+      "source_sheet": "GRADING LEGEND"
+    },
+    {
+      "abbreviation": "PROPOSED STORM DRAIN",
+      "full_name": "Proposed Storm Drain",
+      "category": "symbol",
+      "source_page": 7,
+      "source_sheet": "GRADING LEGEND"
+    },
+    {
+      "abbreviation": "YARD INLET OR DROP INLET",
+      "full_name": "Yard Inlet or Drop Inlet",
+      "category": "symbol",
+      "source_page": 7,
+      "source_sheet": "GRADING LEGEND"
+    },
+    {
+      "abbreviation": "CATCH BASIN",
+      "full_name": "Catch Basin",
+      "category": "symbol",
+      "source_page": 7,
+      "source_sheet": "GRADING LEGEND"
+    },
+    {
+      "abbreviation": "STORM SEWER",
+      "full_name": "Storm Sewer",
+      "category": "symbol",
+      "source_page": 7,
+      "source_sheet": "GRADING LEGEND"
+    },
+    {
+      "abbreviation": "W",
+      "full_name": "Water Line",
+      "category": "symbol",
+      "source_page": 8,
+      "source_sheet": "LEGEND"
+    },
+    {
+      "abbreviation": "S",
+      "full_name": "Sanitary Sewer",
+      "category": "symbol",
+      "source_page": 8,
+      "source_sheet": "LEGEND"
+    },
+    {
+      "abbreviation": "SS",
+      "full_name": "Storm Sewer",
+      "category": "symbol",
+      "source_page": 8,
+      "source_sheet": "LEGEND"
+    },
+    {
+      "abbreviation": "PROP. LINE",
+      "full_name": "Property Line",
+      "category": "symbol",
+      "source_page": 9,
+      "source_sheet": "LEGEND"
+    },
+    {
+      "abbreviation": "W",
+      "full_name": "Water Line",
+      "category": "symbol",
+      "source_page": 9,
+      "source_sheet": "LEGEND"
+    },
+    {
+      "abbreviation": "SS",
+      "full_name": "Sanitary Sewer",
+      "category": "symbol",
+      "source_page": 9,
+      "source_sheet": "LEGEND"
+    },
+    {
+      "abbreviation": "STM",
+      "full_name": "Storm Sewer",
+      "category": "symbol",
+      "source_page": 9,
+      "source_sheet": "LEGEND"
+    },
+    {
+      "abbreviation": "EXISTING GRADE",
+      "full_name": "Existing Grade",
+      "category": "general",
+      "source_page": 14,
+      "source_sheet": "GRADING LEGEND"
+    },
+    {
+      "abbreviation": "EXISTING STORM SEWER",
+      "full_name": "Existing Storm Sewer",
+      "category": "general",
+      "source_page": 14,
+      "source_sheet": "GRADING LEGEND"
+    },
+    {
+      "abbreviation": "PROPOSED GRADE",
+      "full_name": "Proposed Grade",
+      "category": "general",
+      "source_page": 14,
+      "source_sheet": "GRADING LEGEND"
+    },
+    {
+      "abbreviation": "PROPOSED STORM SEWER",
+      "full_name": "Proposed Storm Sewer",
+      "category": "general",
+      "source_page": 14,
+      "source_sheet": "GRADING LEGEND"
+    },
+    {
+      "abbreviation": "ROADWAY",
+      "full_name": "Roadway",
+      "category": "general",
+      "source_page": 14,
+      "source_sheet": "GRADING LEGEND"
+    },
+    {
+      "abbreviation": "STORM SEWER",
+      "full_name": "Storm Sewer",
+      "category": "general",
+      "source_page": 14,
+      "source_sheet": "GRADING LEGEND"
+    }
+  ],
+  "notes": [
+    {
+      "note": "ALL BEARINGS REFERENCED TO GRID NORTH",
+      "source_page": 2
+    },
+    {
+      "note": "ALL DISTANCES SHOWN ARE GRID",
+      "source_page": 2
+    },
+    {
+      "note": "THIS SURVEY WAS PREPARED WITHOUT THE BENEFIT OF A TITLE COMMITMENT",
+      "source_page": 2
+    },
+    {
+      "note": "THIS SURVEY IS SUBJECT TO ANY AND ALL EASEMENTS AND/OR RIGHTS-OF-WAY OF RECORD",
+      "source_page": 2
+    },
+    {
+      "note": "VERIFY PIPE CROSSINGS, COVER, ALIGNMENT, STORM SEWER SIZE, MATERIAL, AND INVERTS PRIOR TO CONSTRUCTION.",
+      "source_page": 6
+    },
+    {
+      "note": "ALL STORM DRAINS ARE LOCATED AT CENTER OF EASEMENTS UNLESS OTHERWISE NOTED.",
+      "source_page": 7
+    },
+    {
+      "note": "ALL PIPE GRADES SHOWN ON STORM STRUCTURES ARE AT THE CENTER OF THE STRUCTURE UNLESS OTHERWISE NOTED.",
+      "source_page": 7
+    },
+    {
+      "note": "PROPERTY LINE",
+      "source_page": 8
+    },
+    {
+      "note": "STATION NUMBERS",
+      "source_page": 8
+    },
+    {
+      "note": "SHEET INDEX: COVER, NOTES, PLAN, PROFILE, STORM SEWER, SANITARY SEWER, WATER, EROSION CONTROL, GRADING, PAVING, DETAILS",
+      "source_page": 9
+    }
+  ]
+}

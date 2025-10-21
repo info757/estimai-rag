@@ -20,6 +20,7 @@ from app.agents.researchers.sanitary_researcher import SanitaryResearcher
 from app.agents.researchers.water_researcher import WaterResearcher
 from app.agents.researchers.elevation_researcher import ElevationResearcher
 from app.agents.researchers.legend_researcher import LegendResearcher
+from app.agents.researchers.grading_researcher import GradingResearcher
 from app.agents.researchers.api_researcher import APIResearcher
 
 logger = logging.getLogger(__name__)
@@ -45,13 +46,14 @@ class SupervisorAgent:
             "sanitary": SanitaryResearcher(),
             "water": WaterResearcher(),
             "elevation": ElevationResearcher(),
-            "legend": LegendResearcher()
+            "legend": LegendResearcher(),
+            "grading": GradingResearcher()
         }
         
         # Initialize API researcher for unknown material augmentation
         self.api_researcher = APIResearcher()
         
-        logger.info("Supervisor initialized with 5 researchers + API augmentation")
+        logger.info("Supervisor initialized with 6 researchers + API augmentation")
     
     def plan_research(self, pdf_summary: str) -> List[Dict[str, str]]:
         """
@@ -76,6 +78,7 @@ Available Researchers:
 - water: Water distribution (DI pipes, hydrants, pressurized systems)
 - elevation: Invert and ground elevations, depth calculations
 - legend: Symbol interpretation and legend reading
+- grading: Grading plans, earthwork volumes, cut/fill calculations
 
 Return JSON list of tasks:
 [
@@ -122,7 +125,8 @@ Your expertise is in deciding which researcher/estimator should perform takeoff 
                 {"researcher": "storm", "task": "Extract all storm drainage information"},
                 {"researcher": "sanitary", "task": "Extract all sanitary sewer information"},
                 {"researcher": "water", "task": "Extract all water main information"},
-                {"researcher": "elevation", "task": "Extract all elevation data and calculate depths"}
+                {"researcher": "elevation", "task": "Extract all elevation data and calculate depths"},
+                {"researcher": "grading", "task": "Extract grading information and calculate earthwork volumes"}
             ]
     
     def execute_research(

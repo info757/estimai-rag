@@ -1,0 +1,700 @@
+[
+  {
+    "content": "Project: Dawn Ridge Homes\n\nLegend contains 56 abbreviations and symbols.\n\nAbbreviations:\n- R/W: Right of Way\n- P.O.B.: Point of Beginning\n- PROPERTY LINE: Property Line\n- LIMITS OF DISTURBANCE: Limits of Disturbance\n- CONSTRUCTION ENTRANCE: Construction Entrance\n- SILT FENCE: Silt Fence\n- TREE PROTECTION: Tree Protection\n- OUTLET PROTECTION: Outlet Protection\n- STRAW BALES: Straw Bales\n- SNAP PAD: Snap Pad\n- SILT FENCE OUTLET/STONE DAM: Silt Fence Outlet/Stone Dam\n- SEDIMENT BASIN: Sediment Basin\n- DESIGN WATER FOR SLOPES: Design Water for Slopes\n- TOP SOIL (SEE DETAIL C-7.2): Top Soil (See Detail C-7.2)\n- STOCKPILE AREA: Stockpile Area\n- CONCRETE WASHOUT AREA: Concrete Washout Area\n- GRAVEL: Gravel\n- AC PAVEMENT: AC Pavement\n- PROPERTY LINE: Property Line\n- LIMITS OF DISTURBANCE: Limits of Disturbance\n- CONSTRUCTION ENTRANCE: Construction Entrance\n- SILT FENCE: Silt Fence\n- PROPOSED CONTOUR: Proposed Contour\n- EXISTING CONTOUR: Existing Contour\n- DIRECTIONAL FLOW ARROW: Directional Flow Arrow\n- STORM DRAIN INLET PROTECTION: Storm Drain Inlet Protection\n- RIP RAP PAD: Rip Rap Pad\n- SILT FENCE OUTLET/STONE DAM: Silt Fence Outlet/Stone Dam\n- TEMPORARY DIVERSION DIKE: Temporary Diversion Dike\n- DESIGN WATER FOR SLOPES: Design Water for Slopes\n- TOP OF BANK: Top of Bank\n- WETLANDS: Wetlands\n- 100-YR. FLOODWAY: 100-Year Floodway\n- W: Water Line\n- SS: Sanitary Sewer\n- SD: Storm Sewer\n- EXISTING GRADE: Existing Grade\n- EXISTING STORM DRAIN: Existing Storm Drain\n- PROPOSED GRADE: Proposed Grade\n- PROPOSED STORM DRAIN: Proposed Storm Drain\n- YARD INLET OR DROP INLET: Yard Inlet or Drop Inlet\n- CATCH BASIN: Catch Basin\n- STORM SEWER: Storm Sewer\n- W: Water Line\n- S: Sanitary Sewer\n- SS: Storm Sewer\n- PROP. LINE: Property Line\n- W: Water Line\n- SS: Sanitary Sewer\n- STM: Storm Sewer\n- EXISTING GRADE: Existing Grade\n- EXISTING STORM SEWER: Existing Storm Sewer\n- PROPOSED GRADE: Proposed Grade\n- PROPOSED STORM SEWER: Proposed Storm Sewer\n- ROADWAY: Roadway\n- STORM SEWER: Storm Sewer\n",
+    "metadata": {
+      "source": "project_legend",
+      "project": "Dawn Ridge Homes",
+      "chunk_type": "legend_overview",
+      "pages": [
+        2,
+        3,
+        4,
+        6,
+        7,
+        8,
+        9,
+        14
+      ]
+    }
+  },
+  {
+    "content": "Abbreviation: R/W\nFull Name: Right of Way\nCategory: general\nSource: MISCELLANEOUS NOTES\n\nThis abbreviation appears in the Dawn Ridge Homes construction documents.",
+    "metadata": {
+      "source": "project_legend",
+      "project": "Dawn Ridge Homes",
+      "chunk_type": "abbreviation",
+      "abbreviation": "R/W",
+      "full_name": "Right of Way",
+      "category": "general",
+      "source_page": 2
+    }
+  },
+  {
+    "content": "Abbreviation: P.O.B.\nFull Name: Point of Beginning\nCategory: general\nSource: MISCELLANEOUS NOTES\n\nThis abbreviation appears in the Dawn Ridge Homes construction documents.",
+    "metadata": {
+      "source": "project_legend",
+      "project": "Dawn Ridge Homes",
+      "chunk_type": "abbreviation",
+      "abbreviation": "P.O.B.",
+      "full_name": "Point of Beginning",
+      "category": "general",
+      "source_page": 2
+    }
+  },
+  {
+    "content": "Abbreviation: PROPERTY LINE\nFull Name: Property Line\nCategory: symbol\nSource: LEGEND\n\nThis abbreviation appears in the Dawn Ridge Homes construction documents.",
+    "metadata": {
+      "source": "project_legend",
+      "project": "Dawn Ridge Homes",
+      "chunk_type": "abbreviation",
+      "abbreviation": "PROPERTY LINE",
+      "full_name": "Property Line",
+      "category": "symbol",
+      "source_page": 3
+    }
+  },
+  {
+    "content": "Abbreviation: LIMITS OF DISTURBANCE\nFull Name: Limits of Disturbance\nCategory: symbol\nSource: LEGEND\n\nThis abbreviation appears in the Dawn Ridge Homes construction documents.",
+    "metadata": {
+      "source": "project_legend",
+      "project": "Dawn Ridge Homes",
+      "chunk_type": "abbreviation",
+      "abbreviation": "LIMITS OF DISTURBANCE",
+      "full_name": "Limits of Disturbance",
+      "category": "symbol",
+      "source_page": 3
+    }
+  },
+  {
+    "content": "Abbreviation: CONSTRUCTION ENTRANCE\nFull Name: Construction Entrance\nCategory: symbol\nSource: LEGEND\n\nThis abbreviation appears in the Dawn Ridge Homes construction documents.",
+    "metadata": {
+      "source": "project_legend",
+      "project": "Dawn Ridge Homes",
+      "chunk_type": "abbreviation",
+      "abbreviation": "CONSTRUCTION ENTRANCE",
+      "full_name": "Construction Entrance",
+      "category": "symbol",
+      "source_page": 3
+    }
+  },
+  {
+    "content": "Abbreviation: SILT FENCE\nFull Name: Silt Fence\nCategory: symbol\nSource: LEGEND\n\nThis abbreviation appears in the Dawn Ridge Homes construction documents.",
+    "metadata": {
+      "source": "project_legend",
+      "project": "Dawn Ridge Homes",
+      "chunk_type": "abbreviation",
+      "abbreviation": "SILT FENCE",
+      "full_name": "Silt Fence",
+      "category": "symbol",
+      "source_page": 3
+    }
+  },
+  {
+    "content": "Abbreviation: TREE PROTECTION\nFull Name: Tree Protection\nCategory: symbol\nSource: LEGEND\n\nThis abbreviation appears in the Dawn Ridge Homes construction documents.",
+    "metadata": {
+      "source": "project_legend",
+      "project": "Dawn Ridge Homes",
+      "chunk_type": "abbreviation",
+      "abbreviation": "TREE PROTECTION",
+      "full_name": "Tree Protection",
+      "category": "symbol",
+      "source_page": 3
+    }
+  },
+  {
+    "content": "Abbreviation: OUTLET PROTECTION\nFull Name: Outlet Protection\nCategory: symbol\nSource: LEGEND\n\nThis abbreviation appears in the Dawn Ridge Homes construction documents.",
+    "metadata": {
+      "source": "project_legend",
+      "project": "Dawn Ridge Homes",
+      "chunk_type": "abbreviation",
+      "abbreviation": "OUTLET PROTECTION",
+      "full_name": "Outlet Protection",
+      "category": "symbol",
+      "source_page": 3
+    }
+  },
+  {
+    "content": "Abbreviation: STRAW BALES\nFull Name: Straw Bales\nCategory: symbol\nSource: LEGEND\n\nThis abbreviation appears in the Dawn Ridge Homes construction documents.",
+    "metadata": {
+      "source": "project_legend",
+      "project": "Dawn Ridge Homes",
+      "chunk_type": "abbreviation",
+      "abbreviation": "STRAW BALES",
+      "full_name": "Straw Bales",
+      "category": "symbol",
+      "source_page": 3
+    }
+  },
+  {
+    "content": "Abbreviation: SNAP PAD\nFull Name: Snap Pad\nCategory: symbol\nSource: LEGEND\n\nThis abbreviation appears in the Dawn Ridge Homes construction documents.",
+    "metadata": {
+      "source": "project_legend",
+      "project": "Dawn Ridge Homes",
+      "chunk_type": "abbreviation",
+      "abbreviation": "SNAP PAD",
+      "full_name": "Snap Pad",
+      "category": "symbol",
+      "source_page": 3
+    }
+  },
+  {
+    "content": "Abbreviation: SILT FENCE OUTLET/STONE DAM\nFull Name: Silt Fence Outlet/Stone Dam\nCategory: symbol\nSource: LEGEND\n\nThis abbreviation appears in the Dawn Ridge Homes construction documents.",
+    "metadata": {
+      "source": "project_legend",
+      "project": "Dawn Ridge Homes",
+      "chunk_type": "abbreviation",
+      "abbreviation": "SILT FENCE OUTLET/STONE DAM",
+      "full_name": "Silt Fence Outlet/Stone Dam",
+      "category": "symbol",
+      "source_page": 3
+    }
+  },
+  {
+    "content": "Abbreviation: SEDIMENT BASIN\nFull Name: Sediment Basin\nCategory: symbol\nSource: LEGEND\n\nThis abbreviation appears in the Dawn Ridge Homes construction documents.",
+    "metadata": {
+      "source": "project_legend",
+      "project": "Dawn Ridge Homes",
+      "chunk_type": "abbreviation",
+      "abbreviation": "SEDIMENT BASIN",
+      "full_name": "Sediment Basin",
+      "category": "symbol",
+      "source_page": 3
+    }
+  },
+  {
+    "content": "Abbreviation: DESIGN WATER FOR SLOPES\nFull Name: Design Water for Slopes\nCategory: symbol\nSource: LEGEND\n\nThis abbreviation appears in the Dawn Ridge Homes construction documents.",
+    "metadata": {
+      "source": "project_legend",
+      "project": "Dawn Ridge Homes",
+      "chunk_type": "abbreviation",
+      "abbreviation": "DESIGN WATER FOR SLOPES",
+      "full_name": "Design Water for Slopes",
+      "category": "symbol",
+      "source_page": 3
+    }
+  },
+  {
+    "content": "Abbreviation: TOP SOIL (SEE DETAIL C-7.2)\nFull Name: Top Soil (See Detail C-7.2)\nCategory: symbol\nSource: LEGEND\n\nThis abbreviation appears in the Dawn Ridge Homes construction documents.",
+    "metadata": {
+      "source": "project_legend",
+      "project": "Dawn Ridge Homes",
+      "chunk_type": "abbreviation",
+      "abbreviation": "TOP SOIL (SEE DETAIL C-7.2)",
+      "full_name": "Top Soil (See Detail C-7.2)",
+      "category": "symbol",
+      "source_page": 3
+    }
+  },
+  {
+    "content": "Abbreviation: STOCKPILE AREA\nFull Name: Stockpile Area\nCategory: symbol\nSource: LEGEND\n\nThis abbreviation appears in the Dawn Ridge Homes construction documents.",
+    "metadata": {
+      "source": "project_legend",
+      "project": "Dawn Ridge Homes",
+      "chunk_type": "abbreviation",
+      "abbreviation": "STOCKPILE AREA",
+      "full_name": "Stockpile Area",
+      "category": "symbol",
+      "source_page": 3
+    }
+  },
+  {
+    "content": "Abbreviation: CONCRETE WASHOUT AREA\nFull Name: Concrete Washout Area\nCategory: symbol\nSource: LEGEND\n\nThis abbreviation appears in the Dawn Ridge Homes construction documents.",
+    "metadata": {
+      "source": "project_legend",
+      "project": "Dawn Ridge Homes",
+      "chunk_type": "abbreviation",
+      "abbreviation": "CONCRETE WASHOUT AREA",
+      "full_name": "Concrete Washout Area",
+      "category": "symbol",
+      "source_page": 3
+    }
+  },
+  {
+    "content": "Abbreviation: GRAVEL\nFull Name: Gravel\nCategory: symbol\nSource: LEGEND\n\nThis abbreviation appears in the Dawn Ridge Homes construction documents.",
+    "metadata": {
+      "source": "project_legend",
+      "project": "Dawn Ridge Homes",
+      "chunk_type": "abbreviation",
+      "abbreviation": "GRAVEL",
+      "full_name": "Gravel",
+      "category": "symbol",
+      "source_page": 3
+    }
+  },
+  {
+    "content": "Abbreviation: AC PAVEMENT\nFull Name: AC Pavement\nCategory: symbol\nSource: LEGEND\n\nThis abbreviation appears in the Dawn Ridge Homes construction documents.",
+    "metadata": {
+      "source": "project_legend",
+      "project": "Dawn Ridge Homes",
+      "chunk_type": "abbreviation",
+      "abbreviation": "AC PAVEMENT",
+      "full_name": "AC Pavement",
+      "category": "symbol",
+      "source_page": 3
+    }
+  },
+  {
+    "content": "Abbreviation: PROPERTY LINE\nFull Name: Property Line\nCategory: symbol\nSource: LEGEND\n\nThis abbreviation appears in the Dawn Ridge Homes construction documents.",
+    "metadata": {
+      "source": "project_legend",
+      "project": "Dawn Ridge Homes",
+      "chunk_type": "abbreviation",
+      "abbreviation": "PROPERTY LINE",
+      "full_name": "Property Line",
+      "category": "symbol",
+      "source_page": 4
+    }
+  },
+  {
+    "content": "Abbreviation: LIMITS OF DISTURBANCE\nFull Name: Limits of Disturbance\nCategory: symbol\nSource: LEGEND\n\nThis abbreviation appears in the Dawn Ridge Homes construction documents.",
+    "metadata": {
+      "source": "project_legend",
+      "project": "Dawn Ridge Homes",
+      "chunk_type": "abbreviation",
+      "abbreviation": "LIMITS OF DISTURBANCE",
+      "full_name": "Limits of Disturbance",
+      "category": "symbol",
+      "source_page": 4
+    }
+  },
+  {
+    "content": "Abbreviation: CONSTRUCTION ENTRANCE\nFull Name: Construction Entrance\nCategory: symbol\nSource: LEGEND\n\nThis abbreviation appears in the Dawn Ridge Homes construction documents.",
+    "metadata": {
+      "source": "project_legend",
+      "project": "Dawn Ridge Homes",
+      "chunk_type": "abbreviation",
+      "abbreviation": "CONSTRUCTION ENTRANCE",
+      "full_name": "Construction Entrance",
+      "category": "symbol",
+      "source_page": 4
+    }
+  },
+  {
+    "content": "Abbreviation: SILT FENCE\nFull Name: Silt Fence\nCategory: symbol\nSource: LEGEND\n\nThis abbreviation appears in the Dawn Ridge Homes construction documents.",
+    "metadata": {
+      "source": "project_legend",
+      "project": "Dawn Ridge Homes",
+      "chunk_type": "abbreviation",
+      "abbreviation": "SILT FENCE",
+      "full_name": "Silt Fence",
+      "category": "symbol",
+      "source_page": 4
+    }
+  },
+  {
+    "content": "Abbreviation: PROPOSED CONTOUR\nFull Name: Proposed Contour\nCategory: symbol\nSource: LEGEND\n\nThis abbreviation appears in the Dawn Ridge Homes construction documents.",
+    "metadata": {
+      "source": "project_legend",
+      "project": "Dawn Ridge Homes",
+      "chunk_type": "abbreviation",
+      "abbreviation": "PROPOSED CONTOUR",
+      "full_name": "Proposed Contour",
+      "category": "symbol",
+      "source_page": 4
+    }
+  },
+  {
+    "content": "Abbreviation: EXISTING CONTOUR\nFull Name: Existing Contour\nCategory: symbol\nSource: LEGEND\n\nThis abbreviation appears in the Dawn Ridge Homes construction documents.",
+    "metadata": {
+      "source": "project_legend",
+      "project": "Dawn Ridge Homes",
+      "chunk_type": "abbreviation",
+      "abbreviation": "EXISTING CONTOUR",
+      "full_name": "Existing Contour",
+      "category": "symbol",
+      "source_page": 4
+    }
+  },
+  {
+    "content": "Abbreviation: DIRECTIONAL FLOW ARROW\nFull Name: Directional Flow Arrow\nCategory: symbol\nSource: LEGEND\n\nThis abbreviation appears in the Dawn Ridge Homes construction documents.",
+    "metadata": {
+      "source": "project_legend",
+      "project": "Dawn Ridge Homes",
+      "chunk_type": "abbreviation",
+      "abbreviation": "DIRECTIONAL FLOW ARROW",
+      "full_name": "Directional Flow Arrow",
+      "category": "symbol",
+      "source_page": 4
+    }
+  },
+  {
+    "content": "Abbreviation: STORM DRAIN INLET PROTECTION\nFull Name: Storm Drain Inlet Protection\nCategory: symbol\nSource: LEGEND\n\nThis abbreviation appears in the Dawn Ridge Homes construction documents.",
+    "metadata": {
+      "source": "project_legend",
+      "project": "Dawn Ridge Homes",
+      "chunk_type": "abbreviation",
+      "abbreviation": "STORM DRAIN INLET PROTECTION",
+      "full_name": "Storm Drain Inlet Protection",
+      "category": "symbol",
+      "source_page": 4
+    }
+  },
+  {
+    "content": "Abbreviation: RIP RAP PAD\nFull Name: Rip Rap Pad\nCategory: symbol\nSource: LEGEND\n\nThis abbreviation appears in the Dawn Ridge Homes construction documents.",
+    "metadata": {
+      "source": "project_legend",
+      "project": "Dawn Ridge Homes",
+      "chunk_type": "abbreviation",
+      "abbreviation": "RIP RAP PAD",
+      "full_name": "Rip Rap Pad",
+      "category": "symbol",
+      "source_page": 4
+    }
+  },
+  {
+    "content": "Abbreviation: SILT FENCE OUTLET/STONE DAM\nFull Name: Silt Fence Outlet/Stone Dam\nCategory: symbol\nSource: LEGEND\n\nThis abbreviation appears in the Dawn Ridge Homes construction documents.",
+    "metadata": {
+      "source": "project_legend",
+      "project": "Dawn Ridge Homes",
+      "chunk_type": "abbreviation",
+      "abbreviation": "SILT FENCE OUTLET/STONE DAM",
+      "full_name": "Silt Fence Outlet/Stone Dam",
+      "category": "symbol",
+      "source_page": 4
+    }
+  },
+  {
+    "content": "Abbreviation: TEMPORARY DIVERSION DIKE\nFull Name: Temporary Diversion Dike\nCategory: symbol\nSource: LEGEND\n\nThis abbreviation appears in the Dawn Ridge Homes construction documents.",
+    "metadata": {
+      "source": "project_legend",
+      "project": "Dawn Ridge Homes",
+      "chunk_type": "abbreviation",
+      "abbreviation": "TEMPORARY DIVERSION DIKE",
+      "full_name": "Temporary Diversion Dike",
+      "category": "symbol",
+      "source_page": 4
+    }
+  },
+  {
+    "content": "Abbreviation: DESIGN WATER FOR SLOPES\nFull Name: Design Water for Slopes\nCategory: symbol\nSource: LEGEND\n\nThis abbreviation appears in the Dawn Ridge Homes construction documents.",
+    "metadata": {
+      "source": "project_legend",
+      "project": "Dawn Ridge Homes",
+      "chunk_type": "abbreviation",
+      "abbreviation": "DESIGN WATER FOR SLOPES",
+      "full_name": "Design Water for Slopes",
+      "category": "symbol",
+      "source_page": 4
+    }
+  },
+  {
+    "content": "Abbreviation: TOP OF BANK\nFull Name: Top of Bank\nCategory: symbol\nSource: LEGEND\n\nThis abbreviation appears in the Dawn Ridge Homes construction documents.",
+    "metadata": {
+      "source": "project_legend",
+      "project": "Dawn Ridge Homes",
+      "chunk_type": "abbreviation",
+      "abbreviation": "TOP OF BANK",
+      "full_name": "Top of Bank",
+      "category": "symbol",
+      "source_page": 4
+    }
+  },
+  {
+    "content": "Abbreviation: WETLANDS\nFull Name: Wetlands\nCategory: symbol\nSource: LEGEND\n\nThis abbreviation appears in the Dawn Ridge Homes construction documents.",
+    "metadata": {
+      "source": "project_legend",
+      "project": "Dawn Ridge Homes",
+      "chunk_type": "abbreviation",
+      "abbreviation": "WETLANDS",
+      "full_name": "Wetlands",
+      "category": "symbol",
+      "source_page": 4
+    }
+  },
+  {
+    "content": "Abbreviation: 100-YR. FLOODWAY\nFull Name: 100-Year Floodway\nCategory: symbol\nSource: LEGEND\n\nThis abbreviation appears in the Dawn Ridge Homes construction documents.",
+    "metadata": {
+      "source": "project_legend",
+      "project": "Dawn Ridge Homes",
+      "chunk_type": "abbreviation",
+      "abbreviation": "100-YR. FLOODWAY",
+      "full_name": "100-Year Floodway",
+      "category": "symbol",
+      "source_page": 4
+    }
+  },
+  {
+    "content": "Abbreviation: W\nFull Name: Water Line\nCategory: symbol\nSource: LEGEND\n\nThis abbreviation appears in the Dawn Ridge Homes construction documents.",
+    "metadata": {
+      "source": "project_legend",
+      "project": "Dawn Ridge Homes",
+      "chunk_type": "abbreviation",
+      "abbreviation": "W",
+      "full_name": "Water Line",
+      "category": "symbol",
+      "source_page": 6
+    }
+  },
+  {
+    "content": "Abbreviation: SS\nFull Name: Sanitary Sewer\nCategory: symbol\nSource: LEGEND\n\nThis abbreviation appears in the Dawn Ridge Homes construction documents.",
+    "metadata": {
+      "source": "project_legend",
+      "project": "Dawn Ridge Homes",
+      "chunk_type": "abbreviation",
+      "abbreviation": "SS",
+      "full_name": "Sanitary Sewer",
+      "category": "symbol",
+      "source_page": 6
+    }
+  },
+  {
+    "content": "Abbreviation: SD\nFull Name: Storm Sewer\nCategory: symbol\nSource: LEGEND\n\nThis abbreviation appears in the Dawn Ridge Homes construction documents.",
+    "metadata": {
+      "source": "project_legend",
+      "project": "Dawn Ridge Homes",
+      "chunk_type": "abbreviation",
+      "abbreviation": "SD",
+      "full_name": "Storm Sewer",
+      "category": "symbol",
+      "source_page": 6
+    }
+  },
+  {
+    "content": "Abbreviation: EXISTING GRADE\nFull Name: Existing Grade\nCategory: symbol\nSource: GRADING LEGEND\n\nThis abbreviation appears in the Dawn Ridge Homes construction documents.",
+    "metadata": {
+      "source": "project_legend",
+      "project": "Dawn Ridge Homes",
+      "chunk_type": "abbreviation",
+      "abbreviation": "EXISTING GRADE",
+      "full_name": "Existing Grade",
+      "category": "symbol",
+      "source_page": 7
+    }
+  },
+  {
+    "content": "Abbreviation: EXISTING STORM DRAIN\nFull Name: Existing Storm Drain\nCategory: symbol\nSource: GRADING LEGEND\n\nThis abbreviation appears in the Dawn Ridge Homes construction documents.",
+    "metadata": {
+      "source": "project_legend",
+      "project": "Dawn Ridge Homes",
+      "chunk_type": "abbreviation",
+      "abbreviation": "EXISTING STORM DRAIN",
+      "full_name": "Existing Storm Drain",
+      "category": "symbol",
+      "source_page": 7
+    }
+  },
+  {
+    "content": "Abbreviation: PROPOSED GRADE\nFull Name: Proposed Grade\nCategory: symbol\nSource: GRADING LEGEND\n\nThis abbreviation appears in the Dawn Ridge Homes construction documents.",
+    "metadata": {
+      "source": "project_legend",
+      "project": "Dawn Ridge Homes",
+      "chunk_type": "abbreviation",
+      "abbreviation": "PROPOSED GRADE",
+      "full_name": "Proposed Grade",
+      "category": "symbol",
+      "source_page": 7
+    }
+  },
+  {
+    "content": "Abbreviation: PROPOSED STORM DRAIN\nFull Name: Proposed Storm Drain\nCategory: symbol\nSource: GRADING LEGEND\n\nThis abbreviation appears in the Dawn Ridge Homes construction documents.",
+    "metadata": {
+      "source": "project_legend",
+      "project": "Dawn Ridge Homes",
+      "chunk_type": "abbreviation",
+      "abbreviation": "PROPOSED STORM DRAIN",
+      "full_name": "Proposed Storm Drain",
+      "category": "symbol",
+      "source_page": 7
+    }
+  },
+  {
+    "content": "Abbreviation: YARD INLET OR DROP INLET\nFull Name: Yard Inlet or Drop Inlet\nCategory: symbol\nSource: GRADING LEGEND\n\nThis abbreviation appears in the Dawn Ridge Homes construction documents.",
+    "metadata": {
+      "source": "project_legend",
+      "project": "Dawn Ridge Homes",
+      "chunk_type": "abbreviation",
+      "abbreviation": "YARD INLET OR DROP INLET",
+      "full_name": "Yard Inlet or Drop Inlet",
+      "category": "symbol",
+      "source_page": 7
+    }
+  },
+  {
+    "content": "Abbreviation: CATCH BASIN\nFull Name: Catch Basin\nCategory: symbol\nSource: GRADING LEGEND\n\nThis abbreviation appears in the Dawn Ridge Homes construction documents.",
+    "metadata": {
+      "source": "project_legend",
+      "project": "Dawn Ridge Homes",
+      "chunk_type": "abbreviation",
+      "abbreviation": "CATCH BASIN",
+      "full_name": "Catch Basin",
+      "category": "symbol",
+      "source_page": 7
+    }
+  },
+  {
+    "content": "Abbreviation: STORM SEWER\nFull Name: Storm Sewer\nCategory: symbol\nSource: GRADING LEGEND\n\nThis abbreviation appears in the Dawn Ridge Homes construction documents.",
+    "metadata": {
+      "source": "project_legend",
+      "project": "Dawn Ridge Homes",
+      "chunk_type": "abbreviation",
+      "abbreviation": "STORM SEWER",
+      "full_name": "Storm Sewer",
+      "category": "symbol",
+      "source_page": 7
+    }
+  },
+  {
+    "content": "Abbreviation: W\nFull Name: Water Line\nCategory: symbol\nSource: LEGEND\n\nThis abbreviation appears in the Dawn Ridge Homes construction documents.",
+    "metadata": {
+      "source": "project_legend",
+      "project": "Dawn Ridge Homes",
+      "chunk_type": "abbreviation",
+      "abbreviation": "W",
+      "full_name": "Water Line",
+      "category": "symbol",
+      "source_page": 8
+    }
+  },
+  {
+    "content": "Abbreviation: S\nFull Name: Sanitary Sewer\nCategory: symbol\nSource: LEGEND\n\nThis abbreviation appears in the Dawn Ridge Homes construction documents.",
+    "metadata": {
+      "source": "project_legend",
+      "project": "Dawn Ridge Homes",
+      "chunk_type": "abbreviation",
+      "abbreviation": "S",
+      "full_name": "Sanitary Sewer",
+      "category": "symbol",
+      "source_page": 8
+    }
+  },
+  {
+    "content": "Abbreviation: SS\nFull Name: Storm Sewer\nCategory: symbol\nSource: LEGEND\n\nThis abbreviation appears in the Dawn Ridge Homes construction documents.",
+    "metadata": {
+      "source": "project_legend",
+      "project": "Dawn Ridge Homes",
+      "chunk_type": "abbreviation",
+      "abbreviation": "SS",
+      "full_name": "Storm Sewer",
+      "category": "symbol",
+      "source_page": 8
+    }
+  },
+  {
+    "content": "Abbreviation: PROP. LINE\nFull Name: Property Line\nCategory: symbol\nSource: LEGEND\n\nThis abbreviation appears in the Dawn Ridge Homes construction documents.",
+    "metadata": {
+      "source": "project_legend",
+      "project": "Dawn Ridge Homes",
+      "chunk_type": "abbreviation",
+      "abbreviation": "PROP. LINE",
+      "full_name": "Property Line",
+      "category": "symbol",
+      "source_page": 9
+    }
+  },
+  {
+    "content": "Abbreviation: W\nFull Name: Water Line\nCategory: symbol\nSource: LEGEND\n\nThis abbreviation appears in the Dawn Ridge Homes construction documents.",
+    "metadata": {
+      "source": "project_legend",
+      "project": "Dawn Ridge Homes",
+      "chunk_type": "abbreviation",
+      "abbreviation": "W",
+      "full_name": "Water Line",
+      "category": "symbol",
+      "source_page": 9
+    }
+  },
+  {
+    "content": "Abbreviation: SS\nFull Name: Sanitary Sewer\nCategory: symbol\nSource: LEGEND\n\nThis abbreviation appears in the Dawn Ridge Homes construction documents.",
+    "metadata": {
+      "source": "project_legend",
+      "project": "Dawn Ridge Homes",
+      "chunk_type": "abbreviation",
+      "abbreviation": "SS",
+      "full_name": "Sanitary Sewer",
+      "category": "symbol",
+      "source_page": 9
+    }
+  },
+  {
+    "content": "Abbreviation: STM\nFull Name: Storm Sewer\nCategory: symbol\nSource: LEGEND\n\nThis abbreviation appears in the Dawn Ridge Homes construction documents.",
+    "metadata": {
+      "source": "project_legend",
+      "project": "Dawn Ridge Homes",
+      "chunk_type": "abbreviation",
+      "abbreviation": "STM",
+      "full_name": "Storm Sewer",
+      "category": "symbol",
+      "source_page": 9
+    }
+  },
+  {
+    "content": "Abbreviation: EXISTING GRADE\nFull Name: Existing Grade\nCategory: general\nSource: GRADING LEGEND\n\nThis abbreviation appears in the Dawn Ridge Homes construction documents.",
+    "metadata": {
+      "source": "project_legend",
+      "project": "Dawn Ridge Homes",
+      "chunk_type": "abbreviation",
+      "abbreviation": "EXISTING GRADE",
+      "full_name": "Existing Grade",
+      "category": "general",
+      "source_page": 14
+    }
+  },
+  {
+    "content": "Abbreviation: EXISTING STORM SEWER\nFull Name: Existing Storm Sewer\nCategory: general\nSource: GRADING LEGEND\n\nThis abbreviation appears in the Dawn Ridge Homes construction documents.",
+    "metadata": {
+      "source": "project_legend",
+      "project": "Dawn Ridge Homes",
+      "chunk_type": "abbreviation",
+      "abbreviation": "EXISTING STORM SEWER",
+      "full_name": "Existing Storm Sewer",
+      "category": "general",
+      "source_page": 14
+    }
+  },
+  {
+    "content": "Abbreviation: PROPOSED GRADE\nFull Name: Proposed Grade\nCategory: general\nSource: GRADING LEGEND\n\nThis abbreviation appears in the Dawn Ridge Homes construction documents.",
+    "metadata": {
+      "source": "project_legend",
+      "project": "Dawn Ridge Homes",
+      "chunk_type": "abbreviation",
+      "abbreviation": "PROPOSED GRADE",
+      "full_name": "Proposed Grade",
+      "category": "general",
+      "source_page": 14
+    }
+  },
+  {
+    "content": "Abbreviation: PROPOSED STORM SEWER\nFull Name: Proposed Storm Sewer\nCategory: general\nSource: GRADING LEGEND\n\nThis abbreviation appears in the Dawn Ridge Homes construction documents.",
+    "metadata": {
+      "source": "project_legend",
+      "project": "Dawn Ridge Homes",
+      "chunk_type": "abbreviation",
+      "abbreviation": "PROPOSED STORM SEWER",
+      "full_name": "Proposed Storm Sewer",
+      "category": "general",
+      "source_page": 14
+    }
+  },
+  {
+    "content": "Abbreviation: ROADWAY\nFull Name: Roadway\nCategory: general\nSource: GRADING LEGEND\n\nThis abbreviation appears in the Dawn Ridge Homes construction documents.",
+    "metadata": {
+      "source": "project_legend",
+      "project": "Dawn Ridge Homes",
+      "chunk_type": "abbreviation",
+      "abbreviation": "ROADWAY",
+      "full_name": "Roadway",
+      "category": "general",
+      "source_page": 14
+    }
+  },
+  {
+    "content": "Abbreviation: STORM SEWER\nFull Name: Storm Sewer\nCategory: general\nSource: GRADING LEGEND\n\nThis abbreviation appears in the Dawn Ridge Homes construction documents.",
+    "metadata": {
+      "source": "project_legend",
+      "project": "Dawn Ridge Homes",
+      "chunk_type": "abbreviation",
+      "abbreviation": "STORM SEWER",
+      "full_name": "Storm Sewer",
+      "category": "general",
+      "source_page": 14
+    }
+  },
+  {
+    "content": "Project: Dawn Ridge Homes\n\nGeneral Notes:\n\n- ALL BEARINGS REFERENCED TO GRID NORTH (Page 2)\n- ALL DISTANCES SHOWN ARE GRID (Page 2)\n- THIS SURVEY WAS PREPARED WITHOUT THE BENEFIT OF A TITLE COMMITMENT (Page 2)\n- THIS SURVEY IS SUBJECT TO ANY AND ALL EASEMENTS AND/OR RIGHTS-OF-WAY OF RECORD (Page 2)\n- VERIFY PIPE CROSSINGS, COVER, ALIGNMENT, STORM SEWER SIZE, MATERIAL, AND INVERTS PRIOR TO CONSTRUCTION. (Page 6)\n- ALL STORM DRAINS ARE LOCATED AT CENTER OF EASEMENTS UNLESS OTHERWISE NOTED. (Page 7)\n- ALL PIPE GRADES SHOWN ON STORM STRUCTURES ARE AT THE CENTER OF THE STRUCTURE UNLESS OTHERWISE NOTED. (Page 7)\n- PROPERTY LINE (Page 8)\n- STATION NUMBERS (Page 8)\n- SHEET INDEX: COVER, NOTES, PLAN, PROFILE, STORM SEWER, SANITARY SEWER, WATER, EROSION CONTROL, GRADING, PAVING, DETAILS (Page 9)\n",
+    "metadata": {
+      "source": "project_legend",
+      "project": "Dawn Ridge Homes",
+      "chunk_type": "notes"
+    }
+  }
+]

@@ -1,0 +1,441 @@
+{
+  "pdf_name": "Dawn Ridge Homes.pdf",
+  "test_type": "baseline_analysis",
+  "vision_pipes_count": 8,
+  "vision_pipes": [
+    {
+      "discipline": "storm",
+      "material": "RCP",
+      "diameter_in": 18,
+      "length_ft": 150,
+      "depth_ft": 10,
+      "page_num": 6
+    },
+    {
+      "discipline": "sanitary",
+      "material": "PVC",
+      "diameter_in": 8,
+      "length_ft": 200,
+      "depth_ft": 8,
+      "page_num": 6
+    },
+    {
+      "discipline": "water",
+      "material": "DI",
+      "diameter_in": 12,
+      "length_ft": 100,
+      "depth_ft": 6,
+      "page_num": 6
+    },
+    {
+      "discipline": "storm",
+      "material": "RCP",
+      "diameter_in": 36,
+      "length_ft": 120,
+      "depth_ft": 10,
+      "page_num": 8
+    },
+    {
+      "discipline": "sanitary",
+      "material": "PVC",
+      "diameter_in": 8,
+      "length_ft": 200,
+      "depth_ft": 8,
+      "page_num": 8
+    },
+    {
+      "discipline": "storm",
+      "material": "RCP",
+      "diameter_in": 15,
+      "length_ft": 150,
+      "depth_ft": 3.5,
+      "page_num": 9
+    },
+    {
+      "discipline": "storm",
+      "material": "RCP",
+      "diameter_in": 18,
+      "length_ft": 200,
+      "depth_ft": 4.0,
+      "page_num": 9
+    },
+    {
+      "discipline": "storm",
+      "material": "RCP",
+      "diameter_in": 24,
+      "length_ft": 250,
+      "depth_ft": 5.0,
+      "page_num": 9
+    }
+  ],
+  "legend_entries": 0,
+  "legend": {},
+  "has_elevations": true,
+  "consolidated_summary": {
+    "storm_pipes": 4,
+    "sanitary_pipes": 1,
+    "water_pipes": 1,
+    "total_pipes": 6,
+    "storm_lf": 670,
+    "sanitary_lf": 200,
+    "water_lf": 100,
+    "total_lf": 970
+  },
+  "materials_found": [
+    "18\" RCP",
+    "36\" RCP",
+    "15\" RCP",
+    "24\" RCP",
+    "8\" PVC",
+    "12\" DI"
+  ],
+  "user_alerts": {},
+  "errors": [],
+  "full_state": {
+    "vision_results": {
+      "pipes": [
+        {
+          "discipline": "storm",
+          "material": "RCP",
+          "diameter_in": 18,
+          "length_ft": 150,
+          "depth_ft": 10,
+          "page_num": 6
+        },
+        {
+          "discipline": "sanitary",
+          "material": "PVC",
+          "diameter_in": 8,
+          "length_ft": 200,
+          "depth_ft": 8,
+          "page_num": 6
+        },
+        {
+          "discipline": "water",
+          "material": "DI",
+          "diameter_in": 12,
+          "length_ft": 100,
+          "depth_ft": 6,
+          "page_num": 6
+        },
+        {
+          "discipline": "storm",
+          "material": "RCP",
+          "diameter_in": 36,
+          "length_ft": 120,
+          "depth_ft": 10,
+          "page_num": 8
+        },
+        {
+          "discipline": "sanitary",
+          "material": "PVC",
+          "diameter_in": 8,
+          "length_ft": 200,
+          "depth_ft": 8,
+          "page_num": 8
+        },
+        {
+          "discipline": "storm",
+          "material": "RCP",
+          "diameter_in": 15,
+          "length_ft": 150,
+          "depth_ft": 3.5,
+          "page_num": 9
+        },
+        {
+          "discipline": "storm",
+          "material": "RCP",
+          "diameter_in": 18,
+          "length_ft": 200,
+          "depth_ft": 4.0,
+          "page_num": 9
+        },
+        {
+          "discipline": "storm",
+          "material": "RCP",
+          "diameter_in": 24,
+          "length_ft": 250,
+          "depth_ft": 5.0,
+          "page_num": 9
+        }
+      ],
+      "total_pipes": 8,
+      "num_pages_processed": 10,
+      "page_summaries": [
+        "I'm unable to analyze the content of the document directly from the image. However, if you can provide the text or details from the document, I can help you extract the necessary information and format it into JSON.",
+        "The document does not contain specific information about individual pipes, their materials, diameters, lengths, or depths. Additionally, there is no legend or abbreviations table visible on this page to decode material abbreviations.",
+        "I'm unable to analyze the content of the document directly. However, if you can provide the text or details from the document, such as the list of pipes and any legend or abbreviations, I can help you format it into the JSON structure you need.",
+        "The document is a site plan for a residential development. It includes a legend with abbreviations for various construction and environmental protection measures. No specific pipe details such as material, diameter, length, or depth are visible on this page.",
+        "The document is a preliminary site plan for a residential development. It includes a legend with abbreviations for different pipe materials but does not provide specific details about individual pipes such as diameter, length, or depth.",
+        "The document contains details of three individual pipes: one storm pipe made of RCP, one sanitary pipe made of PVC, and one water pipe made of DI. The legend provides definitions for the pipe material abbreviations.",
+        "The document is a grading plan for a residential development. It includes a legend for grading symbols but does not provide specific details about individual pipes, such as material, diameter, length, or depth. No individual pipe data was extracted.",
+        "The document contains details of two pipes: one storm pipe made of RCP with a diameter of 36 inches, and one sanitary pipe made of PVC with a diameter of 8 inches. The legend provides abbreviations for the pipe materials.",
+        "Extracted 3 storm pipes with materials and dimensions. Legend includes abbreviations for pipe materials."
+      ],
+      "discipline_counts": {
+        "storm": 5,
+        "sanitary": 2,
+        "water": 1
+      }
+    },
+    "researcher_results": {},
+    "consolidated_data": {
+      "summary": {
+        "storm_pipes": 4,
+        "sanitary_pipes": 1,
+        "water_pipes": 1,
+        "total_pipes": 6,
+        "storm_lf": 670,
+        "sanitary_lf": 200,
+        "water_lf": 100,
+        "total_lf": 970
+      },
+      "materials_found": [
+        "18\" RCP",
+        "36\" RCP",
+        "15\" RCP",
+        "24\" RCP",
+        "8\" PVC",
+        "12\" DI"
+      ],
+      "recommendations": "Ensure to verify the pipe specifications and lengths with the construction documents for accuracy."
+    },
+    "final_report": {
+      "vision_results": {
+        "pipes": [
+          {
+            "discipline": "storm",
+            "material": "RCP",
+            "diameter_in": 18,
+            "length_ft": 150,
+            "depth_ft": 10,
+            "page_num": 6
+          },
+          {
+            "discipline": "sanitary",
+            "material": "PVC",
+            "diameter_in": 8,
+            "length_ft": 200,
+            "depth_ft": 8,
+            "page_num": 6
+          },
+          {
+            "discipline": "water",
+            "material": "DI",
+            "diameter_in": 12,
+            "length_ft": 100,
+            "depth_ft": 6,
+            "page_num": 6
+          },
+          {
+            "discipline": "storm",
+            "material": "RCP",
+            "diameter_in": 36,
+            "length_ft": 120,
+            "depth_ft": 10,
+            "page_num": 8
+          },
+          {
+            "discipline": "sanitary",
+            "material": "PVC",
+            "diameter_in": 8,
+            "length_ft": 200,
+            "depth_ft": 8,
+            "page_num": 8
+          },
+          {
+            "discipline": "storm",
+            "material": "RCP",
+            "diameter_in": 15,
+            "length_ft": 150,
+            "depth_ft": 3.5,
+            "page_num": 9
+          },
+          {
+            "discipline": "storm",
+            "material": "RCP",
+            "diameter_in": 18,
+            "length_ft": 200,
+            "depth_ft": 4.0,
+            "page_num": 9
+          },
+          {
+            "discipline": "storm",
+            "material": "RCP",
+            "diameter_in": 24,
+            "length_ft": 250,
+            "depth_ft": 5.0,
+            "page_num": 9
+          }
+        ],
+        "total_pipes": 8,
+        "num_pages_processed": 10,
+        "page_summaries": [
+          "I'm unable to analyze the content of the document directly from the image. However, if you can provide the text or details from the document, I can help you extract the necessary information and format it into JSON.",
+          "The document does not contain specific information about individual pipes, their materials, diameters, lengths, or depths. Additionally, there is no legend or abbreviations table visible on this page to decode material abbreviations.",
+          "I'm unable to analyze the content of the document directly. However, if you can provide the text or details from the document, such as the list of pipes and any legend or abbreviations, I can help you format it into the JSON structure you need.",
+          "The document is a site plan for a residential development. It includes a legend with abbreviations for various construction and environmental protection measures. No specific pipe details such as material, diameter, length, or depth are visible on this page.",
+          "The document is a preliminary site plan for a residential development. It includes a legend with abbreviations for different pipe materials but does not provide specific details about individual pipes such as diameter, length, or depth.",
+          "The document contains details of three individual pipes: one storm pipe made of RCP, one sanitary pipe made of PVC, and one water pipe made of DI. The legend provides definitions for the pipe material abbreviations.",
+          "The document is a grading plan for a residential development. It includes a legend for grading symbols but does not provide specific details about individual pipes, such as material, diameter, length, or depth. No individual pipe data was extracted.",
+          "The document contains details of two pipes: one storm pipe made of RCP with a diameter of 36 inches, and one sanitary pipe made of PVC with a diameter of 8 inches. The legend provides abbreviations for the pipe materials.",
+          "Extracted 3 storm pipes with materials and dimensions. Legend includes abbreviations for pipe materials."
+        ],
+        "discipline_counts": {
+          "storm": 5,
+          "sanitary": 2,
+          "water": 1
+        }
+      },
+      "supervisor_tasks": [],
+      "researcher_results": {},
+      "consolidated_data": {
+        "summary": {
+          "storm_pipes": 4,
+          "sanitary_pipes": 1,
+          "water_pipes": 1,
+          "total_pipes": 6,
+          "storm_lf": 670,
+          "sanitary_lf": 200,
+          "water_lf": 100,
+          "total_lf": 970
+        },
+        "materials_found": [
+          "18\" RCP",
+          "36\" RCP",
+          "15\" RCP",
+          "24\" RCP",
+          "8\" PVC",
+          "12\" DI"
+        ],
+        "recommendations": "Ensure to verify the pipe specifications and lengths with the construction documents for accuracy."
+      },
+      "conflicts": [],
+      "takeoff_result": {
+        "summary": {
+          "total_pipes": 6,
+          "storm_pipes": 4,
+          "sanitary_pipes": 1,
+          "water_pipes": 1,
+          "storm_lf": 670.0,
+          "sanitary_lf": 200.0,
+          "water_lf": 100.0,
+          "total_lf": 970.0,
+          "validation_flags_count": 0
+        },
+        "pipes": [
+          {
+            "pipe_id": "pipe_0",
+            "discipline": "storm",
+            "material": "RCP",
+            "diameter_in": 18.0,
+            "length_ft": 150.0,
+            "invert_in_ft": null,
+            "invert_out_ft": null,
+            "ground_level_ft": null,
+            "depth_ft": 10.0,
+            "retrieved_context": [],
+            "validation_flags": []
+          },
+          {
+            "pipe_id": "pipe_1",
+            "discipline": "sanitary",
+            "material": "PVC",
+            "diameter_in": 8.0,
+            "length_ft": 200.0,
+            "invert_in_ft": null,
+            "invert_out_ft": null,
+            "ground_level_ft": null,
+            "depth_ft": 8.0,
+            "retrieved_context": [],
+            "validation_flags": []
+          },
+          {
+            "pipe_id": "pipe_2",
+            "discipline": "water",
+            "material": "DI",
+            "diameter_in": 12.0,
+            "length_ft": 100.0,
+            "invert_in_ft": null,
+            "invert_out_ft": null,
+            "ground_level_ft": null,
+            "depth_ft": 6.0,
+            "retrieved_context": [],
+            "validation_flags": []
+          },
+          {
+            "pipe_id": "pipe_3",
+            "discipline": "storm",
+            "material": "RCP",
+            "diameter_in": 36.0,
+            "length_ft": 120.0,
+            "invert_in_ft": null,
+            "invert_out_ft": null,
+            "ground_level_ft": null,
+            "depth_ft": 10.0,
+            "retrieved_context": [],
+            "validation_flags": []
+          },
+          {
+            "pipe_id": "pipe_4",
+            "discipline": "sanitary",
+            "material": "PVC",
+            "diameter_in": 8.0,
+            "length_ft": 200.0,
+            "invert_in_ft": null,
+            "invert_out_ft": null,
+            "ground_level_ft": null,
+            "depth_ft": 8.0,
+            "retrieved_context": [],
+            "validation_flags": []
+          },
+          {
+            "pipe_id": "pipe_5",
+            "discipline": "storm",
+            "material": "RCP",
+            "diameter_in": 15.0,
+            "length_ft": 150.0,
+            "invert_in_ft": null,
+            "invert_out_ft": null,
+            "ground_level_ft": null,
+            "depth_ft": 3.5,
+            "retrieved_context": [],
+            "validation_flags": []
+          },
+          {
+            "pipe_id": "pipe_6",
+            "discipline": "storm",
+            "material": "RCP",
+            "diameter_in": 18.0,
+            "length_ft": 200.0,
+            "invert_in_ft": null,
+            "invert_out_ft": null,
+            "ground_level_ft": null,
+            "depth_ft": 4.0,
+            "retrieved_context": [],
+            "validation_flags": []
+          },
+          {
+            "pipe_id": "pipe_7",
+            "discipline": "storm",
+            "material": "RCP",
+            "diameter_in": 24.0,
+            "length_ft": 250.0,
+            "invert_in_ft": null,
+            "invert_out_ft": null,
+            "ground_level_ft": null,
+            "depth_ft": 5.0,
+            "retrieved_context": [],
+            "validation_flags": []
+          }
+        ],
+        "pdf_summary": "PDF Analysis Results:\n- Pages processed: 10\n- Total pipes detected (raw): 8\n- Vision analysis: GPT-4o pipe extraction\n- Page summaries: I'm unable to analyze the content of the document directly from the image. However, if you can provide the text or details from the document, I can help you extract the necessary information and format it into JSON. | The document does not contain specific information about individual pipes, their materials, diameters, lengths, or depths. Additionally, there is no legend or abbreviations table visible on this page to decode material abbreviations. | I'm unable to analyze the content of the document directly. However, if you can provide the text or details from the document, such as the list of pipes and any legend or abbreviations, I can help you format it into the JSON structure you need. | The document is a site plan for a residential development. It includes a legend with abbreviations for various construction and environmental protection measures. No specific pipe details such as material, diameter, length, or depth are visible on this page. | The document is a preliminary site plan for a residential development. It includes a legend with abbreviations for different pipe materials but does not provide specific details about individual pipes such as diameter, length, or depth. | The document contains details of three individual pipes: one storm pipe made of RCP, one sanitary pipe made of PVC, and one water pipe made of DI. The legend provides definitions for the pipe material abbreviations. | The document is a grading plan for a residential development. It includes a legend for grading symbols but does not provide specific details about individual pipes, such as material, diameter, length, or depth. No individual pipe data was extracted. | The document contains details of two pipes: one storm pipe made of RCP with a diameter of 36 inches, and one sanitary pipe made of PVC with a diameter of 8 inches. The legend provides abbreviations for the pipe materials. | Extracted 3 storm pipes with materials and dimensions. Legend includes abbreviations for pipe materials.\n\nPipe breakdown:\n- storm: 5 pipes\n- sanitary: 2 pipes\n- water: 1 pipes\n\nUser request: Perform complete takeoff on this construction document",
+        "rag_stats": {
+          "researchers_deployed": 0,
+          "total_standards_retrieved": 0,
+          "conflicts_found": 0
+        }
+      }
+    }
+  }
+}

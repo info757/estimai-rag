@@ -77,6 +77,27 @@ class PipeDetection(BaseModel):
         default=None,
         description="Pipe depth (ground - invert)"
     )
+    # Volume calculations
+    excavation_cy: float | None = Field(
+        default=None,
+        description="Trench excavation volume (cubic yards)"
+    )
+    bedding_cy: float | None = Field(
+        default=None,
+        description="Bedding material volume (cubic yards)"
+    )
+    backfill_cy: float | None = Field(
+        default=None,
+        description="Backfill volume (cubic yards)"
+    )
+    compacted_backfill_cy: float | None = Field(
+        default=None,
+        description="Compacted backfill volume (cubic yards)"
+    )
+    trench_width_ft: float | None = Field(
+        default=None,
+        description="Trench width (feet)"
+    )
     retrieved_context: list[str] = Field(
         default_factory=list,
         description="RAG context used for this pipe"
@@ -97,6 +118,11 @@ class TakeoffSummary(BaseModel):
     sanitary_lf: float = Field(description="Sanitary linear feet")
     water_lf: float = Field(description="Water linear feet")
     total_lf: float = Field(description="Total linear feet")
+    # Volume totals
+    total_excavation_cy: float = Field(default=0.0, description="Total excavation volume (cubic yards)")
+    total_bedding_cy: float = Field(default=0.0, description="Total bedding volume (cubic yards)")
+    total_backfill_cy: float = Field(default=0.0, description="Total backfill volume (cubic yards)")
+    estimated_truck_loads: int = Field(default=0, description="Estimated truck loads (@10 CY/truck)")
     validation_flags_count: int = Field(
         description="Number of validation issues"
     )

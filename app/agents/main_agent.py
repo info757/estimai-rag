@@ -92,8 +92,8 @@ class MainAgent:
                 try:
                     return new_loop.run_until_complete(coordinator.analyze_multipage(
                         pdf_path=pdf_path,
-                        max_pages=10,
-                        agents_to_deploy=["pipes"],  # Single general-purpose agent
+                        max_pages=None,  # Process all pages (was 10)
+                        agents_to_deploy=["pipes", "grading"],  # Deploy both pipes and grading agents
                         dpi=300  # High resolution
                     ))
                 finally:
@@ -215,6 +215,7 @@ Pipe breakdown:
         # Trust Supervisor's deduplicated summary
         supervisor_summary = consolidated["summary"]
         
+        # Initial summary (will be updated with volumes after calculation)
         summary = TakeoffSummary(
             total_pipes=supervisor_summary["total_pipes"],
             storm_pipes=supervisor_summary["storm_pipes"],
@@ -224,13 +225,22 @@ Pipe breakdown:
             sanitary_lf=supervisor_summary["sanitary_lf"],
             water_lf=supervisor_summary["water_lf"],
             total_lf=supervisor_summary["total_lf"],
+            total_excavation_cy=0.0,  # Will be updated
+            total_bedding_cy=0.0,  # Will be updated
+            total_backfill_cy=0.0,  # Will be updated
+            estimated_truck_loads=0,  # Will be updated
             validation_flags_count=0
         )
         
-        # Convert vision pipes to PipeDetection format
+        # Convert vision pipes to PipeDetection format + calculate volumes
         from app.models import PipeDetection
+        from app.calculations.earthwork import TrenchCalculator, calculate_project_totals
+        
         pipes = []
         for i, vp in enumerate(vision_pipes):
+            # Calculate volumes for this pipe
+            volumes = TrenchCalculator.calculate_from_pipe_data(vp)
+            
             pipe = PipeDetection(
                 pipe_id=f"pipe_{i}",
                 discipline=vp["discipline"],
@@ -241,10 +251,26 @@ Pipe breakdown:
                 invert_out_ft=vp.get("invert_out_ft"),
                 ground_level_ft=vp.get("ground_level_ft"),
                 depth_ft=vp.get("depth_ft"),
+                # Add calculated volumes
+                excavation_cy=volumes.get("excavation_cy"),
+                bedding_cy=volumes.get("bedding_cy"),
+                backfill_cy=volumes.get("backfill_cy"),
+                compacted_backfill_cy=volumes.get("compacted_backfill_cy"),
+                trench_width_ft=volumes.get("trench_width_ft"),
                 retrieved_context=[],
                 validation_flags=[]
             )
             pipes.append(pipe)
+        
+        # Calculate project totals
+        pipes_dict = [p.model_dump() for p in pipes]
+        project_totals = calculate_project_totals(pipes_dict)
+        
+        # Update summary with volume totals
+        summary.total_excavation_cy = project_totals["total_excavation_cy"]
+        summary.total_bedding_cy = project_totals["total_bedding_cy"]
+        summary.total_backfill_cy = project_totals["total_backfill_cy"]
+        summary.estimated_truck_loads = project_totals["estimated_truck_loads"]
         
         # Build TakeoffResult
         result = TakeoffResult(
@@ -263,7 +289,10 @@ Pipe breakdown:
         
         logger.info(
             f"[Main Agent] Report generated: {summary.total_pipes} pipes, "
-            f"{summary.total_lf:.1f} LF"
+            f"{summary.total_lf:.1f} LF, "
+            f"Excavation: {summary.total_excavation_cy:.1f} CY, "
+            f"Bedding: {summary.total_bedding_cy:.1f} CY, "
+            f"Backfill: {summary.total_backfill_cy:.1f} CY"
         )
         
         # Update state

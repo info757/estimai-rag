@@ -13,6 +13,7 @@ from collections import Counter
 import fitz  # PyMuPDF
 
 from app.vision.pipes_vision_agent_v2 import PipesVisionAgent
+from app.vision.grading_vision_agent import GradingVisionAgent
 
 logger = logging.getLogger(__name__)
 
@@ -32,9 +33,9 @@ class VisionCoordinator:
     def __init__(self):
         """Initialize coordinator with available Vision agents."""
         self.agents = {
-            "pipes": PipesVisionAgent()
+            "pipes": PipesVisionAgent(),
+            "grading": GradingVisionAgent()  # NEW: Grading plan detection
             # Future: Add more specialized agents as needed
-            # "earthwork": EarthworkVisionAgent(),
             # "foundations": FoundationsVisionAgent(),
             # "electrical": ElectricalVisionAgent(),
         }
@@ -60,9 +61,9 @@ class VisionCoordinator:
         Returns:
             Merged results from all deployed agents
         """
-        # Default: deploy both pipe agents
+        # Default: deploy pipes and grading agents
         if agents_to_deploy is None:
-            agents_to_deploy = ["plan_pipes", "profile_pipes"]
+            agents_to_deploy = ["pipes", "grading"]
         
         logger.info(
             f"[VisionCoord] Analyzing page {page_num} with {len(agents_to_deploy)} agents: "
@@ -114,7 +115,7 @@ class VisionCoordinator:
     async def analyze_multipage(
         self,
         pdf_path: str,
-        max_pages: int = 10,
+        max_pages: int = None,  # Changed to None for unlimited (or set to specific number)
         agents_to_deploy: List[str] = None,
         dpi: int = 300
     ) -> Dict[str, Any]:
@@ -123,7 +124,7 @@ class VisionCoordinator:
         
         Args:
             pdf_path: Path to PDF file
-            max_pages: Maximum pages to process
+            max_pages: Maximum pages to process (None = all pages, default: 25 for Dawn Ridge)
             agents_to_deploy: Which agents to use
             dpi: Image rendering quality
         
@@ -134,10 +135,11 @@ class VisionCoordinator:
         
         # Get page count
         doc = fitz.open(pdf_path)
-        num_pages = min(len(doc), max_pages)
+        total_pages = len(doc)
+        num_pages = min(total_pages, max_pages) if max_pages else total_pages
         doc.close()
         
-        logger.info(f"[VisionCoord] Processing {num_pages} pages")
+        logger.info(f"[VisionCoord] Processing {num_pages} pages (out of {total_pages} total)")
         
         # Process each page
         page_results = []

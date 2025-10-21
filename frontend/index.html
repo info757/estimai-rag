@@ -67,7 +67,7 @@
             <!-- Summary Stats -->
             <div id="summary-container" style="display:none;" class="bg-white rounded-lg shadow p-4">
                 <h3 class="font-bold text-lg mb-3">Summary</h3>
-                <div class="grid grid-cols-3 gap-4 text-center">
+                <div class="grid grid-cols-3 gap-4 text-center mb-4">
                     <div class="p-3 bg-blue-50 rounded">
                         <div class="text-2xl font-bold text-blue-600" id="storm-count">-</div>
                         <div class="text-sm text-gray-600">Storm</div>
@@ -81,6 +81,26 @@
                         <div class="text-sm text-gray-600">Water</div>
                     </div>
                 </div>
+                
+                <!-- Volume Totals (NEW!) -->
+                <div class="border-t pt-3 mt-3">
+                    <h4 class="font-semibold text-sm mb-2">📦 Earthwork Volumes</h4>
+                    <div class="grid grid-cols-3 gap-3 text-sm">
+                        <div class="p-2 bg-yellow-50 rounded">
+                            <div class="text-lg font-bold text-yellow-700" id="total-excavation">-</div>
+                            <div class="text-xs text-gray-600">Excavation (CY)</div>
+                        </div>
+                        <div class="p-2 bg-orange-50 rounded">
+                            <div class="text-lg font-bold text-orange-700" id="total-backfill">-</div>
+                            <div class="text-xs text-gray-600">Backfill (CY)</div>
+                        </div>
+                        <div class="p-2 bg-gray-100 rounded">
+                            <div class="text-lg font-bold text-gray-700" id="truck-loads">-</div>
+                            <div class="text-xs text-gray-600">Truck Loads</div>
+                        </div>
+                    </div>
+                </div>
+                
                 <div class="mt-3 text-sm text-gray-600">
                     Processing time: <span id="processing-time" class="font-semibold">-</span>s
                 </div>
@@ -100,6 +120,11 @@
                                 <th class="p-2 text-left">Material</th>
                                 <th class="p-2 text-left">Diameter</th>
                                 <th class="p-2 text-left">Length (LF)</th>
+                                <th class="p-2 text-left">Depth (ft)</th>
+                                <th class="p-2 text-left">IE IN (ft)</th>
+                                <th class="p-2 text-left">RIM (ft)</th>
+                                <th class="p-2 text-left">Excav (CY)</th>
+                                <th class="p-2 text-left">Backfill (CY)</th>
                             </tr>
                         </thead>
                         <tbody id="pipes-tbody">
@@ -273,6 +298,16 @@
             document.getElementById('storm-count').textContent = summary.storm_pipes || 0;
             document.getElementById('sewer-count').textContent = summary.sanitary_pipes || 0;
             document.getElementById('water-count').textContent = summary.water_pipes || 0;
+            
+            // NEW: Display volume totals
+            document.getElementById('total-excavation').textContent = summary.total_excavation_cy 
+                ? summary.total_excavation_cy.toFixed(1) 
+                : '-';
+            document.getElementById('total-backfill').textContent = summary.total_backfill_cy 
+                ? summary.total_backfill_cy.toFixed(1) 
+                : '-';
+            document.getElementById('truck-loads').textContent = summary.estimated_truck_loads || '-';
+            
             document.getElementById('processing-time').textContent = processingTime?.toFixed(1) || '-';
         }
         
@@ -296,12 +331,13 @@
                     <td class="p-2" contenteditable="true" data-idx="${idx}" data-field="material" onblur="markEdited(this)">
                         ${pipe.material || '-'}
                     </td>
-                    <td class="p-2" contenteditable="true" data-idx="${idx}" data-field="diameter_in" onblur="markEdited(this)">
-                        ${pipe.diameter_in || '-'}"
-                    </td>
-                    <td class="p-2" contenteditable="true" data-idx="${idx}" data-field="length_ft" onblur="markEdited(this)">
-                        ${pipe.length_ft || '-'}
-                    </td>
+                    <td class="p-2" contenteditable="true" data-idx="${idx}" data-field="diameter_in" onblur="markEdited(this)">${pipe.diameter_in || '-'}"</td>
+                    <td class="p-2" contenteditable="true" data-idx="${idx}" data-field="length_ft" onblur="markEdited(this)">${pipe.length_ft || '-'}</td>
+                    <td class="p-2 ${pipe.depth_ft ? 'bg-green-50' : ''}">${pipe.depth_ft ? pipe.depth_ft.toFixed(1) : '-'}</td>
+                    <td class="p-2 ${pipe.invert_in_ft ? 'bg-blue-50' : ''}">${pipe.invert_in_ft ? pipe.invert_in_ft.toFixed(2) : '-'}</td>
+                    <td class="p-2 ${pipe.rim_elevation_ft ? 'bg-blue-50' : ''}">${pipe.rim_elevation_ft ? pipe.rim_elevation_ft.toFixed(2) : '-'}</td>
+                    <td class="p-2 ${pipe.excavation_cy ? 'bg-yellow-50 font-semibold' : ''}">${pipe.excavation_cy ? pipe.excavation_cy.toFixed(1) : '-'}</td>
+                    <td class="p-2 ${pipe.backfill_cy ? 'bg-orange-50' : ''}">${pipe.backfill_cy ? pipe.backfill_cy.toFixed(1) : '-'}</td>
                 `;
                 tbody.appendChild(row);
             });
