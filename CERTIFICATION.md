@@ -4,6 +4,7 @@
 **Project**: EstimAI-RAG - Multi-Agent Construction Takeoff System  
 **Submission Date**: October 20, 2025  
 **GitHub**: https://github.com/info757/estimai-rag
+**Loom**: https://www.loom.com/share/f8bc9acc480848188295c61f89c4923f?sid=06c3ec5f-04f7-4fb6-a8ca-397f670d01aa
 
 ---
 
@@ -276,7 +277,7 @@ Hybrid search: 5 fused results for 'DI pipe material specifications'
 
 ### 1. Demo Video
 
-**Link**: [5-Minute Loom Demo](https://www.loom.com/share/your-video-id-here)
+**Link**: [5-Minute Loom Demo]https://www.loom.com/share/f8bc9acc480848188295c61f89c4923f?sid=06c3ec5f-04f7-4fb6-a8ca-397f670d01aa
 
 **Demo Script**:
 1. Show frontend at localhost:8000/frontend/
@@ -450,4 +451,5 @@ User Query: "FPVC pipe material specifications"
 **Submitted by**: Will Holt  
 **Date**: October 20, 2025  
 **Repository**: https://github.com/info757/estimai-rag
+**Loom**: https://www.loom.com/share/f8bc9acc480848188295c61f89c4923f?sid=06c3ec5f-04f7-4fb6-a8ca-397f670d01aa
 
