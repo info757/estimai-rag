@@ -22,7 +22,7 @@ class BaseResearcher:
     1. Receives a task from the supervisor
     2. Retrieves relevant construction standards via RAG
     3. Analyzes the task using LLM with retrieved context
-    4. Returns findings with confidence score
+    4. Returns findings
     """
     
     def __init__(
@@ -68,7 +68,7 @@ Your role:
 - Provide accurate, confident assessments based on evidence
 - Flag any uncertainties or conflicts
 
-Be precise, cite standards when relevant, and always include confidence scores."""
+Be precise and cite standards when relevant."""
     
     def retrieve_context(
         self,
@@ -153,8 +153,6 @@ FINDINGS:
 STANDARDS USED:
 [List which construction standards from above informed your analysis. Quote key phrases.]
 
-CONFIDENCE: [0.0-1.0]
-
 IMPORTANT: Reference specific standards in your findings to show how you validated the information."""
         
         messages = [
@@ -167,9 +165,6 @@ IMPORTANT: Reference specific standards in your findings to show how you validat
             
             # Use raw text response - no JSON parsing needed!
             findings_text = response.content
-            
-            # Simple confidence estimation based on response quality
-            confidence = 0.7 if len(findings_text) > 100 else 0.5
             
             logger.info(
                 f"[{self.researcher_name}] Analysis complete. "
@@ -184,8 +179,7 @@ IMPORTANT: Reference specific standards in your findings to show how you validat
                 "findings": {
                     "analysis": findings_text,
                     "retrieved_standards_count": len(retrieved_docs)
-                },
-                "confidence": confidence
+                }
             }
         
         except Exception as e:
@@ -194,8 +188,7 @@ IMPORTANT: Reference specific standards in your findings to show how you validat
                 "researcher_name": self.researcher_name,
                 "task": task,
                 "retrieved_context": [],
-                "findings": {"error": str(e), "analysis": ""},
-                "confidence": 0.0
+                "findings": {"error": str(e), "analysis": ""}
             }
     
     def __call__(self, state: ResearcherState) -> ResearcherState:

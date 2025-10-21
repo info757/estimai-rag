@@ -48,7 +48,7 @@ class SupervisorAgent:
             "legend": LegendResearcher()
         }
         
-        # Initialize API researcher for low-confidence augmentation
+        # Initialize API researcher for unknown material augmentation
         self.api_researcher = APIResearcher()
         
         logger.info("Supervisor initialized with 5 researchers + API augmentation")
@@ -169,8 +169,7 @@ Your expertise is in deciding which researcher/estimator should perform takeoff 
                         "researcher_name": researcher_name,
                         "task": task,
                         "retrieved_context": [],
-                        "findings": {},
-                        "confidence": 0.0
+                        "findings": {}
                     }
                     
                     # Submit task
@@ -182,18 +181,14 @@ Your expertise is in deciding which researcher/estimator should perform takeoff 
                     try:
                         result = future.result(timeout=120)  # 2 minute timeout per researcher
                         results[researcher_name] = result
-                        logger.info(
-                            f"[{researcher_name}] Complete. "
-                            f"Confidence: {result['confidence']:.2f}"
-                        )
+                        logger.info(f"[{researcher_name}] Complete.")
                     except Exception as e:
                         logger.error(f"[{researcher_name}] Failed: {e}")
                         results[researcher_name] = {
                             "researcher_name": researcher_name,
                             "task": task_spec["task"],
                             "retrieved_context": [],
-                            "findings": {"error": str(e)},
-                            "confidence": 0.0
+                            "findings": {"error": str(e)}
                         }
         else:
             # Run sequentially
@@ -210,8 +205,7 @@ Your expertise is in deciding which researcher/estimator should perform takeoff 
                     "researcher_name": researcher_name,
                     "task": task,
                     "retrieved_context": [],
-                    "findings": {},
-                    "confidence": 0.0
+                    "findings": {}
                 }
                 
                 try:
@@ -223,8 +217,7 @@ Your expertise is in deciding which researcher/estimator should perform takeoff 
                         "researcher_name": researcher_name,
                         "task": task,
                         "retrieved_context": [],
-                        "findings": {"error": str(e)},
-                        "confidence": 0.0
+                        "findings": {"error": str(e)}
                         }
         
         logger.info(f"Research complete: {len(results)} researchers finished")
@@ -307,7 +300,6 @@ Your expertise is in deciding which researcher/estimator should perform takeoff 
                 continue
                 
             findings_text += f"\n## {name.upper()} Researcher\n"
-            findings_text += f"Confidence: {result.get('confidence', 0.0):.2f}\n"
             findings_text += f"Findings: {result.get('findings', {})}\n"
             findings_text += f"Context Used: {len(result.get('retrieved_context', []))} standards\n"
             
@@ -380,14 +372,12 @@ Return JSON:
                         "diameters_found": llm_result.get("diameters_found", []),
                         "elevations_extracted": llm_result.get("elevations_extracted", False),
                         "conflicts": llm_result.get("conflicts", []),
-                        "overall_confidence": llm_result.get("overall_confidence", 0.75),
                         "validation_issues": llm_result.get("validation_issues", []),
                         "recommendations": llm_result.get("recommendations", "")
                     }
                     
                     logger.info(
-                        f"Consolidation complete. Deduplicated: {consolidated['summary'].get('total_pipes', 0)} unique pipes. "
-                        f"Overall confidence: {consolidated['overall_confidence']:.2f}"
+                        f"Consolidation complete. Deduplicated: {consolidated['summary'].get('total_pipes', 0)} unique pipes."
                     )
                     
                 except json.JSONDecodeError:
@@ -418,7 +408,6 @@ Return JSON:
                 "diameters_found": [],
                 "elevations_extracted": False,
                 "conflicts": [],
-                "overall_confidence": 0.0,
                 "validation_issues": ["Consolidation failed"],
                 "recommendations": "Manual review required"
             }
@@ -449,7 +438,6 @@ Return JSON:
                     "total_lf": 0.0
                 },
                 "materials_found": [],
-                "overall_confidence": 0.0,
                 "validation_issues": [],
                 "recommendations": ""
             }
@@ -481,7 +469,6 @@ Return JSON:
         "total_lf": float
     }},
     "materials_found": [],
-    "overall_confidence": 0.0-1.0,
     "recommendations": ""
 }}"""
 
@@ -524,7 +511,6 @@ Return JSON:
                     "total_lf": sum(p.get("length_ft", 0) for p in vision_pipes)
                 },
                 "materials_found": list(set(p.get("material", "") for p in vision_pipes)),
-                "overall_confidence": 0.8,
                 "validation_issues": ["LLM deduplication failed - using naive count"],
                 "recommendations": ""
             }
@@ -563,7 +549,6 @@ Return JSON:
             "diameters_found": [],
             "elevations_extracted": False,
             "conflicts": [],
-            "overall_confidence": sum(r.get("confidence", 0) for r in researcher_results.values()) / len(researcher_results) if researcher_results else 0.0,
             "validation_issues": ["Consolidation JSON parsing failed"],
             "recommendations": "Manual review required"
         }
@@ -746,8 +731,7 @@ Return JSON:
                     "researcher_name": "api",
                     "task": f"Research {material} material",
                     "findings": api_result.get("findings", {}),
-                    "retrieved_context": api_result.get("retrieved_context", []),
-                    "confidence": api_result.get("confidence", 0.6)
+                    "retrieved_context": api_result.get("retrieved_context", [])
                 }
         
         # Summary
@@ -779,7 +763,7 @@ Return JSON:
                 "decoded_materials": {mat: abbreviations.get(mat, mat) for mat in unknown_materials}
             }
         
-        logger.info(f"Consolidation complete. Deduplicated: {consolidated['summary']['total_pipes']} unique pipes. Overall confidence: {consolidated['overall_confidence']:.2f}")
+        logger.info(f"Consolidation complete. Deduplicated: {consolidated['summary']['total_pipes']} unique pipes.")
         logger.info("=== SUPERVISOR COMPLETE ===")
         
         return {
@@ -907,7 +891,7 @@ Return JSON:
         """
         Query Tavily API for specific unknown element.
         
-        Returns success status, contexts, confidence, and failure reason.
+        Returns success status, contexts, and failure reason.
         """
         unknown_type = unknown['type']
         unknown_value = unknown['value']
@@ -958,16 +942,14 @@ Return JSON:
                 return {
                     "success": False,
                     "reason": "External sources don't mention this specific term",
-                    "contexts": contexts,
-                    "confidence": confidence
+                    "contexts": contexts
                 }
             
             # Success!
             logger.info(f"[api] ✓ Found specifications for {unknown_value}")
             return {
                 "success": True,
-                "contexts": contexts,
-                "confidence": confidence
+                "contexts": contexts
             }
             
         except Exception as e:
@@ -975,8 +957,7 @@ Return JSON:
             return {
                 "success": False,
                 "reason": f"API error: {str(e)}",
-                "contexts": [],
-                "confidence": 0.0
+                "contexts": []
             }
     
     def _build_user_alerts(

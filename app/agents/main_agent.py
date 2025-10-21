@@ -4,7 +4,7 @@ Main Agent - orchestrates the entire takeoff workflow with LangGraph.
 Flow:
 1. Analyze PDF → understand what's in it
 2. Call Supervisor → deploy researchers, get findings
-3. Generate Report → create final takeoff with confidence scores
+3. Generate Report → create final takeoff
 """
 import logging
 from typing import Dict, Any
@@ -224,7 +224,6 @@ Pipe breakdown:
             sanitary_lf=supervisor_summary["sanitary_lf"],
             water_lf=supervisor_summary["water_lf"],
             total_lf=supervisor_summary["total_lf"],
-            avg_confidence=consolidated["overall_confidence"],
             validation_flags_count=0
         )
         
@@ -242,7 +241,6 @@ Pipe breakdown:
                 invert_out_ft=vp.get("invert_out_ft"),
                 ground_level_ft=vp.get("ground_level_ft"),
                 depth_ft=vp.get("depth_ft"),
-                confidence=0.8,
                 retrieved_context=[],
                 validation_flags=[]
             )
@@ -265,7 +263,7 @@ Pipe breakdown:
         
         logger.info(
             f"[Main Agent] Report generated: {summary.total_pipes} pipes, "
-            f"{summary.total_lf:.1f} LF, {summary.avg_confidence:.2f} confidence"
+            f"{summary.total_lf:.1f} LF"
         )
         
         # Update state
@@ -333,7 +331,6 @@ Pipe breakdown:
                         "water_lf": 0.0,
                         "total_lf": 0.0
                     },
-                    "overall_confidence": 0.0,
                     "validation_issues": ["Workflow failed"],
                     "recommendations": "Manual takeoff required"
                 }

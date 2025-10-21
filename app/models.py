@@ -37,7 +37,6 @@ class ResearcherState(TypedDict):
     task: str  # Specific task from supervisor
     retrieved_context: list[str]  # RAG-retrieved construction standards
     findings: dict  # What the researcher found
-    confidence: float  # 0.0 to 1.0
 
 
 # ============================================================================
@@ -78,12 +77,6 @@ class PipeDetection(BaseModel):
         default=None,
         description="Pipe depth (ground - invert)"
     )
-    confidence: float = Field(
-        default=0.5,
-        ge=0.0,
-        le=1.0,
-        description="Detection confidence"
-    )
     retrieved_context: list[str] = Field(
         default_factory=list,
         description="RAG context used for this pipe"
@@ -104,9 +97,6 @@ class TakeoffSummary(BaseModel):
     sanitary_lf: float = Field(description="Sanitary linear feet")
     water_lf: float = Field(description="Water linear feet")
     total_lf: float = Field(description="Total linear feet")
-    avg_confidence: float = Field(
-        description="Average confidence across all pipes"
-    )
     validation_flags_count: int = Field(
         description="Number of validation issues"
     )

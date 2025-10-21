@@ -18,7 +18,6 @@ class APIResearcher:
     
     Deployed by Supervisor when:
     - RAG retrieves < 3 relevant contexts
-    - Confidence score < 0.5
     - Unknown materials/codes detected
     """
     
@@ -43,7 +42,7 @@ class APIResearcher:
             vision_pipes: Optional pipe data from Vision LLM
         
         Returns:
-            Dict with findings, retrieved context, and confidence
+            Dict with findings and retrieved context
         """
         task = state.get("task", "")
         
@@ -73,8 +72,7 @@ class APIResearcher:
                     "results_count": len(retrieved_contexts)
                 },
                 "retrieved_context": retrieved_contexts,
-                "retrieved_standards_count": len(retrieved_contexts),
-                "confidence": 0.75  # API results are generally reliable
+                "retrieved_standards_count": len(retrieved_contexts)
             }
         
         except Exception as e:
@@ -86,8 +84,7 @@ class APIResearcher:
                     "api_used": "tavily"
                 },
                 "retrieved_context": [],
-                "retrieved_standards_count": 0,
-                "confidence": 0.0
+                "retrieved_standards_count": 0
             }
     
     def _format_results(self, results: Dict[str, Any]) -> str:

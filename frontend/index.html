@@ -6,9 +6,6 @@
     <title>EstimAI-RAG - Construction Takeoff with Human-in-the-Loop</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        .confidence-low { background-color: #fee2e2; border-left: 4px solid #ef4444; }
-        .confidence-medium { background-color: #fef3c7; border-left: 4px solid #f59e0b; }
-        .confidence-high { background-color: #d1fae5; border-left: 4px solid #10b981; }
         [contenteditable="true"] { cursor: text; padding: 4px; }
         [contenteditable="true"]:hover { background-color: #f3f4f6; }
         [contenteditable="true"]:focus { outline: 2px solid #3b82f6; background-color: white; }
@@ -103,8 +100,6 @@
                                 <th class="p-2 text-left">Material</th>
                                 <th class="p-2 text-left">Diameter</th>
                                 <th class="p-2 text-left">Length (LF)</th>
-                                <th class="p-2 text-left">Confidence</th>
-                                <th class="p-2 text-left">Actions</th>
                             </tr>
                         </thead>
                         <tbody id="pipes-tbody">
@@ -294,11 +289,8 @@
             tbody.innerHTML = '';
             
             pipes.forEach((pipe, idx) => {
-                const conf = pipe.confidence || 0.5;
-                const confClass = conf < 0.5 ? 'confidence-low' : (conf < 0.8 ? 'confidence-medium' : 'confidence-high');
-                
                 const row = document.createElement('tr');
-                row.className = confClass;
+                row.className = 'border-b hover:bg-gray-50';
                 row.innerHTML = `
                     <td class="p-2">${pipe.discipline || '-'}</td>
                     <td class="p-2" contenteditable="true" data-idx="${idx}" data-field="material" onblur="markEdited(this)">
@@ -309,14 +301,6 @@
                     </td>
                     <td class="p-2" contenteditable="true" data-idx="${idx}" data-field="length_ft" onblur="markEdited(this)">
                         ${pipe.length_ft || '-'}
-                    </td>
-                    <td class="p-2">
-                        <span class="px-2 py-1 rounded text-xs font-semibold ${conf < 0.5 ? 'bg-red-600 text-white' : (conf < 0.8 ? 'bg-yellow-600 text-white' : 'bg-green-600 text-white')}">
-                            ${(conf * 100).toFixed(0)}%
-                        </span>
-                    </td>
-                    <td class="p-2">
-                        ${conf < 0.5 ? `<button onclick="verifyPipe(${idx})" class="px-2 py-1 bg-green-500 text-white rounded text-xs hover:bg-green-600">✓ Verify</button>` : '<span class="text-green-600">✓</span>'}
                     </td>
                 `;
                 tbody.appendChild(row);
@@ -386,7 +370,6 @@
             logsDiv.innerHTML = logs.map(log => `
                 <div class="p-2 bg-gray-50 rounded">
                     <span class="text-blue-600 font-semibold">[${log.researcher}]</span>
-                    <span class="text-gray-600">confidence: ${(log.confidence * 100).toFixed(0)}%,</span>
                     <span class="text-gray-600">standards: ${log.standards_used}</span>
                 </div>
             `).join('');
@@ -403,18 +386,6 @@
             editedCells[idx][field] = cell.textContent.trim();
         }
         
-        function verifyPipe(idx) {
-            const row = document.querySelector(`td[data-idx="${idx}"]`).closest('tr');
-            row.classList.remove('confidence-low');
-            row.classList.add('confidence-high');
-            
-            if (!editedCells[idx]) {
-                editedCells[idx] = {};
-            }
-            editedCells[idx].verified = true;
-            
-            alert('Pipe marked as verified!');
-        }
         
         function markVerified(material) {
             alert(`Material "${material}" marked as verified by human review.`);
@@ -445,10 +416,10 @@
             }
             
             const pipes = currentData.result.pipes;
-            let csv = 'Discipline,Material,Diameter (in),Length (LF),Confidence\\n';
+            let csv = 'Discipline,Material,Diameter (in),Length (LF)\\n';
             
             pipes.forEach(pipe => {
-                csv += `${pipe.discipline},${pipe.material},${pipe.diameter_in},${pipe.length_ft},${(pipe.confidence * 100).toFixed(0)}%\\n`;
+                csv += `${pipe.discipline},${pipe.material},${pipe.diameter_in},${pipe.length_ft}\\n`;
             });
             
             // Download

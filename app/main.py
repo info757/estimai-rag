@@ -106,7 +106,6 @@ def takeoff_simple(request: SimpleRequest):
             for name, res in result["researcher_results"].items():
                 researcher_logs.append({
                     "researcher": name,
-                    "confidence": res.get("confidence", 0.0),
                     "findings_summary": str(res.get("findings", {}))[:200]
                 })
         
@@ -240,7 +239,6 @@ async def takeoff(
                 researcher_logs.append({
                     "researcher": name,
                     "task": res.get("task", ""),
-                    "confidence": res.get("confidence", 0.0),
                     "standards_used": len(res.get("retrieved_context", [])),
                     "findings_summary": str(res.get("findings", {}))[:200] + "..."
                 })

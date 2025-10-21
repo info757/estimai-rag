@@ -42,7 +42,7 @@ Analyze the PDF for:
 5. Any validation issues (shallow cover, steep slopes, etc.)
 
 Use the retrieved construction standards to validate your findings.
-Return detailed, accurate information with high confidence when evidence is clear."""
+Return detailed, accurate information when evidence is clear."""
     
     def analyze(self, state, vision_pipes=None):
         """
@@ -130,9 +130,6 @@ Format as clear text analysis with explicit standard citations, not JSON."""
             # Just use the text response - no JSON parsing!
             findings_text = response.content
             
-            # Estimate confidence based on response quality
-            confidence = 0.8 if len(findings_text) > 200 else 0.6
-            
             return {
                 "researcher_name": "storm",
                 "task": task,
@@ -141,8 +138,7 @@ Format as clear text analysis with explicit standard citations, not JSON."""
                     "analysis": findings_text,
                     "retrieved_standards_count": len(unique_docs),
                     "vision_pipes_provided": len(storm_pipes) if storm_pipes else 0
-                },
-                "confidence": confidence
+                }
             }
         
         except Exception as e:
@@ -151,7 +147,6 @@ Format as clear text analysis with explicit standard citations, not JSON."""
                 "researcher_name": "storm",
                 "task": task,
                 "retrieved_context": [],
-                "findings": {"error": str(e), "analysis": ""},
-                "confidence": 0.0
+                "findings": {"error": str(e), "analysis": ""}
             }
 
