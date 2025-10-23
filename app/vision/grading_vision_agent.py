@@ -34,66 +34,143 @@ You specialize in:
 - Interpreting grading notes and specifications
 """
 
-        self.user_prompt_template = """Analyze this construction grading plan.
+        self.user_prompt_template = """Analyze this construction document for GRADING, EROSION CONTROL, and SITE WORK.
 
-Look for GRADING-SPECIFIC information:
-1. **Contour Lines**: Existing grade contours vs. Proposed grade contours
-2. **Spot Elevations**: Points showing elevation (e.g., "EG 845.5", "FG 846.0")
-   - EG = Existing Grade
-   - FG / PG = Finished/Proposed Grade
-3. **Cut/Fill Areas**: Areas marked as CUT or FILL
-4. **Grading Notes**: Construction notes about grading, compaction, topsoil
-5. **Grid Elevations**: Table of elevations at grid points
-6. **Slope Indicators**: Arrows or text showing slope direction and grade
+═══════════════════════════════════════════════════════════════
+1. GRADING & EARTHWORK
+═══════════════════════════════════════════════════════════════
+- Contour Lines: Existing grade vs. Proposed grade contours
+- Spot Elevations: "EG 845.5" (Existing), "FG 846.0" (Finished/Proposed)
+- Cut/Fill Areas: Areas marked as CUT or FILL with quantities
+- Grid Elevations: Tables showing elevations at grid points
+- Slope Indicators: Arrows showing slope direction and grade
+- Grading Notes: Notes about compaction, topsoil stripping, etc.
 
-Extract all grading data you find.
+═══════════════════════════════════════════════════════════════
+2. EROSION CONTROL (CRITICAL - Often marked as "EC" or "Phase 1/2 EC")
+═══════════════════════════════════════════════════════════════
+Look for these items (shown on plans or in tables):
 
-Return JSON:
+Temporary Measures:
+- **Silt Fence** / **Diversion Ditch**: Wavy lines on site perimeter (measure in LF)
+- **Construction Entrance**: Gravel pad at site entrance (measure in SY)
+- **Inlet Protection**: Circles/symbols around storm inlets
+  - "Block and Gravel Inlet Protection"
+  - "Sediment Tube Inlet Protection"  
+  - Count: number of inlets (EA)
+- **Concrete Washout**: Designated area for concrete truck washout (EA)
+- **Baffles**: Filter barriers in pond/detention basin (LF)
+- **Skimmer**: Oil/sediment skimmer in pond (EA, often "3\" Skimmer")
+
+Permanent Measures:
+- **Slope Matting**: Hatched areas on slopes (measure in SY)
+  - "Ditch Matting - SC140"
+  - "Slope Matting"
+- **Grassing/Seeding**: Areas to be seeded (measure in AC or SY)
+
+═══════════════════════════════════════════════════════════════
+3. SITE IMPROVEMENTS
+═══════════════════════════════════════════════════════════════
+- **Retaining Walls**: Thick lines with height callouts (measure in LF, note height)
+  - Example: "Retaining Wall along Northern Perimeter: 384.5 LF x 8-10 ft"
+- **Fencing**: Perimeter or specialty fencing (measure in LF)
+  - "Chain Link Fence"
+  - "Privacy Fence"  
+  - "Fencing around Wet Pond"
+  - "Retaining Wall Fencing"
+
+═══════════════════════════════════════════════════════════════
+
+IMPORTANT:
+1. Extract quantities: LF (linear feet), SY (square yards), AC (acres), EA (each)
+2. Look in tables, notes, and on-plan callouts
+3. ALWAYS return valid JSON enclosed in ```json``` code blocks
+
+Return JSON (MUST be enclosed in ```json``` code blocks):
+```json
 {
   "is_grading_plan": true/false,
-  "spot_elevations": [
-    {
-      "type": "existing" | "proposed",
-      "elevation_ft": number,
-      "location": "description of where on plan",
-      "station": "station if applicable"
-    }
-  ],
-  "contours": {
-    "existing_contours": ["elevations found"],
-    "proposed_contours": ["elevations found"],
-    "contour_interval": "e.g., 1 ft, 2 ft, 5 ft"
+  "grading_data": {
+    "spot_elevations": [
+      {
+        "type": "existing" | "proposed",
+        "elevation_ft": number,
+        "location": "description",
+        "station": "station if applicable"
+      }
+    ],
+    "contours": {
+      "existing_contours": ["elevations found"],
+      "proposed_contours": ["elevations found"],
+      "contour_interval": "e.g., 1 ft"
+    },
+    "cut_fill_areas": [
+      {
+        "type": "cut" | "fill",
+        "area_description": "location",
+        "volume_cy": number or null,
+        "notes": "any notes"
+      }
+    ],
+    "grading_notes": ["note 1", "note 2"]
   },
-  "cut_fill_areas": [
+  "erosion_control": [
     {
-      "type": "cut" | "fill",
-      "area_description": "location/extent",
-      "estimated_depth_ft": number or null,
-      "notes": "any specific notes"
+      "item": "Silt Fence",
+      "quantity": number,
+      "unit": "LF" | "SY" | "EA" | "AC",
+      "phase": "Phase 1 EC" | "Phase 2 EC" | null,
+      "notes": "any notes"
     }
   ],
-  "grading_notes": [
-    "Note 1: Topsoil stripping depth",
-    "Note 2: Compaction requirements",
-    "etc."
-  ],
-  "grid_data": [
+  "site_work": [
     {
-      "grid_point": "e.g., A-1, B-2",
-      "existing_elevation_ft": number or null,
-      "proposed_elevation_ft": number or null,
-      "cut_fill_ft": number (positive = fill, negative = cut)
+      "item": "Retaining Wall",
+      "quantity": number,
+      "unit": "LF",
+      "height_ft": number or null,
+      "location": "description",
+      "notes": "any notes"
     }
   ],
-  "summary": "Brief description of grading work shown"
+  "summary": "Brief description: X erosion control items, Y site improvements, grading data found/not found"
 }
+```
 
-If this is NOT a grading plan, return:
+EXAMPLES:
+
+Erosion Control:
+```json
+{
+  "item": "Diversion Ditch",
+  "quantity": 1748.97,
+  "unit": "LF",
+  "phase": "Phase 1 EC",
+  "notes": null
+}
+```
+
+Site Work:
+```json
+{
+  "item": "Retaining Wall along Northern Perimeter",
+  "quantity": 384.5,
+  "unit": "LF",
+  "height_ft": 9.0,
+  "location": "Northern property line",
+  "notes": "8-10 ft height"
+}
+```
+
+If this is NOT a relevant document:
+```json
 {
   "is_grading_plan": false,
-  "summary": "This appears to be a [type of plan] plan, not a grading plan"
+  "erosion_control": [],
+  "site_work": [],
+  "summary": "This is a utility plan, no grading/erosion control data"
 }
-"""
+```"""
 
     def get_system_prompt(self) -> str:
         return self.system_prompt
