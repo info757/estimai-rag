@@ -1,0 +1,560 @@
+{
+  "expected_pipes": [
+    {
+      "discipline": "sanitary",
+      "material": "DIP",
+      "diameter_in": 8,
+      "length_ft": 177.67,
+      "depth_ft": 9.2,
+      "count": 1.0,
+      "structure_name": "8\" DIP",
+      "type": "Pipe",
+      "class": "Sewer"
+    },
+    {
+      "discipline": "sanitary",
+      "material": "PVC",
+      "diameter_in": 8,
+      "length_ft": 806.01,
+      "depth_ft": 9.0,
+      "count": 1.0,
+      "structure_name": "8\" PVC",
+      "type": "Pipe",
+      "class": "Sewer"
+    },
+    {
+      "discipline": "sanitary",
+      "material": "Unknown",
+      "diameter_in": 4,
+      "length_ft": 816.96,
+      "depth_ft": 6.1,
+      "count": 26.0,
+      "structure_name": "4\" SS Service",
+      "type": "Lateral",
+      "class": "Sewer"
+    },
+    {
+      "discipline": "sanitary",
+      "material": "Unknown",
+      "diameter_in": 4,
+      "length_ft": 0,
+      "depth_ft": 4.0,
+      "count": 26.0,
+      "structure_name": "4\" SSL Cleanout",
+      "type": "Vertical",
+      "class": "Sewer"
+    },
+    {
+      "discipline": "sanitary",
+      "material": "Unknown",
+      "diameter_in": 0,
+      "length_ft": 0,
+      "depth_ft": 4.9,
+      "count": 1.0,
+      "structure_name": "Existing SSMH",
+      "type": "Vertical",
+      "class": "Sewer"
+    },
+    {
+      "discipline": "sanitary",
+      "material": "Unknown",
+      "diameter_in": 0,
+      "length_ft": 0,
+      "depth_ft": 8.6,
+      "count": 8.0,
+      "structure_name": "SSMH",
+      "type": "Vertical",
+      "class": "Sewer"
+    },
+    {
+      "discipline": "storm",
+      "material": "HDPE",
+      "diameter_in": 12,
+      "length_ft": 125.84,
+      "depth_ft": 2.9,
+      "count": 1.0,
+      "structure_name": "12\" Corrugated HDPE",
+      "type": "Pipe",
+      "class": "Storm"
+    },
+    {
+      "discipline": "storm",
+      "material": "HDPE",
+      "diameter_in": 15,
+      "length_ft": 746.8,
+      "depth_ft": 4.4,
+      "count": 2.0,
+      "structure_name": "15\" Corrugated HDPE",
+      "type": "Pipe",
+      "class": "Storm"
+    },
+    {
+      "discipline": "storm",
+      "material": "RCP",
+      "diameter_in": 15,
+      "length_ft": 1260.21,
+      "depth_ft": 5.2,
+      "count": 6.0,
+      "structure_name": "15\" RCP",
+      "type": "Pipe",
+      "class": "Storm"
+    },
+    {
+      "discipline": "storm",
+      "material": "RCP",
+      "diameter_in": 18,
+      "length_ft": 177.31,
+      "depth_ft": 4.9,
+      "count": 1.0,
+      "structure_name": "18\" RCP",
+      "type": "Pipe",
+      "class": "Storm"
+    },
+    {
+      "discipline": "storm",
+      "material": "RCP",
+      "diameter_in": 24,
+      "length_ft": 382.98,
+      "depth_ft": 6.7,
+      "count": 1.0,
+      "structure_name": "24\" RCP",
+      "type": "Pipe",
+      "class": "Storm"
+    },
+    {
+      "discipline": "storm",
+      "material": "RCP",
+      "diameter_in": 24,
+      "length_ft": 49.34,
+      "depth_ft": 3.7,
+      "count": 1.0,
+      "structure_name": "24\" Single Offset Gasket RCP",
+      "type": "Pipe",
+      "class": "Storm"
+    },
+    {
+      "discipline": "storm",
+      "material": "RCP",
+      "diameter_in": 30,
+      "length_ft": 47.46,
+      "depth_ft": 4.8,
+      "count": 1.0,
+      "structure_name": "30\" RCP",
+      "type": "Pipe",
+      "class": "Storm"
+    },
+    {
+      "discipline": "storm",
+      "material": "RCP",
+      "diameter_in": 48,
+      "length_ft": 167.01,
+      "depth_ft": 13.8,
+      "count": 1.0,
+      "structure_name": "48\" RCP",
+      "type": "Pipe",
+      "class": "Storm"
+    },
+    {
+      "discipline": "storm",
+      "material": "Unknown",
+      "diameter_in": 0,
+      "length_ft": 0,
+      "depth_ft": 4.6,
+      "count": 14.0,
+      "structure_name": "NCDOT 840.02 Concrete Catch Basin",
+      "type": "Vertical",
+      "class": "Storm"
+    },
+    {
+      "discipline": "storm",
+      "material": "Unknown",
+      "diameter_in": 0,
+      "length_ft": 0,
+      "depth_ft": 4.8,
+      "count": 18.0,
+      "structure_name": "NCDOT 840.14 Drop Inlet",
+      "type": "Vertical",
+      "class": "Storm"
+    },
+    {
+      "discipline": "storm",
+      "material": "Unknown",
+      "diameter_in": 0,
+      "length_ft": 0,
+      "depth_ft": 8.7,
+      "count": 2.0,
+      "structure_name": "NCDOT 840.53 Manhole",
+      "type": "Vertical",
+      "class": "Storm"
+    },
+    {
+      "discipline": "storm",
+      "material": "Unknown",
+      "diameter_in": 0,
+      "length_ft": 0,
+      "depth_ft": 0.1,
+      "count": 1.0,
+      "structure_name": "Outlet Control Structure",
+      "type": "Vertical",
+      "class": "Storm"
+    },
+    {
+      "discipline": "storm",
+      "material": "Unknown",
+      "diameter_in": 15,
+      "length_ft": 0,
+      "depth_ft": 0,
+      "count": 1.0,
+      "structure_name": "15\" FES",
+      "type": "Fitting",
+      "class": "Storm"
+    },
+    {
+      "discipline": "storm",
+      "material": "Unknown",
+      "diameter_in": 24,
+      "length_ft": 0,
+      "depth_ft": 0,
+      "count": 1.0,
+      "structure_name": "24\" FES",
+      "type": "Fitting",
+      "class": "Storm"
+    },
+    {
+      "discipline": "storm",
+      "material": "Unknown",
+      "diameter_in": 30,
+      "length_ft": 0,
+      "depth_ft": 0,
+      "count": 1.0,
+      "structure_name": "30\" FES",
+      "type": "Fitting",
+      "class": "Storm"
+    },
+    {
+      "discipline": "storm",
+      "material": "Unknown",
+      "diameter_in": 48,
+      "length_ft": 0,
+      "depth_ft": 0,
+      "count": 2.0,
+      "structure_name": "48\" FES",
+      "type": "Fitting",
+      "class": "Storm"
+    },
+    {
+      "discipline": "storm",
+      "material": "Unknown",
+      "diameter_in": 0,
+      "length_ft": 0,
+      "depth_ft": 0,
+      "count": 2.0,
+      "structure_name": "Antiseep Collars w/watertight joints",
+      "type": "Fitting",
+      "class": "Storm"
+    },
+    {
+      "discipline": "water",
+      "material": "DIP",
+      "diameter_in": 8,
+      "length_ft": 1075.66,
+      "depth_ft": 4.0,
+      "count": 3.0,
+      "structure_name": "8\" DIP",
+      "type": "Pipe",
+      "class": "Water"
+    },
+    {
+      "discipline": "water",
+      "material": "Unknown",
+      "diameter_in": 6,
+      "length_ft": 42.48,
+      "depth_ft": 3.7,
+      "count": 3.0,
+      "structure_name": "6\" Fire Lateral",
+      "type": "Lateral",
+      "class": "Water"
+    },
+    {
+      "discipline": "water",
+      "material": "Unknown",
+      "diameter_in": 0,
+      "length_ft": 876.61,
+      "depth_ft": 3.8,
+      "count": 26.0,
+      "structure_name": "Copper Service to meter",
+      "type": "Lateral",
+      "class": "Water"
+    },
+    {
+      "discipline": "water",
+      "material": "Unknown",
+      "diameter_in": 6,
+      "length_ft": 0,
+      "depth_ft": 3.7,
+      "count": 3.0,
+      "structure_name": "6\" Hydrant Assemby",
+      "type": "Vertical",
+      "class": "Water"
+    },
+    {
+      "discipline": "water",
+      "material": "Unknown",
+      "diameter_in": 8,
+      "length_ft": 0,
+      "depth_ft": 0,
+      "count": 3.0,
+      "structure_name": "8\" Gate Valve",
+      "type": "Fitting",
+      "class": "Water"
+    },
+    {
+      "discipline": "water",
+      "material": "Unknown",
+      "diameter_in": 0,
+      "length_ft": 0,
+      "depth_ft": 0,
+      "count": 1.0,
+      "structure_name": "Tie into Existing",
+      "type": "Fitting",
+      "class": "Water"
+    }
+  ],
+  "expected_materials": [
+    {
+      "item": "Construction Entrance",
+      "description": "Construction Entrance",
+      "phase": "Phase 1 EC",
+      "category": "Erosion Control",
+      "quantity": 2996.86,
+      "unit": "SY"
+    },
+    {
+      "item": "Block and Gravel Inlet Protection",
+      "description": "Block and Gravel Inlet Protection",
+      "phase": "Phase 2 EC",
+      "category": "Erosion Control",
+      "quantity": 32.0,
+      "unit": "EA"
+    },
+    {
+      "item": "Sediment Tube Inlet Protection",
+      "description": "Sediment Tube Inlet Protection",
+      "phase": "Phase 2 EC",
+      "category": "Erosion Control",
+      "quantity": 14.0,
+      "unit": "EA"
+    },
+    {
+      "item": "Concrete Washout",
+      "description": "Concrete Washout",
+      "phase": "Phase 1 EC",
+      "category": "Erosion Control",
+      "quantity": 1.0,
+      "unit": "EA"
+    },
+    {
+      "item": "Ditch Matting - SC140",
+      "description": "Ditch Matting - SC140",
+      "phase": "Phase 1 EC",
+      "category": "Erosion Control",
+      "quantity": 18046.2,
+      "unit": "SY"
+    },
+    {
+      "item": "Slope Matting",
+      "description": "Slope Matting",
+      "phase": "Phase 2 EC",
+      "category": "Erosion Control",
+      "quantity": 117238.44,
+      "unit": "SY"
+    },
+    {
+      "item": "Grassing/Seeding",
+      "description": "Grassing/Seeding",
+      "phase": "Phase 2 EC",
+      "category": "Erosion Control",
+      "quantity": 295025.37,
+      "unit": "AC"
+    },
+    {
+      "item": "3\" Skimmer",
+      "description": "3\" Skimmer",
+      "phase": "Phase 1 EC",
+      "category": "Erosion Control",
+      "quantity": 1.0,
+      "unit": "EA"
+    },
+    {
+      "item": "Baffles",
+      "description": "Baffles",
+      "phase": "Phase 1 EC",
+      "category": "Erosion Control",
+      "quantity": 224.99,
+      "unit": "LF"
+    },
+    {
+      "item": "Fencing around Wet Pond",
+      "description": "Fencing around Wet Pond",
+      "phase": "",
+      "category": "Fence Installation",
+      "quantity": 621.75,
+      "unit": "LF"
+    },
+    {
+      "item": "Retaining Wall Fencing",
+      "description": "Retaining Wall Fencing",
+      "phase": "",
+      "category": "Fence Installation",
+      "quantity": 490.13,
+      "unit": "LF"
+    },
+    {
+      "item": "Retaining Wall along Northern Perimeter",
+      "description": "Retaining Wall along Northern Perimeter",
+      "phase": "",
+      "category": "Retaining Wall",
+      "quantity": 384.5,
+      "unit": "LF"
+    },
+    {
+      "item": "Retaining wall at Eastern cul de sac",
+      "description": "Retaining wall at Eastern cul de sac",
+      "phase": "",
+      "category": "Retaining Wall",
+      "quantity": 103.95,
+      "unit": "LF"
+    }
+  ],
+  "expected_volumes": [
+    {
+      "name": "Jobsite",
+      "type": "Earthwork",
+      "total_area": 429339.0,
+      "cut_area": 203030.0,
+      "fill_area": 217848.0,
+      "cut_volume": 60523.0,
+      "fill_volume": 54747.0
+    },
+    {
+      "name": "Regions Total:",
+      "type": "Earthwork",
+      "total_area": 429339.0,
+      "cut_area": 203030.0,
+      "fill_area": 217848.0,
+      "cut_volume": 60523.0,
+      "fill_volume": 54747.0
+    },
+    {
+      "name": "Topsoil",
+      "type": "Stripping",
+      "total_area": 429339.0,
+      "cut_area": 436949.0,
+      "fill_area": 0.667,
+      "cut_volume": 10794.0,
+      "fill_volume": 0
+    },
+    {
+      "name": "Stripping Total",
+      "type": "Stripping",
+      "total_area": 429339.0,
+      "cut_area": 436949.0,
+      "fill_area": 0,
+      "cut_volume": 10794.0,
+      "fill_volume": 0
+    },
+    {
+      "name": "3/7 Asphalt",
+      "type": "Sectional",
+      "total_area": 40797.0,
+      "cut_area": 40823.0,
+      "fill_area": 0.833,
+      "cut_volume": 1259.0,
+      "fill_volume": 0
+    },
+    {
+      "name": "Bldg Sub:",
+      "type": "Sectional",
+      "total_area": 72999.0,
+      "cut_area": 72999.0,
+      "fill_area": 0.0,
+      "cut_volume": 0.0,
+      "fill_volume": 0
+    },
+    {
+      "name": "Curb",
+      "type": "Sectional",
+      "total_area": 9642.0,
+      "cut_area": 9649.0,
+      "fill_area": 0.917,
+      "cut_volume": 328.0,
+      "fill_volume": 0
+    },
+    {
+      "name": "Greenspace",
+      "type": "Sectional",
+      "total_area": 300122.0,
+      "cut_area": 311573.0,
+      "fill_area": 0.333,
+      "cut_volume": 3843.0,
+      "fill_volume": 0
+    },
+    {
+      "name": "SIDEWALK Sub:",
+      "type": "Sectional",
+      "total_area": 5779.0,
+      "cut_area": 5809.0,
+      "fill_area": 0.333,
+      "cut_volume": 71.0,
+      "fill_volume": 0
+    },
+    {
+      "name": "Sectional Total",
+      "type": "Sectional",
+      "total_area": 429339.0,
+      "cut_area": 440853.0,
+      "fill_area": 0,
+      "cut_volume": 5501.0,
+      "fill_volume": 0
+    }
+  ],
+  "expected_summary": {
+    "total_pipes": 29,
+    "storm_pipes": 17,
+    "sanitary_pipes": 6,
+    "water_pipes": 6,
+    "storm_lf": 2956.95,
+    "sanitary_lf": 1800.6399999999999,
+    "water_lf": 1994.75,
+    "total_lf": 6752.34
+  },
+  "expected_retrieval_keywords": [
+    "Concrete",
+    "DIP",
+    "FES",
+    "HDPE",
+    "PVC",
+    "RCP",
+    "SS",
+    "SSL"
+  ],
+  "materials_vocabulary": [
+    "Fitting",
+    "Lateral",
+    "Pipe",
+    "Vertical"
+  ],
+  "abbreviations_vocabulary": [
+    "Concrete",
+    "DIP",
+    "FES",
+    "HDPE",
+    "PVC",
+    "RCP",
+    "SS",
+    "SSL"
+  ],
+  "total_utility_items": 29,
+  "total_material_items": 13,
+  "total_volume_items": 10
+}

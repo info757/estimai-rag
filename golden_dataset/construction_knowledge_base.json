@@ -1,0 +1,242 @@
+{
+  "metadata": {
+    "source": "Dawn Ridge Ground Truth Analysis",
+    "generated_date": "2025-10-23",
+    "total_entries": 40,
+    "categories": [
+      "Abbreviation",
+      "Fitting",
+      "Erosion Control",
+      "Pipe",
+      "visual_cue",
+      "standard",
+      "Structure",
+      "Material",
+      "Pipe Material",
+      "formula",
+      "Pipe_material",
+      "abbreviation",
+      "Specification Code",
+      "Specification/Standard"
+    ]
+  },
+  "entries": [
+    {
+      "term": "840.02",
+      "definition": "In the context of construction/sitework, \"840.02\" typically refers to a specific section or item number in a set of construction specifications or a standard, such as those used by a state Department of Transportation (DOT). It often pertains to a particular type of work, material, or construction method, such as drainage structures, pipe installation, or other sitework-related tasks.",
+      "category": "Specification/Standard"
+    },
+    {
+      "term": "840.14",
+      "definition": "In the context of construction/sitework, \"840.14\" typically refers to a specific section or item number in a set of construction specifications or a standard, often related to sitework or utilities. It may denote a particular type of pipe, fitting, or construction method as outlined in a project's documentation or a regional standard.",
+      "category": "Specification/Standard"
+    },
+    {
+      "term": "840.53",
+      "definition": "In the context of construction/sitework, \"840.53\" typically refers to a specific item or code in a construction specification or standard, often related to sitework or civil engineering tasks. It could denote a particular type of pipe, fitting, or construction method as per a standardized numbering system used in project documentation.",
+      "category": "Specification Code"
+    },
+    {
+      "term": "CB",
+      "definition": "CB stands for \"Catch Basin,\" a structure designed to collect and convey surface water runoff into the stormwater drainage system.",
+      "category": "Structure"
+    },
+    {
+      "term": "CO",
+      "definition": "CO stands for \"Change Order,\" which is a formal document used to record an amendment to the original construction contract.",
+      "category": "Abbreviation"
+    },
+    {
+      "term": "Chain Link Fence",
+      "definition": "A type of woven fence made from galvanized or coated steel wire, forming a diamond pattern, used for security and boundary delineation.",
+      "category": "Structure"
+    },
+    {
+      "term": "Concrete",
+      "definition": "A composite material composed of fine and coarse aggregates bonded together with a fluid cement that hardens over time, used extensively in construction for its strength and durability.",
+      "category": "Material"
+    },
+    {
+      "term": "DI",
+      "definition": "DI stands for \"Ductile Iron,\" a type of iron known for its durability, flexibility, and resistance to corrosion, commonly used in pipes and fittings.",
+      "category": "Pipe Material"
+    },
+    {
+      "term": "DIP",
+      "definition": "DIP stands for Ductile Iron Pipe, a type of pipe commonly used for water and sewage systems due to its strength, durability, and flexibility.",
+      "category": "Pipe Material"
+    },
+    {
+      "term": "Diversion Ditch",
+      "definition": "A diversion ditch is a channel constructed to redirect surface water away from construction sites, preventing erosion and sedimentation.",
+      "category": "Structure"
+    },
+    {
+      "term": "FES",
+      "definition": "FES stands for Flared End Section, which is a type of pipe fitting used at the end of culverts or drainage pipes to improve water flow and reduce erosion.",
+      "category": "Fitting"
+    },
+    {
+      "term": "Fitting",
+      "definition": "A fitting is a component used to connect, redirect, or terminate sections of piping or tubing in a plumbing or mechanical system.",
+      "category": "Fitting"
+    },
+    {
+      "term": "HDPE",
+      "definition": "High-Density Polyethylene (HDPE) is a thermoplastic polymer known for its high strength-to-density ratio, making it ideal for piping systems.",
+      "category": "Pipe Material"
+    },
+    {
+      "term": "Inlet Protection",
+      "definition": "Inlet protection refers to temporary measures implemented to prevent sediment and debris from entering stormwater inlets during construction activities.",
+      "category": "Erosion Control"
+    },
+    {
+      "term": "Lateral",
+      "definition": "A lateral is a secondary pipe or conduit that branches off from a main line, typically used to connect individual properties or structures to a main utility line such as water, sewer, or gas.",
+      "category": "Pipe"
+    },
+    {
+      "term": "MH",
+      "definition": "MH stands for \"Manhole,\" which is an access point to an underground utility system, such as a sewer or drainage system, allowing for inspection, maintenance, and repair.",
+      "category": "Structure"
+    },
+    {
+      "term": "NCDOT",
+      "definition": "NCDOT stands for the North Carolina Department of Transportation, which is the state agency responsible for the construction and maintenance of transportation infrastructure, including roads, bridges, and public transit in North Carolina.",
+      "category": "abbreviation"
+    },
+    {
+      "term": "PVC",
+      "definition": "PVC, or Polyvinyl Chloride, is a synthetic plastic polymer commonly used for pipes and fittings in construction due to its durability, chemical resistance, and cost-effectiveness.",
+      "category": "Pipe Material"
+    },
+    {
+      "term": "Pipe",
+      "definition": "A cylindrical conduit used to transport fluids, gases, or solids, typically made from materials such as metal, plastic, or concrete.",
+      "category": "Pipe_material"
+    },
+    {
+      "term": "Privacy Fence",
+      "definition": "A privacy fence is a type of barrier constructed to provide seclusion and security by obstructing visibility and access to a property. Typically made from wood, vinyl, or composite materials, it is designed to be taller than standard fences, often ranging from 6 to 8 feet in height.",
+      "category": "Structure"
+    },
+    {
+      "term": "RCP",
+      "definition": "Reinforced Concrete Pipe, a type of pipe made from concrete with embedded steel reinforcement to enhance its strength and durability.",
+      "category": "Pipe Material"
+    },
+    {
+      "term": "Retaining Wall",
+      "definition": "A retaining wall is a structure designed to hold back soil or rock from a building, structure, or area to prevent erosion or collapse.",
+      "category": "Structure"
+    },
+    {
+      "term": "SS",
+      "definition": "SS stands for Stainless Steel, a corrosion-resistant alloy used in construction for its durability and aesthetic appeal.",
+      "category": "Material"
+    },
+    {
+      "term": "SSL",
+      "definition": "SSL stands for \"Subgrade Surface Level,\" which refers to the finished level of the ground after excavation and grading, but before any construction or paving begins.",
+      "category": "Abbreviation"
+    },
+    {
+      "term": "SSMH",
+      "definition": "SSMH stands for Sanitary Sewer Manhole, a structure that provides access to a sanitary sewer system for maintenance, inspection, and cleaning.",
+      "category": "Structure"
+    },
+    {
+      "term": "Silt Fence",
+      "definition": "A temporary sediment control device used on construction sites to protect water quality in nearby streams, rivers, and lakes from sediment (loose soil) in stormwater runoff.",
+      "category": "Erosion Control"
+    },
+    {
+      "term": "Slope Matting",
+      "definition": "Slope matting is a protective layer made from natural or synthetic materials, used to stabilize soil on slopes and prevent erosion during and after construction activities.",
+      "category": "Erosion Control"
+    },
+    {
+      "term": "Vertical",
+      "definition": "In construction, \"vertical\" refers to any structural element or component that is oriented perpendicular to the horizontal plane, typically aligned with the direction of gravity.",
+      "category": "Structure"
+    },
+    {
+      "term": "Service Lateral",
+      "definition": "Service connection from main to building",
+      "category": "visual_cue",
+      "visual_description": "Shown as dashed lines perpendicular to main pipes, typically 4\" diameter, 20-50 LF length"
+    },
+    {
+      "term": "Manhole",
+      "definition": "Access structure for sewer maintenance",
+      "category": "visual_cue",
+      "visual_description": "Shown as circles with labels like MH-1, MH-2, SSMH, typically 4-6 ft diameter"
+    },
+    {
+      "term": "Catch Basin",
+      "definition": "Storm drain inlet structure",
+      "category": "visual_cue",
+      "visual_description": "Shown as rectangles with labels like CB-1, CB-2, often with NCDOT specifications"
+    },
+    {
+      "term": "Drop Inlet",
+      "definition": "Storm drain inlet with vertical drop",
+      "category": "visual_cue",
+      "visual_description": "Shown as rectangles with DI-1, DI-2 labels, NCDOT 840.14 specification"
+    },
+    {
+      "term": "FES",
+      "definition": "Flared End Section - concrete outlet structure",
+      "category": "visual_cue",
+      "visual_description": "Shown as flared concrete structure at pipe outlets, often labeled FES"
+    },
+    {
+      "term": "Silt Fence",
+      "definition": "Temporary erosion control barrier",
+      "category": "visual_cue",
+      "visual_description": "Shown as wavy lines around construction perimeter, typically 100-200 LF"
+    },
+    {
+      "term": "Inlet Protection",
+      "definition": "Temporary protection around storm inlets",
+      "category": "visual_cue",
+      "visual_description": "Shown as circles or symbols around storm inlets during construction"
+    },
+    {
+      "term": "Trench Width Formula",
+      "definition": "Standard trench width calculation for pipe installation",
+      "category": "formula",
+      "formula": "Trench Width = Pipe Diameter + 2 feet (working space)",
+      "usage": "Used for excavation volume calculations"
+    },
+    {
+      "term": "Excavation Volume",
+      "definition": "Volume of earth to be excavated for pipe installation",
+      "category": "formula",
+      "formula": "Volume (CY) = (Width \u00d7 Depth \u00d7 Length) / 27",
+      "usage": "Convert cubic feet to cubic yards for excavation estimates"
+    },
+    {
+      "term": "Bedding Material",
+      "definition": "Sand or gravel bedding for pipe support",
+      "category": "formula",
+      "formula": "Bedding Volume = (Width \u00d7 0.5 ft \u00d7 Length) / 27",
+      "usage": "Standard 6-inch bedding depth for most pipes"
+    },
+    {
+      "term": "Backfill Volume",
+      "definition": "Material needed to backfill trench after pipe installation",
+      "category": "formula",
+      "formula": "Backfill = Excavation - Pipe Volume - Bedding",
+      "usage": "Calculate material needed for trench backfill"
+    },
+    {
+      "term": "Service Lateral Length",
+      "definition": "Average length of service connection from main to building",
+      "category": "standard",
+      "formula": "Typical length: 30-50 LF per connection",
+      "usage": "Estimate service lateral quantities for residential connections"
+    }
+  ]
+}
