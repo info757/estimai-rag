@@ -1,0 +1,386 @@
+{
+  "6": {
+    "page_num": 6,
+    "total_detected": 4,
+    "item_types": {
+      "mainline": 1,
+      "lateral": 1,
+      "structure": 1,
+      "fitting": 1
+    },
+    "has_laterals": true,
+    "has_structures": true,
+    "has_fittings": true,
+    "has_erosion_control": false,
+    "has_site_work": false,
+    "materials_found": [
+      "PVC",
+      "Concrete"
+    ],
+    "raw_pipes": [
+      {
+        "item_type": "mainline",
+        "discipline": "sanitary",
+        "material": "PVC",
+        "diameter_in": 8,
+        "length_ft": 100,
+        "count": 1,
+        "depth_ft": 6.5,
+        "invert_in_ft": 845.0,
+        "invert_out_ft": 840.0,
+        "structure_name": "8\" PVC"
+      },
+      {
+        "item_type": "lateral",
+        "discipline": "sanitary",
+        "material": "PVC",
+        "diameter_in": 4,
+        "length_ft": 30,
+        "count": 10,
+        "depth_ft": 5.0,
+        "structure_name": "4\" SS Service"
+      },
+      {
+        "item_type": "structure",
+        "discipline": "sanitary",
+        "material": "Concrete",
+        "diameter_in": 48,
+        "length_ft": null,
+        "count": 1,
+        "depth_ft": 7.0,
+        "rim_elevation_ft": 850.0,
+        "invert_in_ft": 843.0,
+        "invert_out_ft": 842.5,
+        "structure_name": "Sanitary Sewer Manhole MH-1"
+      },
+      {
+        "item_type": "fitting",
+        "discipline": "storm",
+        "material": "Concrete",
+        "diameter_in": 24,
+        "length_ft": null,
+        "count": 1,
+        "structure_name": "24\" FES (Flared End Section)"
+      }
+    ],
+    "raw_grading": {}
+  },
+  "8": {
+    "page_num": 8,
+    "total_detected": 0,
+    "item_types": {},
+    "has_laterals": false,
+    "has_structures": false,
+    "has_fittings": false,
+    "has_erosion_control": false,
+    "has_site_work": false,
+    "materials_found": [],
+    "raw_pipes": [],
+    "raw_grading": {}
+  },
+  "9": {
+    "page_num": 9,
+    "total_detected": 5,
+    "item_types": {
+      "mainline": 2,
+      "lateral": 1,
+      "structure": 1,
+      "fitting": 1
+    },
+    "has_laterals": true,
+    "has_structures": true,
+    "has_fittings": true,
+    "has_erosion_control": false,
+    "has_site_work": false,
+    "materials_found": [
+      "PVC",
+      "RCP",
+      "Concrete"
+    ],
+    "raw_pipes": [
+      {
+        "item_type": "mainline",
+        "discipline": "storm",
+        "material": "RCP",
+        "diameter_in": 15,
+        "length_ft": 150,
+        "count": 1,
+        "depth_ft": 5.0,
+        "invert_in_ft": 844.45,
+        "invert_out_ft": 843.7,
+        "structure_name": "15\" RCP",
+        "from_structure": "C-1",
+        "to_structure": "C-2",
+        "station_start": "1+00",
+        "station_end": "2+50",
+        "notes": ""
+      },
+      {
+        "item_type": "mainline",
+        "discipline": "storm",
+        "material": "RCP",
+        "diameter_in": 18,
+        "length_ft": 200,
+        "count": 1,
+        "depth_ft": 6.0,
+        "invert_in_ft": 843.7,
+        "invert_out_ft": 842.5,
+        "structure_name": "18\" RCP",
+        "from_structure": "C-2",
+        "to_structure": "C-3",
+        "station_start": "2+50",
+        "station_end": "4+50",
+        "notes": ""
+      },
+      {
+        "item_type": "lateral",
+        "discipline": "sanitary",
+        "material": "PVC",
+        "diameter_in": 4,
+        "length_ft": 30,
+        "count": 10,
+        "depth_ft": 4.5,
+        "structure_name": "4\" SS Service",
+        "from_structure": null,
+        "to_structure": null,
+        "station_start": null,
+        "station_end": null,
+        "notes": ""
+      },
+      {
+        "item_type": "structure",
+        "discipline": "storm",
+        "material": "Concrete",
+        "diameter_in": 48,
+        "length_ft": null,
+        "count": 1,
+        "depth_ft": 5.5,
+        "rim_elevation_ft": 850.0,
+        "invert_in_ft": 844.45,
+        "invert_out_ft": 843.7,
+        "structure_name": "NCDOT 840.02 Concrete Catch Basin C-1",
+        "from_structure": null,
+        "to_structure": null,
+        "station_start": null,
+        "station_end": null,
+        "notes": ""
+      },
+      {
+        "item_type": "fitting",
+        "discipline": "storm",
+        "material": "Concrete",
+        "diameter_in": 24,
+        "length_ft": null,
+        "count": 1,
+        "structure_name": "24\" FES (Flared End Section)",
+        "from_structure": null,
+        "to_structure": null,
+        "station_start": null,
+        "station_end": null,
+        "notes": ""
+      }
+    ],
+    "raw_grading": {}
+  },
+  "13": {
+    "page_num": 13,
+    "total_detected": 4,
+    "item_types": {
+      "mainline": 1,
+      "lateral": 1,
+      "structure": 1,
+      "fitting": 1
+    },
+    "has_laterals": true,
+    "has_structures": true,
+    "has_fittings": true,
+    "has_erosion_control": false,
+    "has_site_work": false,
+    "materials_found": [
+      "PVC",
+      "RCP",
+      "Concrete"
+    ],
+    "raw_pipes": [
+      {
+        "item_type": "mainline",
+        "discipline": "storm",
+        "material": "RCP",
+        "diameter_in": 18,
+        "length_ft": 150,
+        "count": 1,
+        "depth_ft": 6.5,
+        "invert_in_ft": 645.5,
+        "invert_out_ft": 644.0,
+        "rim_elevation_ft": null,
+        "structure_name": "18\" RCP",
+        "from_structure": "MH-1",
+        "to_structure": "MH-2",
+        "station_start": "1+00",
+        "station_end": "2+50",
+        "notes": ""
+      },
+      {
+        "item_type": "lateral",
+        "discipline": "sanitary",
+        "material": "PVC",
+        "diameter_in": 4,
+        "length_ft": 30,
+        "count": 10,
+        "depth_ft": 5.0,
+        "invert_in_ft": null,
+        "invert_out_ft": null,
+        "rim_elevation_ft": null,
+        "structure_name": "4\" SS Service",
+        "from_structure": null,
+        "to_structure": null,
+        "station_start": null,
+        "station_end": null,
+        "notes": ""
+      },
+      {
+        "item_type": "structure",
+        "discipline": "storm",
+        "material": "Concrete",
+        "diameter_in": 48,
+        "length_ft": null,
+        "count": 1,
+        "depth_ft": 4.6,
+        "rim_elevation_ft": 850.0,
+        "invert_in_ft": 845.4,
+        "invert_out_ft": null,
+        "structure_name": "NCDOT 840.02 Concrete Catch Basin CB-1",
+        "from_structure": null,
+        "to_structure": null,
+        "station_start": null,
+        "station_end": null,
+        "notes": ""
+      },
+      {
+        "item_type": "fitting",
+        "discipline": "storm",
+        "material": "Concrete",
+        "diameter_in": 24,
+        "length_ft": null,
+        "count": 1,
+        "structure_name": "24\" FES (Flared End Section)",
+        "from_structure": null,
+        "to_structure": null,
+        "station_start": null,
+        "station_end": null,
+        "notes": ""
+      }
+    ],
+    "raw_grading": {}
+  },
+  "14": {
+    "page_num": 14,
+    "total_detected": 7,
+    "item_types": {
+      "mainline": 3,
+      "lateral": 1,
+      "structure": 2,
+      "fitting": 1
+    },
+    "has_laterals": true,
+    "has_structures": true,
+    "has_fittings": true,
+    "has_erosion_control": false,
+    "has_site_work": false,
+    "materials_found": [
+      "PVC",
+      "RCP",
+      "Concrete",
+      "Corrugated HDPE"
+    ],
+    "raw_pipes": [
+      {
+        "item_type": "mainline",
+        "discipline": "storm",
+        "material": "Corrugated HDPE",
+        "diameter_in": 18,
+        "length_ft": 150,
+        "count": 1,
+        "depth_ft": 5.0,
+        "structure_name": "18\" Corrugated HDPE"
+      },
+      {
+        "item_type": "mainline",
+        "discipline": "storm",
+        "material": "RCP",
+        "diameter_in": 24,
+        "length_ft": 200,
+        "count": 1,
+        "depth_ft": 6.5,
+        "structure_name": "24\" RCP"
+      },
+      {
+        "item_type": "mainline",
+        "discipline": "sanitary",
+        "material": "PVC",
+        "diameter_in": 8,
+        "length_ft": 300,
+        "count": 1,
+        "depth_ft": 7.0,
+        "structure_name": "8\" PVC"
+      },
+      {
+        "item_type": "lateral",
+        "discipline": "sanitary",
+        "material": "PVC",
+        "diameter_in": 4,
+        "length_ft": 30,
+        "count": 10,
+        "depth_ft": 4.5,
+        "structure_name": "4\" SS Service"
+      },
+      {
+        "item_type": "structure",
+        "discipline": "storm",
+        "material": "Concrete",
+        "diameter_in": 48,
+        "length_ft": null,
+        "count": 1,
+        "depth_ft": 4.6,
+        "rim_elevation_ft": 850.0,
+        "invert_in_ft": 845.4,
+        "structure_name": "NCDOT 840.02 Concrete Catch Basin CB-1"
+      },
+      {
+        "item_type": "structure",
+        "discipline": "sanitary",
+        "material": "Concrete",
+        "diameter_in": null,
+        "length_ft": null,
+        "count": 1,
+        "depth_ft": 5.0,
+        "rim_elevation_ft": 860.0,
+        "invert_in_ft": 855.0,
+        "structure_name": "Sanitary Sewer Manhole MH-1"
+      },
+      {
+        "item_type": "fitting",
+        "discipline": "storm",
+        "material": "Concrete",
+        "diameter_in": 24,
+        "length_ft": null,
+        "count": 1,
+        "structure_name": "24\" FES (Flared End Section)"
+      }
+    ],
+    "raw_grading": {}
+  },
+  "16": {
+    "page_num": 16,
+    "total_detected": 0,
+    "item_types": {},
+    "has_laterals": false,
+    "has_structures": false,
+    "has_fittings": false,
+    "has_erosion_control": false,
+    "has_site_work": false,
+    "materials_found": [],
+    "raw_pipes": [],
+    "raw_grading": {}
+  }
+}

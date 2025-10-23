@@ -446,19 +446,41 @@ Return JSON:
                 "recommendations": ""
             }
         
-        # Use LLM to deduplicate (same prompt as consolidate_findings)
+        # Use LLM with context-aware reasoning for intelligent deduplication
         vision_summary = f"Vision detected {len(vision_pipes)} pipes from construction document."
         
-        prompt = f"""You are an expert at reading construction blueprint documents and vector and raster pdfs.
+        # Format detections with full context
+        detections_context = self._format_pipes_for_llm(vision_pipes)
+        
+        prompt = f"""You are an expert construction estimator analyzing utility detections from PDF plans.
 
 {vision_summary}
 
-Vision Detections:
-{self._format_pipes_for_llm(vision_pipes)}
+Vision Detections (what was actually seen on the PDF):
+{detections_context}
 
-If you see a construction item like a pipe with the same label more than once then don't count it multiple times. It is simply a construction item being referenced again from a different view or perhaps giving us more information about it. Analyze for new, important information but do not count it again when you see it has the same naming convention you already saw and counted.
+CRITICAL: Understand the difference between DUPLICATES and QUANTITY MULTIPLIERS:
 
-Calculate the total unique pipes by type and their total lengths.
+1. **DUPLICATES** (don't double-count):
+   - Same pipe with same from/to structures = duplicate (shown on multiple pages/views)
+   - Example: "15\" RCP from CB-1 to CB-2" on page 6 AND page 9 = 1 pipe, shown twice
+
+2. **QUANTITY MULTIPLIERS** (DO count and multiply):
+   - Items with "count" field > 1 = multiple separate instances
+   - Example: "4\" SS Service, count=26" = 26 separate service laterals
+   - For these: MULTIPLY the length_ft by count to get total_lf
+   
+3. **GENERAL CONSTRUCTION KNOWLEDGE** (use this context):
+   - Service laterals (SS Service, Copper Service): One per building/lot, count indicates number of connections
+   - Structures (MH, CB, CO): Each labeled instance is separate (MH-1, MH-2, CB-1, CB-2)
+   - Fittings (FES, valves): Count each instance
+   - Mainlines: Continuous runs should be summed, separate runs kept separate
+
+INSTRUCTIONS:
+- For items with count > 1: Calculate total_lf = length_ft × count
+- For duplicates (same from/to structures): Keep only one, use longer length if different
+- For mainlines: Sum LF if sequential structures (CB-1→CB-2→CB-3), keep separate otherwise
+- Show your reasoning for each decision
 
 Return JSON:
 {{
@@ -473,7 +495,8 @@ Return JSON:
         "total_lf": float
     }},
     "materials_found": [],
-    "recommendations": ""
+    "recommendations": "",
+    "reasoning": "Brief explanation of how quantities were calculated"
 }}"""
 
         try:

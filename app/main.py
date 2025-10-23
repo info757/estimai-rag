@@ -10,6 +10,10 @@ from fastapi import FastAPI, UploadFile, File, Form, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 from app.models import TakeoffResponse
 from app.agents.main_agent import run_takeoff
@@ -43,8 +47,14 @@ UPLOAD_DIR.mkdir(exist_ok=True)
 
 
 @app.get("/")
-def root():
-    """Root endpoint."""
+async def root():
+    """Serve the frontend HTML."""
+    return FileResponse("frontend/index.html")
+
+
+@app.get("/api")
+def api_info():
+    """API info endpoint."""
     return {
         "app": "EstimAI-RAG",
         "version": "1.0.0",

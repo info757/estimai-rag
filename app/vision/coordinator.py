@@ -14,6 +14,7 @@ import fitz  # PyMuPDF
 
 from app.vision.pipes_vision_agent_v2 import PipesVisionAgent
 from app.vision.grading_vision_agent import GradingVisionAgent
+from app.vision.legend_vision_agent import LegendVisionAgent
 
 logger = logging.getLogger(__name__)
 
@@ -34,7 +35,8 @@ class VisionCoordinator:
         """Initialize coordinator with available Vision agents."""
         self.agents = {
             "pipes": PipesVisionAgent(),
-            "grading": GradingVisionAgent()  # NEW: Grading plan detection
+            "grading": GradingVisionAgent(),
+            "legend": LegendVisionAgent()  # NEW: Legend and abbreviation extraction
             # Future: Add more specialized agents as needed
             # "foundations": FoundationsVisionAgent(),
             # "electrical": ElectricalVisionAgent(),
